@@ -1,0 +1,44 @@
+# Use postgres/example user/password credentials
+version: '3.1'
+
+services:
+    db:
+        image: postgres
+        restart: always
+        environment:
+            POSTGRES_PASSWORD: lg2QouTDKf-3?(N!
+            POSTGRES_USER: chat
+            POSTGRES_DB: chat
+        volumes:
+            - ./data:/var/lib/postgresql/data
+        expose:
+            - 5432
+    adminer:
+        image: adminer
+        restart: always
+        depends_on:
+            - db
+        ports:
+            - 8080:8080
+
+    chat:
+        build: .
+        command: bash -c "ENV_PATH=.dev.env node dist/main.js"
+        depends_on:
+            - db
+        ports:
+            - 3000:3000
+
+    nginx:
+        image: nginx:latest
+        restart: unless-stopped
+        depends_on:
+            - db
+            - adminer
+            - chat
+        ports:
+            - 80:80
+            - 443:443
+        volumes:
+            - ./nginx/user_conf.d/server.dev.conf:/etc/nginx/nginx.conf
+            - ./static:/home/app/web/
