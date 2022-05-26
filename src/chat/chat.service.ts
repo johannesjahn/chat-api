@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { exception } from 'console';
 import { CreateConversationRequestDTO } from 'src/dtos/conversation.dto';
 import { User } from 'src/users/user.entity';
-import { Repository } from 'typeorm';
+import { Repository, MoreThan, FindConditions } from 'typeorm';
 import { Conversation, Message } from './chat.entity';
 
 @Injectable()
@@ -59,17 +59,34 @@ export class ChatService {
     return result;
   }
 
-  async getMessages(userId: number, conversationId: number) {
+  async getMessages(
+    userId: number,
+    conversationId: number,
+    lastMessage?: number,
+  ) {
     const conversation = await this.conversationRepository.findOne(
       conversationId,
       { relations: ['participants'] },
     );
     if (!conversation.participants.some((usr) => usr.id == userId))
       throw exception('HELP');
+
+    let findConditions: FindConditions<Message>;
+
+    if (lastMessage) {
+      findConditions = {
+        conversation: conversation,
+        id: MoreThan(lastMessage),
+      };
+    } else {
+      findConditions = { conversation: conversation };
+    }
+
     const m = await this.messageRepository.find({
-      where: { conversation: conversation },
+      where: findConditions,
       relations: ['author'],
     });
+
     conversation.messages = m;
     return conversation;
   }

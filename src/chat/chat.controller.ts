@@ -37,12 +37,16 @@ export class ChatController {
 
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
-  @ApiCreatedResponse({ type: ConversationResponseDTO })
+  @ApiCreatedResponse({
+    type: ConversationResponseDTO,
+    description: 'Fetches the messages for a given conversation.',
+  })
   @Post('/get-messages')
   async getMessages(@Request() req, @Body() body: GetMessagesDTO) {
     const result = await this.chatService.getMessages(
       req.user.userId,
       body.conversationId,
+      body.lastMessage,
     );
     return result;
   }

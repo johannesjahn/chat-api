@@ -12,6 +12,12 @@ export class CreateMessageDTO {
 export class GetMessagesDTO {
   @ApiProperty()
   conversationId: number;
+  @ApiProperty({
+    required: false,
+    description:
+      'To reduce the amount of data fetched the client can send the id of the last received message and only get messages that are newer than that',
+  })
+  lastMessage?: number;
 }
 
 export class MessageResponseDTO {
