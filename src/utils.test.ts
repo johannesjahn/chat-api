@@ -48,7 +48,7 @@ export const getTestModule = async () => {
 
 export const populateDB = async (app: TestingModule) => {
   const service = app.get(AuthService);
-  const res = await service.register({
+  await service.register({
     username: 'Nachobar',
     password: '123',
   });

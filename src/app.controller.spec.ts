@@ -1,6 +1,5 @@
 import { TestingModule } from '@nestjs/testing';
-import { getRepositoryToken } from '@nestjs/typeorm';
-import { Connection, Repository } from 'typeorm';
+import { Connection } from 'typeorm';
 import { UserAuth } from './users/userAuth.entity';
 import {
   cleanupDB,
