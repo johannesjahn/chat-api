@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreatePostDTO {
-  @ApiProperty()
+  @ApiProperty({ description: 'The content of a post' })
   content: string;
 }
 
