@@ -68,6 +68,37 @@ export class PostService {
     return result;
   }
 
+  async getComments(postId: number) {
+    const result = await this.commentRepository.find({
+      where: { post: { id: postId } },
+      relations: ['author', 'replies'],
+    });
+    return result;
+  }
+
+  async updateComment(userId: number, commentId: number, content: string) {
+    const comment = await this.commentRepository.findOne({
+      where: { id: commentId, author: { id: userId } },
+    });
+    if (!comment) throw new HttpException('Comment not found', 404);
+    comment.content = content;
+
+    const result = await this.commentRepository.update(commentId, comment);
+    if (result.affected === 0)
+      throw new HttpException('Could not update comment', 400);
+    return { success: 'Comment updated' };
+  }
+
+  async deleteComment(userId: number, commentId: number) {
+    const result = await this.commentRepository.delete({
+      id: commentId,
+      author: { id: userId },
+    });
+    if (result.affected === 0)
+      throw new HttpException('Comment not found', 404);
+    return { success: 'Comment deleted' };
+  }
+
   async createReply(userId: number, createReplyDTO: CreateReplyDTO) {
     const result = await this.replyRepository.save({
       author: { id: userId },
