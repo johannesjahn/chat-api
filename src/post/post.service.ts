@@ -107,4 +107,34 @@ export class PostService {
     });
     return result;
   }
+
+  async getReplies(commentId: number) {
+    const result = await this.replyRepository.find({
+      where: { comment: { id: commentId } },
+      relations: ['author'],
+    });
+    return result;
+  }
+
+  async updateReply(userId: number, replyId: number, content: string) {
+    const reply = await this.replyRepository.findOne({
+      where: { id: replyId, author: { id: userId } },
+    });
+    if (!reply) throw new HttpException('Reply not found', 404);
+    reply.content = content;
+
+    const result = await this.replyRepository.update(replyId, reply);
+    if (result.affected === 0)
+      throw new HttpException('Could not update reply', 400);
+    return { success: 'Reply updated' };
+  }
+
+  async deleteReply(userId: number, replyId: number) {
+    const result = await this.replyRepository.delete({
+      id: replyId,
+      author: { id: userId },
+    });
+    if (result.affected === 0) throw new HttpException('Reply not found', 404);
+    return { success: 'Reply deleted' };
+  }
 }
