@@ -1,5 +1,5 @@
-import { Conversation, Message } from 'src/chat/chat.entity';
-import { Comment, Post, Reply } from 'src/post/post.entity';
+import { Conversation, Message } from '../chat/chat.entity';
+import { Post, Comment, Reply } from '../post/post.entity';
 import {
   Column,
   Entity,

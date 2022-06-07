@@ -3,10 +3,10 @@ import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { compare, hash } from 'bcrypt';
 import { exception } from 'console';
-import { RegisterDTO } from 'src/dtos/register.dto';
-import { User } from 'src/users/user.entity';
-import { UserAuth } from 'src/users/userAuth.entity';
-import { UsersService } from 'src/users/users.service';
+import { RegisterDTO } from '../dtos/register.dto';
+import { User } from '../users/user.entity';
+import { UserAuth } from '../users/userAuth.entity';
+import { UsersService } from '../users/users.service';
 import { Repository } from 'typeorm';
 import { hashConstants } from './constants';
 

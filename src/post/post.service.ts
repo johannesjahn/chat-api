@@ -5,7 +5,7 @@ import {
   CreatePostDTO,
   CreateReplyDTO,
   UpdatePostDTO,
-} from 'src/dtos/post.dto';
+} from '../dtos/post.dto';
 import { Repository } from 'typeorm';
 import { Comment, Post, Reply } from './post.entity';
 

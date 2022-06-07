@@ -9,14 +9,14 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import {
   CreateCommentDTO,
   CreatePostDTO,
   CreateReplyDTO,
   DeletePostDTO,
   UpdatePostDTO,
-} from 'src/dtos/post.dto';
+} from '../dtos/post.dto';
 import { PostService } from './post.service';
 
 @ApiTags('post')

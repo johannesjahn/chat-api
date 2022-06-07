@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { exception } from 'console';
-import { CreateConversationRequestDTO } from 'src/dtos/conversation.dto';
-import { User } from 'src/users/user.entity';
+import { CreateConversationRequestDTO } from '../dtos/conversation.dto';
+import { User } from '../users/user.entity';
 import { Repository, MoreThan, FindConditions } from 'typeorm';
 import { Conversation, Message } from './chat.entity';
 

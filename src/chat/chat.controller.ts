@@ -7,14 +7,14 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import {
   ConversationResponseDTO,
   CreateMessageDTO,
   GetMessagesDTO,
   MessageResponseDTO,
-} from 'src/dtos/chat.dto';
-import { CreateConversationRequestDTO } from 'src/dtos/conversation.dto';
+} from '../dtos/chat.dto';
+import { CreateConversationRequestDTO } from '../dtos/conversation.dto';
 import { ChatService } from './chat.service';
 
 @ApiTags('chat')

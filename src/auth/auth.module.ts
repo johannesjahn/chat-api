@@ -7,9 +7,9 @@ import { JwtModule } from '@nestjs/jwt';
 import { jwtConstants } from './constants';
 import { JwtStrategy } from './jwt.strategy';
 import { AuthController } from './auth.controller';
-import { User } from 'src/users/user.entity';
+import { User } from '../users/user.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UserAuth } from 'src/users/userAuth.entity';
+import { UserAuth } from '../users/userAuth.entity';
 
 @Module({
   imports: [
