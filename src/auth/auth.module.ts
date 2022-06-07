@@ -8,8 +8,9 @@ import { jwtConstants } from './constants';
 import { JwtStrategy } from './jwt.strategy';
 import { AuthController } from './auth.controller';
 import { User } from '../users/user.entity';
-import { TypeOrmModule } from '@nestjs/typeorm';
+import { getRepositoryToken, TypeOrmModule } from '@nestjs/typeorm';
 import { UserAuth } from '../users/userAuth.entity';
+import { Repository } from 'typeorm';
 
 @Module({
   imports: [

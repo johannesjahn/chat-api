@@ -19,7 +19,7 @@ import { UsersModule } from './users/users.module';
       username: 'chat',
       password: process.env.DATABASE_PW,
       database: 'chat',
-      entities: ['dist/**/*.entity{.ts,.js}'],
+      entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: true,
     }),
     UsersModule,

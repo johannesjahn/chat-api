@@ -1,22 +1,41 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { TestingModule } from '@nestjs/testing';
+import { getRepositoryToken } from '@nestjs/typeorm';
+import { Connection, Repository } from 'typeorm';
+import { UserAuth } from './users/userAuth.entity';
+import {
+  cleanupDB,
+  connectToTestDB,
+  getTestModule,
+  populateDB,
+} from './utils.test';
 
 describe('AppController', () => {
-  let appController: AppController;
+  let app: TestingModule;
+  let dbConnection: Connection;
 
-  beforeEach(async () => {
-    const app: TestingModule = await Test.createTestingModule({
-      controllers: [AppController],
-      providers: [AppService],
-    }).compile();
-
-    appController = app.get<AppController>(AppController);
+  beforeAll(async () => {
+    dbConnection = await connectToTestDB();
+    app = await getTestModule();
   });
 
-  describe('root', () => {
-    it('should return "Hello World!"', () => {
-      expect(appController.getHello()).toBe('Hello World!');
-    });
+  afterAll(() => {
+    dbConnection.close();
+  });
+
+  beforeEach(async () => {
+    await populateDB(app);
+  });
+
+  afterEach(async () => {
+    await cleanupDB(dbConnection);
+  });
+
+  it('should return "Hello World!"', () => {
+    //expect(appController.getHello()).toBe('Hello World!');
+  });
+  it('check Login', async () => {
+    const repo = dbConnection.getRepository(UserAuth);
+    const result = await repo.find();
+    expect(result).not.toHaveLength(0);
   });
 });

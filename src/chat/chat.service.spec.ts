@@ -9,7 +9,7 @@ import {
 } from '../utils.test';
 import { UsersService } from '../users/users.service';
 
-describe('PostService', () => {
+describe('ChatService', () => {
   let app: TestingModule;
   let dbConnection: Connection;
   let service: UsersService;

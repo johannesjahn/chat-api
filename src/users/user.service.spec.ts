@@ -7,9 +7,9 @@ import {
   getTestModule,
   populateDB,
 } from '../utils.test';
-import { UsersService } from '../users/users.service';
+import { UsersService } from './users.service';
 
-describe('PostService', () => {
+describe('UserService', () => {
   let app: TestingModule;
   let dbConnection: Connection;
   let service: UsersService;

@@ -25,7 +25,7 @@ export class User {
   @ManyToMany(() => Conversation, (conversation) => conversation.participants)
   conversations: Conversation[];
 
-  @OneToOne(() => UserAuth)
+  @OneToOne(() => UserAuth, { onDelete: 'CASCADE' })
   @JoinColumn()
   userAuth: UserAuth;
 
