@@ -1,8 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { compare, hash } from 'bcrypt';
-import { exception } from 'console';
 import { RegisterDTO } from '../dtos/register.dto';
 import { User } from '../users/user.entity';
 import { UserAuth } from '../users/userAuth.entity';
@@ -41,7 +40,7 @@ export class AuthService {
 
   async register(registerDTO: RegisterDTO) {
     const user = await this.usersService.findUser(registerDTO.username);
-    if (user) throw exception('Username is already taken');
+    if (user) throw new HttpException({ error: 'User already exists' }, 400);
     const pw = await hash(registerDTO.password, hashConstants.saltRounds);
     const auth = new UserAuth();
     auth.password = pw;
@@ -50,6 +49,8 @@ export class AuthService {
     nUser.username = registerDTO.username;
     nUser.userAuth = userAuthSaved;
     await this.userRepository.save(nUser);
+    // just filtering the userAuth properties here
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { userAuth, ...result } = nUser;
     return result;
   }
