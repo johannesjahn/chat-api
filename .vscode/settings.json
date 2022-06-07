@@ -5,6 +5,7 @@
         "Nachobar",
         "nestjs",
         "prebuild",
+        "Repies",
         "typeorm"
     ]
 }
