@@ -1,4 +1,5 @@
 import { Conversation, Message } from 'src/chat/chat.entity';
+import { Comment, Post, Reply } from 'src/post/post.entity';
 import {
   Column,
   Entity,
@@ -27,4 +28,13 @@ export class User {
   @OneToOne(() => UserAuth)
   @JoinColumn()
   userAuth: UserAuth;
+
+  @OneToMany(() => Post, (post) => post.author)
+  posts: Post[];
+
+  @OneToMany(() => Comment, (comment) => comment.author)
+  comments: Comment[];
+
+  @OneToMany(() => Reply, (reply) => reply.author)
+  replies: Reply[];
 }

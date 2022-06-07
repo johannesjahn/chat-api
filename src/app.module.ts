@@ -1,12 +1,13 @@
 import { MiddlewareConsumer, Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
-import { ConfigModule } from '@nestjs/config';
 import { ChatModule } from './chat/chat.module';
 import { AppLoggerMiddleware } from './middleware/app.logger.middleware';
+import { PostModule } from './post/post.module';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { AppLoggerMiddleware } from './middleware/app.logger.middleware';
     UsersModule,
     AuthModule,
     ChatModule,
+    PostModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -1,0 +1,79 @@
+import { HttpException, Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import {
+  CreateCommentDTO,
+  CreatePostDTO,
+  CreateReplyDTO,
+  UpdatePostDTO,
+} from 'src/dtos/post.dto';
+import { Repository } from 'typeorm';
+import { Comment, Post, Reply } from './post.entity';
+
+@Injectable()
+export class PostService {
+  constructor(
+    @InjectRepository(Post)
+    private postRepository: Repository<Post>,
+    @InjectRepository(Comment)
+    private commentRepository: Repository<Comment>,
+    @InjectRepository(Reply)
+    private replyRepository: Repository<Reply>,
+  ) {}
+
+  async createPost(userId: number, post: CreatePostDTO) {
+    const createdPost = await this.postRepository.save({
+      content: post.content,
+      author: { id: userId },
+    });
+    return createdPost;
+  }
+
+  async getPosts() {
+    const result = await this.postRepository.find();
+    return result;
+  }
+
+  async deletePost(userId: number, postId: number) {
+    const result = await this.postRepository.delete({
+      id: postId,
+      author: { id: userId },
+    });
+
+    if (result.affected === 0) throw new HttpException('Post not found', 404);
+    return { success: 'Post deleted' };
+  }
+
+  async updatePost(userId: number, postDTO: UpdatePostDTO) {
+    const post = await this.postRepository.findOne({
+      id: postDTO.id,
+      author: { id: userId },
+    });
+
+    if (!post) throw new HttpException('Post not found', 404);
+    post.content = postDTO.content;
+
+    const result = await this.postRepository.update(postDTO.id, post);
+
+    if (result.affected === 0)
+      throw new HttpException('Could not update post', 400);
+    return { success: 'Post updated' };
+  }
+
+  async createComment(userId: number, createCommentDTO: CreateCommentDTO) {
+    const result = await this.commentRepository.save({
+      author: { id: userId },
+      post: { id: createCommentDTO.postId },
+      content: createCommentDTO.content,
+    });
+    return result;
+  }
+
+  async createReply(userId: number, createReplyDTO: CreateReplyDTO) {
+    const result = await this.replyRepository.save({
+      author: { id: userId },
+      comment: { id: createReplyDTO.commentId },
+      content: createReplyDTO.content,
+    });
+    return result;
+  }
+}
