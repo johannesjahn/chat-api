@@ -26,7 +26,7 @@ export class Post {
   @ManyToOne(() => User, (user) => user.posts)
   author: User;
 
-  @OneToMany(() => Comment, (comment) => comment.post)
+  @OneToMany(() => Comment, (comment) => comment.post, { onDelete: 'CASCADE' })
   comments: Comment[];
 }
 
@@ -44,13 +44,19 @@ export class Comment {
   @Column()
   content: string;
 
-  @ManyToOne(() => Post, (post) => post.comments, { nullable: false })
+  @ManyToOne(() => Post, (post) => post.comments, {
+    nullable: false,
+    onDelete: 'CASCADE',
+  })
   post: Post;
 
   @OneToMany(() => Reply, (reply) => reply.comment)
   replies: Reply[];
 
-  @ManyToOne(() => User, (user) => user.posts, { nullable: false })
+  @ManyToOne(() => User, (user) => user.posts, {
+    nullable: false,
+    onDelete: 'CASCADE',
+  })
   author: User;
 }
 
@@ -68,9 +74,15 @@ export class Reply {
   @Column()
   content: string;
 
-  @ManyToOne(() => Comment, (comment) => comment.replies, { nullable: false })
+  @ManyToOne(() => Comment, (comment) => comment.replies, {
+    nullable: false,
+    onDelete: 'CASCADE',
+  })
   comment: Comment;
 
-  @ManyToOne(() => User, (user) => user.posts, { nullable: false })
+  @ManyToOne(() => User, (user) => user.posts, {
+    nullable: false,
+    onDelete: 'CASCADE',
+  })
   author: User;
 }

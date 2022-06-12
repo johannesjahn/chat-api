@@ -4,6 +4,8 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { Connection, createConnection, getRepository } from 'typeorm';
 import { AuthService } from './auth/auth.service';
 import { jwtConstants } from './auth/constants';
+import { Post, Comment, Reply } from './post/post.entity';
+import { PostService } from './post/post.service';
 import { User } from './users/user.entity';
 import { UserAuth } from './users/userAuth.entity';
 import { UsersService } from './users/users.service';
@@ -24,6 +26,10 @@ export const getTestModule = async () => {
   const userRepository = getRepository(User, 'default');
   const authRepository = getRepository(UserAuth, 'default');
 
+  const postRepository = getRepository(Post, 'default');
+  const commentRepository = getRepository(Comment, 'default');
+  const replyRepository = getRepository(Reply, 'default');
+
   return await Test.createTestingModule({
     imports: [
       JwtModule.register({
@@ -40,8 +46,21 @@ export const getTestModule = async () => {
         provide: getRepositoryToken(UserAuth),
         useValue: authRepository,
       },
+      {
+        provide: getRepositoryToken(Post),
+        useValue: postRepository,
+      },
+      {
+        provide: getRepositoryToken(Comment),
+        useValue: commentRepository,
+      },
+      {
+        provide: getRepositoryToken(Reply),
+        useValue: replyRepository,
+      },
       UsersService,
       AuthService,
+      PostService,
     ],
   }).compile();
 };

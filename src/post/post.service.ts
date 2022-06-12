@@ -29,7 +29,15 @@ export class PostService {
   }
 
   async getPosts() {
-    const result = await this.postRepository.find();
+    const result = await this.postRepository.find({
+      relations: [
+        'author',
+        'comments',
+        'comments.author',
+        'comments.replies',
+        'comments.replies.author',
+      ],
+    });
     return result;
   }
 
