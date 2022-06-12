@@ -13,12 +13,10 @@ import { PostService } from './post.service';
 describe('PostService', () => {
   let app: TestingModule;
   let dbConnection: Connection;
-  let service: UsersService;
 
   beforeAll(async () => {
     dbConnection = await connectToTestDB();
     app = await getTestModule();
-    service = app.get(UsersService);
   });
 
   afterAll(() => {
