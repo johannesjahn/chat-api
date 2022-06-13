@@ -7,7 +7,6 @@ import {
   getTestModule,
   populateDB,
 } from '../utils.test';
-import { UsersService } from '../users/users.service';
 import { PostService } from './post.service';
 
 describe('PostService', () => {

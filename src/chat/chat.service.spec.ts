@@ -8,6 +8,9 @@ import {
   populateDB,
 } from '../utils.test';
 import { UsersService } from '../users/users.service';
+import { faker } from '@faker-js/faker';
+import { ChatService } from './chat.service';
+import { HttpException } from '@nestjs/common';
 
 describe('ChatService', () => {
   let app: TestingModule;
@@ -32,21 +35,100 @@ describe('ChatService', () => {
     await cleanupDB(dbConnection);
   });
 
-  it('There should be some users in the system', async () => {
-    const users = await service.findAll();
-    expect(users).not.toHaveLength(0);
+  it('Create a Chat', async () => {
+    const authService = app.get(AuthService);
+    const firstUser = await authService.register({
+      username: faker.internet.userName(),
+      password: faker.internet.password(),
+    });
+    const secondUser = await authService.register({
+      username: faker.internet.userName(),
+      password: faker.internet.password(),
+    });
+
+    const chatService = app.get(ChatService);
+    await chatService.createOne(firstUser.id, { partnerId: secondUser.id });
+
+    const chats = await chatService.getConversationListForUser(firstUser.id);
+
+    expect(chats.length).toBe(1);
+
+    const chats2 = await chatService.getConversationListForUser(secondUser.id);
+
+    expect(chats2.length).toBe(1);
   });
 
-  it('Check find users', async () => {
+  it('Write a message', async () => {
     const authService = app.get(AuthService);
-    const ownUser = await authService.register({
-      username: 'TestUser',
-      password: '123',
+    const firstUser = await authService.register({
+      username: faker.internet.userName(),
+      password: faker.internet.password(),
     });
-    const usersWithSelf = await service.findAll();
-    expect(usersWithSelf).toContainEqual(ownUser);
+    const secondUser = await authService.register({
+      username: faker.internet.userName(),
+      password: faker.internet.password(),
+    });
 
-    const usersWithoutSelf = await service.findAllWithoutSelf(ownUser.id);
-    expect(usersWithoutSelf).not.toContainEqual(ownUser);
+    const chatService = app.get(ChatService);
+    const conversation = await chatService.createOne(firstUser.id, {
+      partnerId: secondUser.id,
+    });
+
+    const text = faker.random.words(100);
+    await chatService.sendMessage(firstUser.id, conversation.id, text);
+
+    const messages = await chatService.getMessages(
+      secondUser.id,
+      conversation.id,
+      null,
+    );
+
+    expect(messages.messages.length).toBe(1);
+    expect(messages.messages[0].author.id).toBe(firstUser.id);
+    expect(messages.messages[0].content).toBe(text);
+
+    await chatService.sendMessage(
+      secondUser.id,
+      conversation.id,
+      faker.lorem.paragraph(100),
+    );
+
+    const messages2 = await chatService.getMessages(
+      secondUser.id,
+      conversation.id,
+      null,
+    );
+
+    expect(messages2.messages.length).toBe(2);
+    expect(messages2.messages[1].author.id).toBe(secondUser.id);
+  });
+
+  it('Write a message in the wrong conversation', async () => {
+    const authService = app.get(AuthService);
+    const firstUser = await authService.register({
+      username: faker.internet.userName(),
+      password: faker.internet.password(),
+    });
+    const secondUser = await authService.register({
+      username: faker.internet.userName(),
+      password: faker.internet.password(),
+    });
+
+    const thirdUser = await authService.register({
+      username: faker.internet.userName(),
+      password: faker.internet.password(),
+    });
+
+    const chatService = app.get(ChatService);
+    const conversation = await chatService.createOne(firstUser.id, {
+      partnerId: secondUser.id,
+    });
+
+    const text = faker.random.words(100);
+    try {
+      await chatService.sendMessage(thirdUser.id, conversation.id, text);
+    } catch (e) {
+      expect(e).toBeInstanceOf(HttpException);
+    }
   });
 });

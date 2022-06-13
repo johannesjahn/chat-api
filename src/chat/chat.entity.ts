@@ -22,7 +22,10 @@ export class Conversation {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @ManyToMany(() => User, (user) => user.conversations)
+  @ManyToMany(() => User, (user) => user.conversations, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   @JoinTable()
   participants: User[];
 
@@ -44,9 +47,11 @@ export class Message {
   @Column()
   content: string;
 
-  @ManyToOne(() => User, (user) => user.messages)
+  @ManyToOne(() => User, (user) => user.messages, { onDelete: 'CASCADE' })
   author: User;
 
-  @ManyToOne(() => Conversation, (conversation) => conversation.messages)
+  @ManyToOne(() => Conversation, (conversation) => conversation.messages, {
+    onDelete: 'CASCADE',
+  })
   conversation: Conversation;
 }

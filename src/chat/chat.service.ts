@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { exception } from 'console';
 import { CreateConversationRequestDTO } from '../dtos/conversation.dto';
@@ -50,7 +50,7 @@ export class ChatService {
       { relations: ['participants'] },
     );
     if (!conversation.participants.some((usr) => usr.id == userId))
-      throw exception('HELP');
+      throw new HttpException('No access', 403);
     const message = new Message();
     message.author = user;
     message.content = content;
@@ -69,7 +69,7 @@ export class ChatService {
       { relations: ['participants'] },
     );
     if (!conversation.participants.some((usr) => usr.id == userId))
-      throw exception('HELP');
+      throw new HttpException('No access', 403);
 
     let findConditions: FindConditions<Message>;
 

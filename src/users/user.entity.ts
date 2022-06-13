@@ -22,7 +22,10 @@ export class User {
   @OneToMany(() => Message, (message) => message.author)
   messages: Message[];
 
-  @ManyToMany(() => Conversation, (conversation) => conversation.participants)
+  @ManyToMany(() => Conversation, (conversation) => conversation.participants, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   conversations: Conversation[];
 
   @OneToOne(() => UserAuth, { onDelete: 'CASCADE' })
