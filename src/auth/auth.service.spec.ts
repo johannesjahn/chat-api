@@ -8,6 +8,7 @@ import {
   populateDB,
 } from '../utils.test';
 import { UsersService } from '../users/users.service';
+import { faker } from '@faker-js/faker';
 
 describe('AuthService', () => {
   let app: TestingModule;
@@ -37,16 +38,17 @@ describe('AuthService', () => {
     expect(users).not.toHaveLength(0);
   });
 
-  it('Check find users', async () => {
+  it('Check Login', async () => {
     const authService = app.get(AuthService);
-    const ownUser = await authService.register({
-      username: 'TestUser',
-      password: '123',
-    });
-    const usersWithSelf = await service.findAll();
-    expect(usersWithSelf).toContainEqual(ownUser);
 
-    const usersWithoutSelf = await service.findAllWithoutSelf(ownUser.id);
-    expect(usersWithoutSelf).not.toContainEqual(ownUser);
+    const username = faker.internet.userName();
+    const password = faker.internet.password();
+
+    const ownUser = await authService.register({
+      username: username,
+      password: password,
+    });
+
+    await authService.validateUser(username, password);
   });
 });

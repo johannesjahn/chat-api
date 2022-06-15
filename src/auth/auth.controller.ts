@@ -18,7 +18,7 @@ export class AuthController {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     @Body() _body: LoginDTO,
   ): Promise<LoginResponseDTO> {
-    return this.authService.login(req.user);
+    return this.authService.login(req.user.username, req.user.id);
   }
 
   @Post('register')
