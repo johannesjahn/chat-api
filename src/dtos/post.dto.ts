@@ -6,6 +6,41 @@ export class CreatePostDTO {
   content: string;
 }
 
+export class ReplyResponseDTO {
+  @ApiProperty()
+  id: number;
+
+  @ApiProperty()
+  createdAt: Date;
+
+  @ApiProperty()
+  updatedAt: Date;
+
+  @ApiProperty()
+  content: string;
+
+  @ApiProperty()
+  author: UserResponseDTO;
+}
+export class CommentResponseDTO {
+  @ApiProperty()
+  id: number;
+
+  @ApiProperty()
+  createdAt: Date;
+
+  @ApiProperty()
+  updatedAt: Date;
+
+  @ApiProperty()
+  content: string;
+
+  @ApiProperty()
+  author: UserResponseDTO;
+
+  @ApiProperty({ type: ReplyResponseDTO, isArray: true })
+  replies: ReplyResponseDTO[];
+}
 export class PostResponseDTO {
   @ApiProperty()
   id: number;
@@ -22,7 +57,7 @@ export class PostResponseDTO {
   @ApiProperty()
   author: UserResponseDTO;
 
-  @ApiProperty()
+  @ApiProperty({ type: CommentResponseDTO, isArray: true })
   comments: CommentResponseDTO[];
 }
 
@@ -43,43 +78,6 @@ export class CreateCommentDTO {
   postId: number;
   @ApiProperty()
   content: string;
-}
-
-export class CommentResponseDTO {
-  @ApiProperty()
-  id: number;
-
-  @ApiProperty()
-  createdAt: Date;
-
-  @ApiProperty()
-  updatedAt: Date;
-
-  @ApiProperty()
-  content: string;
-
-  @ApiProperty()
-  author: UserResponseDTO;
-
-  @ApiProperty()
-  replies: ReplyResponseDTO[];
-}
-
-export class ReplyResponseDTO {
-  @ApiProperty()
-  id: number;
-
-  @ApiProperty()
-  createdAt: Date;
-
-  @ApiProperty()
-  updatedAt: Date;
-
-  @ApiProperty()
-  content: string;
-
-  @ApiProperty()
-  author: UserResponseDTO;
 }
 
 export class GetCommentsDTO {

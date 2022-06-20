@@ -47,9 +47,9 @@ export class ConversationResponseDTO {
   @ApiProperty()
   updatedAt: Date;
 
-  @ApiProperty({ type: [UserResponseDTO] })
+  @ApiProperty({ type: UserResponseDTO, isArray: true })
   participants: UserResponseDTO[];
 
-  @ApiProperty({ type: [MessageResponseDTO] })
+  @ApiProperty({ type: MessageResponseDTO, isArray: true })
   messages: MessageResponseDTO[];
 }
