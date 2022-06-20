@@ -8,7 +8,7 @@ import {
   Request,
   UseGuards,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import {
   CreateCommentDTO,
@@ -19,6 +19,7 @@ import {
   DeleteReplyDTO,
   GetCommentsDTO,
   GetRepliesDTO,
+  PostResponseDTO,
   UpdateCommentDTO,
   UpdatePostDTO,
   UpdateReplyDTO,
@@ -32,6 +33,7 @@ export class PostController {
 
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
+  @ApiCreatedResponse({ type: PostResponseDTO })
   @Post('/')
   async createPost(@Request() req, @Body() body: CreatePostDTO) {
     return this.postService.createPost(req.user.userId, body);

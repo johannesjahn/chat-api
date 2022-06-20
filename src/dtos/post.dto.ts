@@ -1,8 +1,29 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { UserResponseDTO } from './user.dto';
 
 export class CreatePostDTO {
   @ApiProperty({ description: 'The content of a post' })
   content: string;
+}
+
+export class PostResponseDTO {
+  @ApiProperty()
+  id: number;
+
+  @ApiProperty()
+  createdAt: Date;
+
+  @ApiProperty()
+  updatedAt: Date;
+
+  @ApiProperty()
+  content: string;
+
+  @ApiProperty()
+  author: UserResponseDTO;
+
+  @ApiProperty()
+  comments: CommentResponseDTO[];
 }
 
 export class UpdatePostDTO {
@@ -22,6 +43,43 @@ export class CreateCommentDTO {
   postId: number;
   @ApiProperty()
   content: string;
+}
+
+export class CommentResponseDTO {
+  @ApiProperty()
+  id: number;
+
+  @ApiProperty()
+  createdAt: Date;
+
+  @ApiProperty()
+  updatedAt: Date;
+
+  @ApiProperty()
+  content: string;
+
+  @ApiProperty()
+  author: UserResponseDTO;
+
+  @ApiProperty()
+  replies: ReplyResponseDTO[];
+}
+
+export class ReplyResponseDTO {
+  @ApiProperty()
+  id: number;
+
+  @ApiProperty()
+  createdAt: Date;
+
+  @ApiProperty()
+  updatedAt: Date;
+
+  @ApiProperty()
+  content: string;
+
+  @ApiProperty()
+  author: UserResponseDTO;
 }
 
 export class GetCommentsDTO {
