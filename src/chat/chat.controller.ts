@@ -7,6 +7,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
+import { ConversationMapper, MessageMapper } from 'src/mappers/chat.mapper';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import {
   ConversationResponseDTO,
@@ -32,7 +33,10 @@ export class ChatController {
       body.conversationId,
       body.content,
     );
-    return result;
+
+    const mapper = new MessageMapper();
+    const dto = mapper.convert(result);
+    return dto;
   }
 
   @ApiBearerAuth()
@@ -48,7 +52,9 @@ export class ChatController {
       body.conversationId,
       body.lastMessage,
     );
-    return result;
+    const mapper = new ConversationMapper();
+    const dto = mapper.convert(result);
+    return dto;
   }
 
   @ApiBearerAuth()
@@ -59,7 +65,11 @@ export class ChatController {
     @Request() req,
     @Body() body: CreateConversationRequestDTO,
   ) {
-    return await this.chatService.createOne(req.user.userId, body);
+    const result = await this.chatService.createOne(req.user.userId, body);
+
+    const mapper = new ConversationMapper();
+    const dto = mapper.convert(result);
+    return dto;
   }
 
   @ApiBearerAuth()
@@ -70,6 +80,9 @@ export class ChatController {
     const result = await this.chatService.getConversationListForUser(
       req.user.userId,
     );
-    return result;
+    const mapper = new ConversationMapper();
+    const dtos = result.map((v) => mapper.convert(v));
+
+    return dtos;
   }
 }
