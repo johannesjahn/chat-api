@@ -25,6 +25,9 @@ export class PostService {
       content: post.content,
       author: { id: userId },
     });
+
+    delete createdPost.author;
+
     return createdPost;
   }
 
