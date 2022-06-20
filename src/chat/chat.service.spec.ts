@@ -11,6 +11,7 @@ import { UsersService } from '../users/users.service';
 import { faker } from '@faker-js/faker';
 import { ChatService } from './chat.service';
 import { HttpException } from '@nestjs/common';
+import { MessageMapper } from '../mappers/chat.mapper';
 
 describe('ChatService', () => {
   let app: TestingModule;
@@ -130,5 +131,42 @@ describe('ChatService', () => {
     } catch (e) {
       expect(e).toBeInstanceOf(HttpException);
     }
+  });
+
+  it('Check message converter', async () => {
+    const authService = app.get(AuthService);
+    const firstUser = await authService.register({
+      username: faker.internet.userName(),
+      password: faker.internet.password(),
+    });
+    const secondUser = await authService.register({
+      username: faker.internet.userName(),
+      password: faker.internet.password(),
+    });
+
+    const chatService = app.get(ChatService);
+    const conversation = await chatService.createOne(firstUser.id, {
+      partnerId: secondUser.id,
+    });
+
+    const text = faker.random.words(100);
+    await chatService.sendMessage(firstUser.id, conversation.id, text);
+
+    await chatService.sendMessage(
+      secondUser.id,
+      conversation.id,
+      faker.lorem.paragraph(100),
+    );
+
+    const messages = await chatService.getMessages(
+      secondUser.id,
+      conversation.id,
+      null,
+    );
+
+    const mapper = new MessageMapper();
+    const dtos = messages.messages.map((v) => mapper.convert(v));
+
+    expect(dtos.length).toBe(messages.messages.length);
   });
 });
