@@ -51,7 +51,7 @@ export class AuthService {
     await this.userRepository.save(nUser);
     // just filtering the userAuth properties here
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { userAuth, ...result } = nUser;
-    return result;
+    delete nUser.userAuth;
+    return nUser;
   }
 }

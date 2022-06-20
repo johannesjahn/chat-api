@@ -4,6 +4,8 @@ import { AuthService } from './auth.service';
 import { RegisterDTO } from '../dtos/register.dto';
 import { LoginDTO, LoginResponseDTO } from '../dtos/login.dto';
 import { ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
+import { UserMapper } from '../mappers/user.mapper';
+import { UserResponseDTO } from 'src/dtos/user.dto';
 
 @ApiTags('Auth')
 @Controller('auth/')
@@ -21,8 +23,14 @@ export class AuthController {
     return this.authService.login(req.user.username, req.user.id);
   }
 
+  @ApiCreatedResponse({ type: UserResponseDTO })
   @Post('register')
   async register(@Body() req: RegisterDTO) {
-    return this.authService.register(req);
+    const result = await this.authService.register(req);
+
+    const mapper = new UserMapper();
+    const dto = mapper.convert(result);
+
+    return dto;
   }
 }
