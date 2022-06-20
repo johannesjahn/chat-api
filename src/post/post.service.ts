@@ -76,6 +76,9 @@ export class PostService {
       post: { id: createCommentDTO.postId },
       content: createCommentDTO.content,
     });
+
+    delete result.author;
+
     return result;
   }
 
@@ -116,6 +119,9 @@ export class PostService {
       comment: { id: createReplyDTO.commentId },
       content: createReplyDTO.content,
     });
+
+    delete result.author;
+
     return result;
   }
 

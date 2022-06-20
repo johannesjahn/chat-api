@@ -19,7 +19,7 @@ export class ReplyResponseDTO {
   @ApiProperty()
   content: string;
 
-  @ApiProperty()
+  @ApiProperty({ nullable: true })
   author: UserResponseDTO;
 }
 export class CommentResponseDTO {
@@ -35,7 +35,7 @@ export class CommentResponseDTO {
   @ApiProperty()
   content: string;
 
-  @ApiProperty()
+  @ApiProperty({ nullable: true })
   author: UserResponseDTO;
 
   @ApiProperty({ type: ReplyResponseDTO, isArray: true })
