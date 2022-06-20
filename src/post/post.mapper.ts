@@ -89,6 +89,7 @@ export class CommentMapper extends Converter<Comment, CommentResponseDTO> {}
     source: 'comments',
     target: 'comments',
     converter: CommentMapper,
+    isCollection: true,
   },
 ])
 export class PostMapper extends Converter<Post, PostResponseDTO> {}

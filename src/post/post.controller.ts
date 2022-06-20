@@ -9,11 +9,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
-import {
-  CommentMapper,
-  PostMapper,
-  ReplyMapper,
-} from 'src/post/post.mapper';
+import { CommentMapper, PostMapper, ReplyMapper } from 'src/post/post.mapper';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import {
   CommentResponseDTO,
