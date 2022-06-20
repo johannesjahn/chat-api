@@ -8,6 +8,7 @@ import {
   populateDB,
 } from '../utils.test';
 import { PostService } from './post.service';
+import { CommentMapper, ReplyMapper } from '../mappers/post.mapper';
 
 describe('PostService', () => {
   let app: TestingModule;
@@ -81,5 +82,70 @@ describe('PostService', () => {
 
     const postsAfterDelete = await postService.getPosts();
     expect(postsAfterDelete.length).toBe(0);
+  });
+
+  it('Check reply type converter', async () => {
+    const authService = app.get(AuthService);
+    const ownUser = await authService.register({
+      username: 'TestUser',
+      password: '123',
+    });
+    const postService = app.get(PostService);
+    const post = await postService.createPost(ownUser.id, {
+      content: 'Test post',
+    });
+
+    const comment = await postService.createComment(ownUser.id, {
+      postId: post.id,
+      content: 'Test comment',
+    });
+
+    await postService.createReply(ownUser.id, {
+      commentId: comment.id,
+      content: 'Test reply',
+    });
+
+    const replies = await postService.getReplies(comment.id);
+    const reply = replies[0];
+
+    const replyMapper = new ReplyMapper();
+    const result = replyMapper.convert(reply);
+
+    expect(result).not.toBeNull();
+  });
+
+  it('Check comment type converter', async () => {
+    const authService = app.get(AuthService);
+    const ownUser = await authService.register({
+      username: 'TestUser',
+      password: '123',
+    });
+    const postService = app.get(PostService);
+    const post = await postService.createPost(ownUser.id, {
+      content: 'Test post',
+    });
+
+    const comment = await postService.createComment(ownUser.id, {
+      postId: post.id,
+      content: 'Test comment',
+    });
+
+    await postService.createReply(ownUser.id, {
+      commentId: comment.id,
+      content: 'Test reply',
+    });
+
+    await postService.createReply(ownUser.id, {
+      commentId: comment.id,
+      content: 'Second reply',
+    });
+
+    const comments = await postService.getComments(post.id);
+    const testComment = comments[0];
+
+    const commentMapper = new CommentMapper();
+    const result = commentMapper.convert(testComment);
+
+    expect(result).not.toBeNull();
   });
 });

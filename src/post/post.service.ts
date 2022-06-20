@@ -79,7 +79,7 @@ export class PostService {
   async getComments(postId: number) {
     const result = await this.commentRepository.find({
       where: { post: { id: postId } },
-      relations: ['author', 'replies'],
+      relations: ['author', 'replies', 'replies.author'],
     });
     return result;
   }

@@ -8,6 +8,7 @@ import {
   populateDB,
 } from '../utils.test';
 import { UsersService } from './users.service';
+import { UserMapper } from '../mappers/user.mapper';
 
 describe('UserService', () => {
   let app: TestingModule;
@@ -48,5 +49,15 @@ describe('UserService', () => {
 
     const usersWithoutSelf = await service.findAllWithoutSelf(ownUser.id);
     expect(usersWithoutSelf).not.toContainEqual(ownUser);
+  });
+
+  it('Check user conversion', async () => {
+    const user = await service.findAll();
+
+    const converter = new UserMapper();
+
+    const result = converter.convert(user[0]);
+
+    expect(result).not.toBeNull();
   });
 });
