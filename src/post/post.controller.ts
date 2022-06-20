@@ -9,8 +9,14 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
+import {
+  CommentMapper,
+  PostMapper,
+  ReplyMapper,
+} from 'src/mappers/post.mapper';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import {
+  CommentResponseDTO,
   CreateCommentDTO,
   CreatePostDTO,
   CreateReplyDTO,
@@ -20,6 +26,7 @@ import {
   GetCommentsDTO,
   GetRepliesDTO,
   PostResponseDTO,
+  ReplyResponseDTO,
   UpdateCommentDTO,
   UpdatePostDTO,
   UpdateReplyDTO,
@@ -36,12 +43,21 @@ export class PostController {
   @ApiCreatedResponse({ type: PostResponseDTO })
   @Post('/')
   async createPost(@Request() req, @Body() body: CreatePostDTO) {
-    return this.postService.createPost(req.user.userId, body);
+    const result = await this.postService.createPost(req.user.userId, body);
+    const mapper = new PostMapper();
+
+    const dto = mapper.convert(result);
+    return dto;
   }
 
   @Get('/')
+  @ApiCreatedResponse({ type: PostResponseDTO, isArray: true })
   async getPosts() {
-    return this.postService.getPosts();
+    const result = await this.postService.getPosts();
+    const mapper = new PostMapper();
+
+    const dtos = result.map((p) => mapper.convert(p));
+    return dtos;
   }
 
   @ApiBearerAuth()
@@ -52,22 +68,37 @@ export class PostController {
   }
 
   @ApiBearerAuth()
+  @ApiCreatedResponse({ type: PostResponseDTO })
   @UseGuards(JwtAuthGuard)
   @Put('/')
   async updatePost(@Request() req, @Body() body: UpdatePostDTO) {
-    return this.postService.updatePost(req.user.userId, body);
+    const result = await this.postService.updatePost(req.user.userId, body);
+    const mapper = new PostMapper();
+
+    const dto = mapper.convert(result);
+    return dto;
   }
 
   @ApiBearerAuth()
+  @ApiCreatedResponse({ type: CommentResponseDTO })
   @UseGuards(JwtAuthGuard)
   @Post('/comment')
   async createComment(@Request() req, @Body() body: CreateCommentDTO) {
-    return this.postService.createComment(req.user.userId, body);
+    const result = await this.postService.createComment(req.user.userId, body);
+    const mapper = new CommentMapper();
+
+    const dto = mapper.convert(result);
+    return dto;
   }
 
   @Get('/comment')
+  @ApiCreatedResponse({ type: CommentResponseDTO, isArray: true })
   async getComments(@Body() body: GetCommentsDTO) {
-    return await this.postService.getComments(body.postId);
+    const result = await this.postService.getComments(body.postId);
+    const mapper = new CommentMapper();
+
+    const dtos = result.map((c) => mapper.convert(c));
+    return dtos;
   }
 
   @ApiBearerAuth()
@@ -78,26 +109,41 @@ export class PostController {
   }
 
   @ApiBearerAuth()
+  @ApiCreatedResponse({ type: CommentResponseDTO })
   @UseGuards(JwtAuthGuard)
   @Put('/comment')
   async updateComment(@Request() req, @Body() body: UpdateCommentDTO) {
-    return this.postService.updateComment(
+    const result = await this.postService.updateComment(
       req.user.userId,
       body.commentId,
       body.content,
     );
+    const mapper = new CommentMapper();
+
+    const dto = mapper.convert(result);
+    return dto;
   }
 
   @ApiBearerAuth()
+  @ApiCreatedResponse({ type: ReplyResponseDTO })
   @UseGuards(JwtAuthGuard)
   @Post('/reply')
   async createReply(@Request() req, @Body() body: CreateReplyDTO) {
-    return this.postService.createReply(req.user.userId, body);
+    const result = await this.postService.createReply(req.user.userId, body);
+    const mapper = new ReplyMapper();
+
+    const dto = mapper.convert(result);
+    return dto;
   }
 
+  @ApiCreatedResponse({ type: ReplyResponseDTO, isArray: true })
   @Get('/reply')
   async getReplies(@Body() body: GetRepliesDTO) {
-    return await this.postService.getReplies(body.commentId);
+    const result = await this.postService.getReplies(body.commentId);
+    const mapper = new ReplyMapper();
+
+    const dtos = result.map((r) => mapper.convert(r));
+    return dtos;
   }
 
   @ApiBearerAuth()
@@ -108,13 +154,18 @@ export class PostController {
   }
 
   @ApiBearerAuth()
+  @ApiCreatedResponse({ type: ReplyResponseDTO })
   @UseGuards(JwtAuthGuard)
   @Put('/reply')
   async updateReply(@Request() req, @Body() body: UpdateReplyDTO) {
-    return this.postService.updateReply(
+    const result = await this.postService.updateReply(
       req.user.userId,
       body.replyId,
       body.content,
     );
+    const mapper = new ReplyMapper();
+
+    const dto = mapper.convert(result);
+    return dto;
   }
 }

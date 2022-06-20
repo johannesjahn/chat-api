@@ -64,7 +64,7 @@ export class PostService {
 
     if (result.affected === 0)
       throw new HttpException('Could not update post', 400);
-    return { success: 'Post updated' };
+    return post;
   }
 
   async createComment(userId: number, createCommentDTO: CreateCommentDTO) {
@@ -94,7 +94,7 @@ export class PostService {
     const result = await this.commentRepository.update(commentId, comment);
     if (result.affected === 0)
       throw new HttpException('Could not update comment', 400);
-    return { success: 'Comment updated' };
+    return comment;
   }
 
   async deleteComment(userId: number, commentId: number) {
@@ -134,7 +134,7 @@ export class PostService {
     const result = await this.replyRepository.update(replyId, reply);
     if (result.affected === 0)
       throw new HttpException('Could not update reply', 400);
-    return { success: 'Reply updated' };
+    return reply;
   }
 
   async deleteReply(userId: number, replyId: number) {
