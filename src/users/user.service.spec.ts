@@ -8,7 +8,7 @@ import {
   populateDB,
 } from '../utils.test';
 import { UsersService } from './users.service';
-import { UserMapper } from '../mappers/user.mapper';
+import { UserMapper } from './user.mapper';
 
 describe('UserService', () => {
   let app: TestingModule;

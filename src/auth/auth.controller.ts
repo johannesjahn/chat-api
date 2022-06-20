@@ -4,7 +4,7 @@ import { AuthService } from './auth.service';
 import { RegisterDTO } from '../dtos/register.dto';
 import { LoginDTO, LoginResponseDTO } from '../dtos/login.dto';
 import { ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
-import { UserMapper } from '../mappers/user.mapper';
+import { UserMapper } from '../users/user.mapper';
 import { UserResponseDTO } from 'src/dtos/user.dto';
 
 @ApiTags('Auth')

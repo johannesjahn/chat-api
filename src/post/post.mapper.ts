@@ -3,9 +3,9 @@ import {
   PostResponseDTO,
   ReplyResponseDTO,
 } from '../dtos/post.dto';
-import { Comment, Post, Reply } from '../post/post.entity';
+import { Comment, Post, Reply } from './post.entity';
 import { Converter, Mapper } from 'typevert';
-import { UserMapper } from './user.mapper';
+import { UserMapper } from '../users/user.mapper';
 
 @Mapper({ sourceType: Reply, targetType: ReplyResponseDTO }, [
   {

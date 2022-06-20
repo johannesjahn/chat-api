@@ -8,7 +8,7 @@ import {
   populateDB,
 } from '../utils.test';
 import { PostService } from './post.service';
-import { CommentMapper, ReplyMapper } from '../mappers/post.mapper';
+import { CommentMapper, ReplyMapper } from './post.mapper';
 
 describe('PostService', () => {
   let app: TestingModule;

@@ -13,7 +13,7 @@ import {
   CommentMapper,
   PostMapper,
   ReplyMapper,
-} from 'src/mappers/post.mapper';
+} from 'src/post/post.mapper';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import {
   CommentResponseDTO,

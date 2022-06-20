@@ -1,7 +1,7 @@
-import { Conversation, Message } from '../chat/chat.entity';
+import { Conversation, Message } from './chat.entity';
 import { Converter, Mapper } from 'typevert';
 import { ConversationResponseDTO, MessageResponseDTO } from '../dtos/chat.dto';
-import { UserMapper } from './user.mapper';
+import { UserMapper } from '../users/user.mapper';
 
 @Mapper({ sourceType: Message, targetType: MessageResponseDTO }, [
   {

@@ -1,5 +1,5 @@
 import { UserResponseDTO } from '../dtos/user.dto';
-import { User } from '../users/user.entity';
+import { User } from './user.entity';
 import { Converter, Mapper } from 'typevert';
 
 @Mapper({ sourceType: User, targetType: UserResponseDTO }, [

@@ -7,7 +7,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
-import { ConversationMapper, MessageMapper } from 'src/mappers/chat.mapper';
+import { ConversationMapper, MessageMapper } from 'src/chat/chat.mapper';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import {
   ConversationResponseDTO,

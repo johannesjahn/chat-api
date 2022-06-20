@@ -11,7 +11,7 @@ import { UsersService } from '../users/users.service';
 import { faker } from '@faker-js/faker';
 import { ChatService } from './chat.service';
 import { HttpException } from '@nestjs/common';
-import { MessageMapper } from '../mappers/chat.mapper';
+import { MessageMapper } from './chat.mapper';
 
 describe('ChatService', () => {
   let app: TestingModule;
