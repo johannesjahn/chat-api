@@ -1,9 +1,8 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { exception } from 'console';
 import { CreateConversationRequestDTO } from '../dtos/conversation.dto';
 import { User } from '../users/user.entity';
-import { Repository, MoreThan, FindConditions } from 'typeorm';
+import { Repository, MoreThan, FindOptionsWhere } from 'typeorm';
 import { Conversation, Message } from './chat.entity';
 
 @Injectable()
@@ -21,9 +20,13 @@ export class ChatService {
     createrId: number,
     request: CreateConversationRequestDTO,
   ): Promise<Conversation> {
-    const partnerUser = await this.userRepository.findOne(request.partnerId);
-    if (!partnerUser) throw exception('Partner not found');
-    const creater = await this.userRepository.findOne(createrId);
+    const partnerUser = await this.userRepository.findOne({
+      where: { id: request.partnerId },
+    });
+    if (!partnerUser) throw new HttpException('User not found', 404);
+    const creater = await this.userRepository.findOne({
+      where: { id: createrId },
+    });
 
     const conversation = new Conversation();
     conversation.participants = [creater, partnerUser];
@@ -44,11 +47,11 @@ export class ChatService {
   }
 
   async sendMessage(userId: number, conversationId: number, content: string) {
-    const user = await this.userRepository.findOne(userId);
-    const conversation = await this.conversationRepository.findOne(
-      conversationId,
-      { relations: ['participants'] },
-    );
+    const user = await this.userRepository.findOne({ where: { id: userId } });
+    const conversation = await this.conversationRepository.findOne({
+      where: { id: conversationId },
+      relations: ['participants'],
+    });
     if (!conversation.participants.some((usr) => usr.id == userId))
       throw new HttpException('No access', 403);
     const message = new Message();
@@ -64,22 +67,22 @@ export class ChatService {
     conversationId: number,
     lastMessage?: number,
   ) {
-    const conversation = await this.conversationRepository.findOne(
-      conversationId,
-      { relations: ['participants'] },
-    );
+    const conversation = await this.conversationRepository.findOne({
+      where: { id: conversationId },
+      relations: ['participants'],
+    });
     if (!conversation.participants.some((usr) => usr.id == userId))
       throw new HttpException('No access', 403);
 
-    let findConditions: FindConditions<Message>;
+    let findConditions: FindOptionsWhere<Message>;
 
     if (lastMessage) {
       findConditions = {
-        conversation: conversation,
+        conversation: { id: conversationId },
         id: MoreThan(lastMessage),
       };
     } else {
-      findConditions = { conversation: conversation };
+      findConditions = { conversation: { id: conversationId } };
     }
 
     const m = await this.messageRepository.find({

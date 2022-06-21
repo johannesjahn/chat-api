@@ -40,6 +40,7 @@ export class PostService {
         'comments.replies',
         'comments.replies.author',
       ],
+      order: { updatedAt: 'DESC' },
     });
     return result;
   }
@@ -56,8 +57,7 @@ export class PostService {
 
   async updatePost(userId: number, postDTO: UpdatePostDTO) {
     const post = await this.postRepository.findOne({
-      id: postDTO.id,
-      author: { id: userId },
+      where: { id: postDTO.id, author: { id: userId } },
     });
 
     if (!post) throw new HttpException('Post not found', 404);
