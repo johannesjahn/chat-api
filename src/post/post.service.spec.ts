@@ -31,7 +31,22 @@ describe('PostService', () => {
     await cleanupDB(dbConnection);
   });
 
-  it('Create and Delete post', async () => {
+  it('Create a post', async () => {
+    const authService = app.get(AuthService);
+    const ownUser = await authService.register({
+      username: 'TestUser',
+      password: '123',
+    });
+    const postService = app.get(PostService);
+    await postService.createPost(ownUser.id, {
+      content: 'Test post',
+    });
+
+    const posts = await postService.getPosts();
+    expect(posts).toHaveLength(1);
+  });
+
+  it('Create and Delete a post', async () => {
     const authService = app.get(AuthService);
     const ownUser = await authService.register({
       username: 'TestUser',
