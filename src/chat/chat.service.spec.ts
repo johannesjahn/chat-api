@@ -7,7 +7,6 @@ import {
   getTestModule,
   populateDB,
 } from '../utils.test';
-import { UsersService } from '../users/users.service';
 import { faker } from '@faker-js/faker';
 import { ChatService } from './chat.service';
 import { HttpException } from '@nestjs/common';
@@ -16,12 +15,10 @@ import { MessageMapper } from './chat.mapper';
 describe('ChatService', () => {
   let app: TestingModule;
   let dbConnection: Connection;
-  let service: UsersService;
 
   beforeAll(async () => {
     dbConnection = await connectToTestDB();
     app = await getTestModule();
-    service = app.get(UsersService);
   });
 
   afterAll(() => {
