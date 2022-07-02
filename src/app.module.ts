@@ -8,6 +8,7 @@ import { ChatModule } from './chat/chat.module';
 import { AppLoggerMiddleware } from './middleware/app.logger.middleware';
 import { PostModule } from './post/post.module';
 import { UsersModule } from './users/users.module';
+import { AwsService } from './aws/aws.service';
 
 @Module({
   imports: [
@@ -28,7 +29,7 @@ import { UsersModule } from './users/users.module';
     PostModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, AwsService],
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer): void {
