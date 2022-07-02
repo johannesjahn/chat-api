@@ -9,6 +9,7 @@ import {
 } from '../utils.test';
 import { PostService } from './post.service';
 import { CommentMapper, ReplyMapper } from './post.mapper';
+import { faker } from '@faker-js/faker';
 
 describe('PostService', () => {
   let app: TestingModule;
@@ -34,12 +35,12 @@ describe('PostService', () => {
   it('Create a post', async () => {
     const authService = app.get(AuthService);
     const ownUser = await authService.register({
-      username: 'TestUser',
-      password: '123',
+      username: faker.internet.userName(),
+      password: faker.internet.password(),
     });
     const postService = app.get(PostService);
     await postService.createPost(ownUser.id, {
-      content: 'Test post',
+      content: faker.lorem.paragraph(),
     });
 
     const posts = await postService.getPosts();
@@ -49,12 +50,12 @@ describe('PostService', () => {
   it('Create and Delete a post', async () => {
     const authService = app.get(AuthService);
     const ownUser = await authService.register({
-      username: 'TestUser',
-      password: '123',
+      username: faker.internet.userName(),
+      password: faker.internet.password(),
     });
     const postService = app.get(PostService);
     const post = await postService.createPost(ownUser.id, {
-      content: 'Test post',
+      content: faker.lorem.paragraph(),
     });
 
     const posts = await postService.getPosts();
@@ -69,8 +70,8 @@ describe('PostService', () => {
   it('Check if can create post, comment, and reply to the comment', async () => {
     const authService = app.get(AuthService);
     const ownUser = await authService.register({
-      username: 'TestUser',
-      password: '123',
+      username: faker.internet.userName(),
+      password: faker.internet.password(),
     });
     const postService = app.get(PostService);
     const post = await postService.createPost(ownUser.id, {
