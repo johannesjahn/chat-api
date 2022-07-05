@@ -57,7 +57,6 @@ describe('UserService', () => {
     const converter = new UserMapper();
 
     const result = converter.convert(user[0]);
-
     expect(result).not.toBeNull();
   });
 });
