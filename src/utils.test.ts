@@ -1,7 +1,7 @@
 import { JwtModule } from '@nestjs/jwt';
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { Connection, createConnection, getRepository } from 'typeorm';
+import { DataSource } from 'typeorm';
 import { AuthService } from './auth/auth.service';
 import { jwtConstants } from './auth/constants';
 import { Conversation, Message } from './chat/chat.entity';
@@ -12,8 +12,8 @@ import { User } from './users/user.entity';
 import { UserAuth } from './users/userAuth.entity';
 import { UsersService } from './users/users.service';
 
-export const connectToTestDB = async () => {
-  return await createConnection({
+export const getTestDataSource = async () => {
+  const ds = await new DataSource({
     type: 'sqlite',
     database: ':memory:',
     dropSchema: true,
@@ -21,19 +21,21 @@ export const connectToTestDB = async () => {
     synchronize: true,
     logging: false,
     name: 'default',
-  });
+  }).initialize();
+
+  return ds;
 };
 
-export const getTestModule = async () => {
-  const userRepository = getRepository(User, 'default');
-  const authRepository = getRepository(UserAuth, 'default');
+export const getTestModule = async (dataSource: DataSource) => {
+  const userRepository = dataSource.getRepository(User);
+  const authRepository = dataSource.getRepository(UserAuth);
 
-  const postRepository = getRepository(Post, 'default');
-  const commentRepository = getRepository(Comment, 'default');
-  const replyRepository = getRepository(Reply, 'default');
+  const postRepository = dataSource.getRepository(Post);
+  const commentRepository = dataSource.getRepository(Comment);
+  const replyRepository = dataSource.getRepository(Reply);
 
-  const conversationRepository = getRepository(Conversation, 'default');
-  const messageRepository = getRepository(Message, 'default');
+  const conversationRepository = dataSource.getRepository(Conversation);
+  const messageRepository = dataSource.getRepository(Message);
 
   return await Test.createTestingModule({
     imports: [
@@ -91,11 +93,11 @@ export const populateDB = async (app: TestingModule) => {
   });
 };
 
-export const cleanupDB = async (dbConnection: Connection) => {
-  const entities = dbConnection.entityMetadatas;
+export const cleanupDB = async (dataSource: DataSource) => {
+  const entities = dataSource.entityMetadatas;
 
   for (const entity of entities) {
-    const repository = dbConnection.getRepository(entity.name); // Get repository
+    const repository = dataSource.getRepository(entity.name); // Get repository
     await repository.clear(); // Clear each entity table's content
   }
 };

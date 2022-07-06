@@ -1,24 +1,24 @@
 import { TestingModule } from '@nestjs/testing';
-import { Connection } from 'typeorm';
+import { DataSource } from 'typeorm';
 import { UserAuth } from './users/userAuth.entity';
 import {
   cleanupDB,
-  connectToTestDB,
+  getTestDataSource,
   getTestModule,
   populateDB,
 } from './utils.test';
 
 describe('AppController', () => {
   let app: TestingModule;
-  let dbConnection: Connection;
+  let dataSource: DataSource;
 
   beforeAll(async () => {
-    dbConnection = await connectToTestDB();
-    app = await getTestModule();
+    dataSource = await getTestDataSource();
+    app = await getTestModule(dataSource);
   });
 
   afterAll(() => {
-    dbConnection.close();
+    dataSource.close();
   });
 
   beforeEach(async () => {
@@ -26,14 +26,14 @@ describe('AppController', () => {
   });
 
   afterEach(async () => {
-    await cleanupDB(dbConnection);
+    await cleanupDB(dataSource);
   });
 
   it('should return "Hello World!"', () => {
     //expect(appController.getHello()).toBe('Hello World!');
   });
   it('check Login', async () => {
-    const repo = dbConnection.getRepository(UserAuth);
+    const repo = dataSource.getRepository(UserAuth);
     const result = await repo.find();
     expect(result).not.toHaveLength(0);
   });

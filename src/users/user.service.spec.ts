@@ -1,9 +1,9 @@
 import { TestingModule } from '@nestjs/testing';
 import { AuthService } from '../auth/auth.service';
-import { Connection } from 'typeorm';
+import { Connection, DataSource } from 'typeorm';
 import {
   cleanupDB,
-  connectToTestDB,
+  getTestDataSource,
   getTestModule,
   populateDB,
 } from '../utils.test';
@@ -12,17 +12,17 @@ import { UserMapper } from './user.mapper';
 
 describe('UserService', () => {
   let app: TestingModule;
-  let dbConnection: Connection;
+  let dataSource: DataSource;
   let service: UsersService;
 
   beforeAll(async () => {
-    dbConnection = await connectToTestDB();
-    app = await getTestModule();
+    dataSource = await getTestDataSource();
+    app = await getTestModule(dataSource);
     service = app.get(UsersService);
   });
 
   afterAll(() => {
-    dbConnection.close();
+    dataSource.close();
   });
 
   beforeEach(async () => {
@@ -30,7 +30,7 @@ describe('UserService', () => {
   });
 
   afterEach(async () => {
-    await cleanupDB(dbConnection);
+    await cleanupDB(dataSource);
   });
 
   it('There should be some users in the system', async () => {

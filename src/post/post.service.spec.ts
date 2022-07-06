@@ -1,9 +1,9 @@
 import { TestingModule } from '@nestjs/testing';
 import { AuthService } from '../auth/auth.service';
-import { Connection } from 'typeorm';
+import { DataSource } from 'typeorm';
 import {
   cleanupDB,
-  connectToTestDB,
+  getTestDataSource,
   getTestModule,
   populateDB,
 } from '../utils.test';
@@ -13,15 +13,15 @@ import { faker } from '@faker-js/faker';
 
 describe('PostService', () => {
   let app: TestingModule;
-  let dbConnection: Connection;
+  let dataSource: DataSource;
 
   beforeAll(async () => {
-    dbConnection = await connectToTestDB();
-    app = await getTestModule();
+    dataSource = await getTestDataSource();
+    app = await getTestModule(dataSource);
   });
 
   afterAll(() => {
-    dbConnection.close();
+    dataSource.destroy();
   });
 
   beforeEach(async () => {
@@ -29,7 +29,7 @@ describe('PostService', () => {
   });
 
   afterEach(async () => {
-    await cleanupDB(dbConnection);
+    await cleanupDB(dataSource);
   });
 
   it('Create a post', async () => {

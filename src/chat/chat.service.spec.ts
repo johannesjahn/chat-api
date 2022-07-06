@@ -1,9 +1,9 @@
 import { TestingModule } from '@nestjs/testing';
 import { AuthService } from '../auth/auth.service';
-import { Connection } from 'typeorm';
+import { Connection, DataSource } from 'typeorm';
 import {
   cleanupDB,
-  connectToTestDB,
+  getTestDataSource,
   getTestModule,
   populateDB,
 } from '../utils.test';
@@ -14,15 +14,15 @@ import { MessageMapper } from './chat.mapper';
 
 describe('ChatService', () => {
   let app: TestingModule;
-  let dbConnection: Connection;
+  let dataSource: DataSource;
 
   beforeAll(async () => {
-    dbConnection = await connectToTestDB();
-    app = await getTestModule();
+    dataSource = await getTestDataSource();
+    app = await getTestModule(dataSource);
   });
 
-  afterAll(() => {
-    dbConnection.close();
+  afterAll(async () => {
+    await dataSource.destroy();
   });
 
   beforeEach(async () => {
@@ -30,7 +30,7 @@ describe('ChatService', () => {
   });
 
   afterEach(async () => {
-    await cleanupDB(dbConnection);
+    await cleanupDB(dataSource);
   });
 
   it('Create a Chat', async () => {
