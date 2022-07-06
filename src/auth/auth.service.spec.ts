@@ -1,14 +1,14 @@
+import { faker } from '@faker-js/faker';
 import { TestingModule } from '@nestjs/testing';
+import { DataSource } from 'typeorm';
 import { AuthService } from '../auth/auth.service';
-import { Connection, DataSource } from 'typeorm';
+import { UsersService } from '../users/users.service';
 import {
   cleanupDB,
   getTestDataSource,
   getTestModule,
   populateDB,
 } from '../utils.test';
-import { UsersService } from '../users/users.service';
-import { faker } from '@faker-js/faker';
 
 describe('AuthService', () => {
   let app: TestingModule;
@@ -44,7 +44,7 @@ describe('AuthService', () => {
     const username = faker.internet.userName();
     const password = faker.internet.password();
 
-    const ownUser = await authService.register({
+    await authService.register({
       username: username,
       password: password,
     });

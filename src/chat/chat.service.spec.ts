@@ -1,6 +1,6 @@
 import { TestingModule } from '@nestjs/testing';
 import { AuthService } from '../auth/auth.service';
-import { Connection, DataSource } from 'typeorm';
+import { DataSource } from 'typeorm';
 import {
   cleanupDB,
   getTestDataSource,
