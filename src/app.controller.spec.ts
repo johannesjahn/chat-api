@@ -29,9 +29,6 @@ describe('AppController', () => {
     await cleanupDB(dataSource);
   });
 
-  it('should return "Hello World!"', () => {
-    //expect(appController.getHello()).toBe('Hello World!');
-  });
   it('check Login', async () => {
     const repo = dataSource.getRepository(UserAuth);
     const result = await repo.find();
