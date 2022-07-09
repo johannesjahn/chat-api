@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { ContentType } from 'src/chat/chat.entity';
 import { UserResponseDTO } from './user.dto';
 
 export class CreateMessageDTO {
@@ -7,6 +8,9 @@ export class CreateMessageDTO {
 
   @ApiProperty()
   content: string;
+
+  @ApiProperty({ enum: ContentType })
+  contentType: ContentType;
 }
 
 export class GetMessagesDTO {
@@ -32,6 +36,9 @@ export class MessageResponseDTO {
 
   @ApiProperty()
   content: string;
+
+  @ApiProperty({ enum: ContentType })
+  contentType: ContentType;
 
   @ApiProperty()
   author: UserResponseDTO;

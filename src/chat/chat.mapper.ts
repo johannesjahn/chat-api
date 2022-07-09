@@ -25,6 +25,10 @@ import { UserMapper } from '../users/user.mapper';
     target: 'author',
     converter: UserMapper,
   },
+  {
+    source: 'contentType',
+    target: 'contentType',
+  },
 ])
 export class MessageMapper extends Converter<Message, MessageResponseDTO> {}
 

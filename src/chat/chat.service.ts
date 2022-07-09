@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { CreateConversationRequestDTO } from '../dtos/conversation.dto';
 import { User } from '../users/user.entity';
 import { Repository, MoreThan, FindOptionsWhere } from 'typeorm';
-import { Conversation, Message } from './chat.entity';
+import { ContentType, Conversation, Message } from './chat.entity';
 
 @Injectable()
 export class ChatService {
@@ -46,7 +46,12 @@ export class ChatService {
       .getMany();
   }
 
-  async sendMessage(userId: number, conversationId: number, content: string) {
+  async sendMessage(
+    userId: number,
+    conversationId: number,
+    content: string,
+    contentType: ContentType,
+  ) {
     const user = await this.userRepository.findOne({ where: { id: userId } });
     const conversation = await this.conversationRepository.findOne({
       where: { id: conversationId },
@@ -58,6 +63,7 @@ export class ChatService {
     message.author = user;
     message.content = content;
     message.conversation = conversation;
+    message.contentType = contentType;
     const result = await this.messageRepository.save(message);
     return result;
   }

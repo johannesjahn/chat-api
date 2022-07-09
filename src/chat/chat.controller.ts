@@ -32,6 +32,7 @@ export class ChatController {
       req.user.userId,
       body.conversationId,
       body.content,
+      body.contentType,
     );
 
     const mapper = new MessageMapper();
