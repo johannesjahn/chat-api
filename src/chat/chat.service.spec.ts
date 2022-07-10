@@ -73,7 +73,7 @@ describe('ChatService', () => {
     });
 
     const text = faker.random.words(100);
-    await chatService.sendMessage(firstUser.id, conversation.id, text);
+    await chatService.sendMessage(firstUser.id, conversation.id, text, 'TEXT');
 
     const messages = await chatService.getMessages(
       secondUser.id,
@@ -89,6 +89,7 @@ describe('ChatService', () => {
       secondUser.id,
       conversation.id,
       faker.lorem.paragraph(100),
+      'TEXT',
     );
 
     const messages2 = await chatService.getMessages(
@@ -124,7 +125,12 @@ describe('ChatService', () => {
 
     const text = faker.random.words(100);
     try {
-      await chatService.sendMessage(thirdUser.id, conversation.id, text);
+      await chatService.sendMessage(
+        thirdUser.id,
+        conversation.id,
+        text,
+        'TEXT',
+      );
     } catch (e) {
       expect(e).toBeInstanceOf(HttpException);
     }
@@ -147,12 +153,13 @@ describe('ChatService', () => {
     });
 
     const text = faker.random.words(100);
-    await chatService.sendMessage(firstUser.id, conversation.id, text);
+    await chatService.sendMessage(firstUser.id, conversation.id, text, 'TEXT');
 
     await chatService.sendMessage(
       secondUser.id,
       conversation.id,
       faker.lorem.paragraph(100),
+      'TEXT',
     );
 
     const messages = await chatService.getMessages(

@@ -33,10 +33,8 @@ export class Conversation {
   messages: Message[];
 }
 
-export enum ContentType {
-  PLAIN_TEXT,
-  IMAGE_URL,
-}
+export type ContentType = 'TEXT' | 'IMAGE_URL';
+
 @Entity()
 export class Message {
   @PrimaryGeneratedColumn()
@@ -51,11 +49,7 @@ export class Message {
   @Column()
   content: string;
 
-  @Column({
-    type: 'enum',
-    enum: ContentType,
-    default: ContentType.PLAIN_TEXT,
-  })
+  @Column({ default: 'TEXT' })
   contentType: ContentType;
 
   @ManyToOne(() => User, (user) => user.messages, { onDelete: 'CASCADE' })

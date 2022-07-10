@@ -9,7 +9,7 @@ export class CreateMessageDTO {
   @ApiProperty()
   content: string;
 
-  @ApiProperty({ enum: ContentType })
+  @ApiProperty()
   contentType: ContentType;
 }
 
@@ -37,7 +37,7 @@ export class MessageResponseDTO {
   @ApiProperty()
   content: string;
 
-  @ApiProperty({ enum: ContentType })
+  @ApiProperty()
   contentType: ContentType;
 
   @ApiProperty()
