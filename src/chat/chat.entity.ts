@@ -16,10 +16,10 @@ export class Conversation {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ type: 'timestamptz' })
   createdAt: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ type: 'timestamptz' })
   updatedAt: Date;
 
   @ManyToMany(() => User, (user) => user.conversations, {
@@ -40,10 +40,10 @@ export class Message {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ type: 'timestamptz' })
   createdAt: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ type: 'timestamptz' })
   updatedAt: Date;
 
   @Column()

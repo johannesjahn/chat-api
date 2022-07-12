@@ -14,10 +14,10 @@ export class Post {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ type: 'timestamptz' })
   createdAt: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ type: 'timestamptz' })
   updatedAt: Date;
 
   @Column()
@@ -35,10 +35,10 @@ export class Comment {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ type: 'timestamptz' })
   createdAt: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ type: 'timestamptz' })
   updatedAt: Date;
 
   @Column()
@@ -65,10 +65,10 @@ export class Reply {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ type: 'timestamptz' })
   createdAt: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ type: 'timestamptz' })
   updatedAt: Date;
 
   @Column()
