@@ -1,25 +1,9 @@
+import { AbstractEntity } from '../utils/utils.entity';
+import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 import { User } from '../users/user.entity';
-import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  ManyToOne,
-  OneToMany,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn,
-} from 'typeorm';
 
 @Entity('post')
-export class Post {
-  @PrimaryGeneratedColumn()
-  id: number;
-
-  @CreateDateColumn({ type: 'timestamptz' })
-  createdAt: Date;
-
-  @UpdateDateColumn({ type: 'timestamptz' })
-  updatedAt: Date;
-
+export class Post extends AbstractEntity {
   @Column()
   content: string;
 
@@ -31,16 +15,7 @@ export class Post {
 }
 
 @Entity('comment')
-export class Comment {
-  @PrimaryGeneratedColumn()
-  id: number;
-
-  @CreateDateColumn({ type: 'timestamptz' })
-  createdAt: Date;
-
-  @UpdateDateColumn({ type: 'timestamptz' })
-  updatedAt: Date;
-
+export class Comment extends AbstractEntity {
   @Column()
   content: string;
 
@@ -61,16 +36,7 @@ export class Comment {
 }
 
 @Entity('reply')
-export class Reply {
-  @PrimaryGeneratedColumn()
-  id: number;
-
-  @CreateDateColumn({ type: 'timestamptz' })
-  createdAt: Date;
-
-  @UpdateDateColumn({ type: 'timestamptz' })
-  updatedAt: Date;
-
+export class Reply extends AbstractEntity {
   @Column()
   content: string;
 

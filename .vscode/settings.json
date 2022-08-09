@@ -6,6 +6,7 @@
         "nestjs",
         "prebuild",
         "Repies",
+        "timestamptz",
         "typeorm",
         "typevert"
     ],

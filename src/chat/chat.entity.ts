@@ -1,27 +1,16 @@
-import { User } from '../users/user.entity';
+import { AbstractEntity } from '../utils/utils.entity';
 import {
   Column,
-  CreateDateColumn,
   Entity,
   JoinTable,
   ManyToMany,
   ManyToOne,
   OneToMany,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn,
 } from 'typeorm';
+import { User } from '../users/user.entity';
 
 @Entity()
-export class Conversation {
-  @PrimaryGeneratedColumn()
-  id: number;
-
-  @CreateDateColumn({ type: 'timestamptz' })
-  createdAt: Date;
-
-  @UpdateDateColumn({ type: 'timestamptz' })
-  updatedAt: Date;
-
+export class Conversation extends AbstractEntity {
   @ManyToMany(() => User, (user) => user.conversations, {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
@@ -36,16 +25,7 @@ export class Conversation {
 export type ContentType = 'TEXT' | 'IMAGE_URL';
 
 @Entity()
-export class Message {
-  @PrimaryGeneratedColumn()
-  id: number;
-
-  @CreateDateColumn({ type: 'timestamptz' })
-  createdAt: Date;
-
-  @UpdateDateColumn({ type: 'timestamptz' })
-  updatedAt: Date;
-
+export class Message extends AbstractEntity {
   @Column()
   content: string;
 
