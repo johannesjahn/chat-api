@@ -17,7 +17,7 @@ export const getTestDataSource = async () => {
     type: 'sqlite',
     database: ':memory:',
     dropSchema: true,
-    entities: ['./**/*.entity{.ts,.js}'],
+    entities: ['./**/*.entity.ts'],
     synchronize: true,
     logging: false,
     name: 'default',

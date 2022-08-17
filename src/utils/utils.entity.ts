@@ -1,16 +1,13 @@
-import {
-  CreateDateColumn,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn,
-} from 'typeorm';
+import { PrimaryGeneratedColumn } from 'typeorm';
+import { DbAwareCreateDateColumn, DbAwareUpdateDateColumn } from './utils';
 
 export abstract class AbstractEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @CreateDateColumn({ type: 'timestamp' }) // change to timestamptz in prod
+  @DbAwareCreateDateColumn({ type: 'timestamptz' })
   createdAt: Date;
 
-  @UpdateDateColumn({ type: 'timestamp' }) // change to timestamptz in prod
+  @DbAwareUpdateDateColumn({ type: 'timestamptz' })
   updatedAt: Date;
 }
