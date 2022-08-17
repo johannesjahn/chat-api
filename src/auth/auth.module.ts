@@ -15,9 +15,10 @@ import { LocalStrategy } from './local.strategy';
   imports: [
     UsersModule,
     PassportModule,
-    JwtModule.register({
-      secret: jwtConstants.secret,
-      signOptions: {},
+    JwtModule.registerAsync({
+      useFactory: () => {
+        return { secret: jwtConstants.getSecret(), signOptions: {} };
+      },
     }),
     TypeOrmModule.forFeature([User]),
     TypeOrmModule.forFeature([UserAuth]),

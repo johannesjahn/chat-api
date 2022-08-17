@@ -40,7 +40,7 @@ export const getTestModule = async (dataSource: DataSource) => {
   return await Test.createTestingModule({
     imports: [
       JwtModule.register({
-        secret: jwtConstants.secret,
+        secret: jwtConstants.getSecret(),
         signOptions: {},
       }),
     ],
