@@ -4,7 +4,7 @@ FROM node
 
 WORKDIR /usr/app
 
-COPY ["package.json", "yarn.lock", ".env", ".dev.env", "./"]
+COPY ["./", "./"]
 RUN yarn install
 
-COPY ./dist ./dist
+RUN yarn build

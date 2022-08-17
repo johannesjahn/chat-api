@@ -22,12 +22,16 @@ services:
             - 8080:8080
 
     chat:
-        build: .
+        image: node
         command: bash -c "ENV_PATH=.dev.env node dist/src/main.js"
         depends_on:
             - db
         ports:
             - 3000:3000
+        volumes:
+            - ./dist:/dist
+            - ./.dev.env:/.dev.env
+            - ./node_modules:/node_modules
 
     nginx:
         image: nginx:latest
