@@ -23,7 +23,7 @@ services:
 
     chat:
         build: .
-        command: bash -c "ENV_PATH=.dev.env node dist/main.js"
+        command: bash -c "ENV_PATH=.dev.env node dist/src/main.js"
         depends_on:
             - db
         ports:
