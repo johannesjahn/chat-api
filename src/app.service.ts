@@ -7,7 +7,7 @@ export class AppService {
   constructor(private usersService: UsersService) {}
 
   getHello(): string {
-    return 'Hello World!';
+    return 'Hello to you 😊';
   }
 
   getFirstUser(): Promise<User> {
