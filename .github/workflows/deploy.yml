@@ -20,3 +20,18 @@ jobs:
         with:
           name: dist
           path: dist.zip
+
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v2
+        with:
+          name: dist
+          path: ./dist.zip
+      - uses: easingthemes/ssh-deploy@2.1.5
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
+          SOURCE: "./dist.zip"
+          REMOTE_HOST: "chat.johannes-jahn.com"
+          REMOTE_USER: "ubuntu"
+          TARGET: "dev/chat-api"
