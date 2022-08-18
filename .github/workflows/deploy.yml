@@ -13,7 +13,11 @@ jobs:
       - uses: c-hive/gha-yarn-cache@v2
       - run: yarn install
       - run: yarn build
+      - uses: montudor/action-zip@v1
+          with:
+            args: zip -qq -r dist.zip dist
       - uses: actions/upload-artifact@master
         with:
           name: dist
-          path: dist/
+          path: dist.zip
+          
