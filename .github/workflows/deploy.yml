@@ -32,7 +32,7 @@ jobs:
       - uses: easingthemes/ssh-deploy@v2.1.5
         env:
           SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
-          SOURCE: "dist.zip"
+          SOURCE: "./"
           REMOTE_HOST: "chat.johannes-jahn.com"
           REMOTE_USER: "ubuntu"
-          TARGET: "dev/chat-api/dist.zip"
+          TARGET: "dev/chat-api/"
