@@ -14,10 +14,9 @@ jobs:
       - run: yarn install
       - run: yarn build
       - uses: montudor/action-zip@v1
-          with:
-            args: zip -qq -r dist.zip dist
+        with:
+          args: zip -qq -r dist.zip dist
       - uses: actions/upload-artifact@master
         with:
           name: dist
           path: dist.zip
-          
