@@ -28,11 +28,11 @@ jobs:
       - uses: actions/download-artifact@v2
         with:
           name: dist
-          path: dist.zip
+          path: ./dist.zip
       - uses: easingthemes/ssh-deploy@v2.1.5
         env:
           SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
-          SOURCE: "./dist.zip"
+          SOURCE: "dist.zip"
           REMOTE_HOST: "chat.johannes-jahn.com"
           REMOTE_USER: "ubuntu"
           TARGET: "dev/chat-api"
