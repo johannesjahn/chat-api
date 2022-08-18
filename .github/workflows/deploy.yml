@@ -41,4 +41,4 @@ jobs:
           host: chat.johannes-jahn.com
           username: ubuntu
           key: ${{ secrets.EC2_SSH_KEY }}
-          script: mv dev/chat-api/dist.zip/dist.zip dev/chat-api/
+          script: cd dev/chat-api && mv dist.zip tmp && mv tmp/dist.zip dist.zip && rm -rf dist && unzip dist.zip && docker-compose -f docker-compose.prod.yml restart chat && rm -rf tmp && rm dist.zip
