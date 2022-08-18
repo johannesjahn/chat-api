@@ -36,3 +36,9 @@ jobs:
           REMOTE_HOST: "chat.johannes-jahn.com"
           REMOTE_USER: "ubuntu"
           TARGET: "dev/chat-api/"
+      - uses: garygrossgarten/github-action-ssh@release
+        with:
+          command: ls -a
+          host: "chat.johannes-jahn.com"
+          username: ubuntu
+          privateKey: ${{ secrets.EC2_SSH_KEY}}
