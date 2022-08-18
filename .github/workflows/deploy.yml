@@ -35,4 +35,4 @@ jobs:
           SOURCE: "dist.zip"
           REMOTE_HOST: "chat.johannes-jahn.com"
           REMOTE_USER: "ubuntu"
-          TARGET: "dev/chat-api/"
+          TARGET: "dev/chat-api/dist.zip"
