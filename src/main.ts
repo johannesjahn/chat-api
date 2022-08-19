@@ -13,7 +13,7 @@ async function bootstrap() {
   const config = new DocumentBuilder()
     .setTitle('Chat - API')
     .setDescription('Chat - API Description')
-    .setVersion('1.3')
+    .setVersion('1.3.1')
     .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, config);
