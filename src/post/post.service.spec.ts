@@ -41,6 +41,7 @@ describe('PostService', () => {
     const postService = app.get(PostService);
     await postService.createPost(ownUser.id, {
       content: faker.lorem.paragraph(),
+      contentType: 'TEXT',
     });
 
     const posts = await postService.getPosts();
@@ -56,6 +57,7 @@ describe('PostService', () => {
     const postService = app.get(PostService);
     const post = await postService.createPost(ownUser.id, {
       content: faker.lorem.paragraph(),
+      contentType: 'TEXT',
     });
 
     const posts = await postService.getPosts();
@@ -76,6 +78,7 @@ describe('PostService', () => {
     const postService = app.get(PostService);
     const post = await postService.createPost(ownUser.id, {
       content: 'Test post',
+      contentType: 'TEXT',
     });
 
     const comment = await postService.createComment(ownUser.id, {
@@ -109,6 +112,7 @@ describe('PostService', () => {
     const postService = app.get(PostService);
     const post = await postService.createPost(ownUser.id, {
       content: 'Test post',
+      contentType: 'TEXT',
     });
 
     const comment = await postService.createComment(ownUser.id, {
@@ -139,6 +143,7 @@ describe('PostService', () => {
     const postService = app.get(PostService);
     const post = await postService.createPost(ownUser.id, {
       content: 'Test post',
+      contentType: 'TEXT',
     });
 
     const comment = await postService.createComment(ownUser.id, {
