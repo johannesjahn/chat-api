@@ -1,11 +1,15 @@
 import { AbstractEntity } from '../utils/utils.entity';
 import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 import { User } from '../users/user.entity';
+import { ContentType } from 'src/chat/chat.entity';
 
 @Entity('post')
 export class Post extends AbstractEntity {
   @Column()
   content: string;
+
+  @Column({ default: 'TEXT' })
+  contentType: ContentType;
 
   @ManyToOne(() => User, (user) => user.posts)
   author: User;

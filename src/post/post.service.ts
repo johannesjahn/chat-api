@@ -23,6 +23,7 @@ export class PostService {
   async createPost(userId: number, post: CreatePostDTO) {
     const createdPost = await this.postRepository.save({
       content: post.content,
+      contentType: post.contentType,
       author: { id: userId },
     });
 
@@ -62,6 +63,7 @@ export class PostService {
 
     if (!post) throw new HttpException('Post not found', 404);
     post.content = postDTO.content;
+    post.contentType = postDTO.contentType;
 
     const result = await this.postRepository.update(postDTO.id, post);
 

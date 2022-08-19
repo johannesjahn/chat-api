@@ -1,9 +1,13 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { ContentType } from 'linux/dist/src/chat/chat.entity';
 import { UserResponseDTO } from './user.dto';
 
 export class CreatePostDTO {
   @ApiProperty({ description: 'The content of a post' })
   content: string;
+
+  @ApiProperty()
+  contentType: ContentType;
 }
 
 export class ReplyResponseDTO {
@@ -54,6 +58,9 @@ export class PostResponseDTO {
   @ApiProperty()
   content: string;
 
+  @ApiProperty()
+  contentType: ContentType;
+
   @ApiProperty({ nullable: true })
   author: UserResponseDTO;
 
@@ -66,6 +73,8 @@ export class UpdatePostDTO {
   id: number;
   @ApiProperty()
   content: string;
+  @ApiProperty()
+  contentType: ContentType;
 }
 
 export class DeletePostDTO {

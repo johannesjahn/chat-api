@@ -81,6 +81,10 @@ export class CommentMapper extends Converter<Comment, CommentResponseDTO> {}
     target: 'content',
   },
   {
+    source: 'contentType',
+    target: 'contentType',
+  },
+  {
     source: 'author',
     target: 'author',
     converter: UserMapper,
