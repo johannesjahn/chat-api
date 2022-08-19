@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { ContentType } from 'linux/dist/src/chat/chat.entity';
+import { ContentType } from '../chat/chat.entity';
 import { UserResponseDTO } from './user.dto';
 
 export class CreatePostDTO {
