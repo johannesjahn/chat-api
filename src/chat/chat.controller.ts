@@ -18,7 +18,7 @@ import {
 import { CreateConversationRequestDTO } from '../dtos/conversation.dto';
 import { ChatService } from './chat.service';
 
-@ApiTags('chat')
+@ApiTags('Chat')
 @Controller('chat')
 export class ChatController {
   constructor(private chatService: ChatService) {}

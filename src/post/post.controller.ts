@@ -29,7 +29,7 @@ import {
 } from '../dtos/post.dto';
 import { PostService } from './post.service';
 
-@ApiTags('post')
+@ApiTags('Post')
 @Controller('post')
 export class PostController {
   constructor(private postService: PostService) {}
