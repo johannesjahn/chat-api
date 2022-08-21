@@ -41,7 +41,7 @@ export class PostService {
         'comments.replies',
         'comments.replies.author',
       ],
-      order: { updatedAt: 'DESC' },
+      order: { createdAt: 'DESC' },
     });
     return result;
   }
@@ -87,6 +87,7 @@ export class PostService {
   async getComments(postId: number) {
     const result = await this.commentRepository.find({
       where: { post: { id: postId } },
+      order: { createdAt: 'DESC' },
       relations: ['author', 'replies', 'replies.author'],
     });
     return result;
@@ -130,6 +131,7 @@ export class PostService {
   async getReplies(commentId: number) {
     const result = await this.replyRepository.find({
       where: { comment: { id: commentId } },
+      order: { createdAt: 'DESC' },
       relations: ['author'],
     });
     return result;
