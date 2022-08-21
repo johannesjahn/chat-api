@@ -89,11 +89,6 @@ export class CreateCommentDTO {
   content: string;
 }
 
-export class GetCommentsDTO {
-  @ApiProperty()
-  postId: number;
-}
-
 export class DeleteCommentDTO {
   @ApiProperty()
   commentId: number;
@@ -123,9 +118,4 @@ export class UpdateReplyDTO {
   replyId: number;
   @ApiProperty()
   content: string;
-}
-
-export class GetRepliesDTO {
-  @ApiProperty()
-  commentId: number;
 }

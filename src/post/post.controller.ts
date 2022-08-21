@@ -3,12 +3,14 @@ import {
   Controller,
   Delete,
   Get,
+  Param,
   Post,
   Put,
   Request,
   UseGuards,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
+import { Number } from 'aws-sdk/clients/iot';
 import { CommentMapper, PostMapper, ReplyMapper } from 'src/post/post.mapper';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import {
@@ -19,8 +21,6 @@ import {
   DeleteCommentDTO,
   DeletePostDTO,
   DeleteReplyDTO,
-  GetCommentsDTO,
-  GetRepliesDTO,
   PostResponseDTO,
   ReplyResponseDTO,
   UpdateCommentDTO,
@@ -87,10 +87,10 @@ export class PostController {
     return dto;
   }
 
-  @Get('/comment')
+  @Get('/comment/:postId')
   @ApiCreatedResponse({ type: CommentResponseDTO, isArray: true })
-  async getComments(@Body() body: GetCommentsDTO) {
-    const result = await this.postService.getComments(body.postId);
+  async getComments(@Param('postId') postId: number) {
+    const result = await this.postService.getComments(postId);
     const mapper = new CommentMapper();
 
     const dtos = result.map((c) => mapper.convert(c));
@@ -133,9 +133,9 @@ export class PostController {
   }
 
   @ApiCreatedResponse({ type: ReplyResponseDTO, isArray: true })
-  @Get('/reply')
-  async getReplies(@Body() body: GetRepliesDTO) {
-    const result = await this.postService.getReplies(body.commentId);
+  @Get('/reply/:commentId')
+  async getReplies(@Param('commentId') commentId: number) {
+    const result = await this.postService.getReplies(commentId);
     const mapper = new ReplyMapper();
 
     const dtos = result.map((r) => mapper.convert(r));
