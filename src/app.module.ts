@@ -9,6 +9,7 @@ import { AppLoggerMiddleware } from './middleware/app.logger.middleware';
 import { PostModule } from './post/post.module';
 import { UsersModule } from './users/users.module';
 import { AwsService } from './aws/aws.service';
+import { AppGateway } from './app.gateway';
 
 @Module({
   imports: [
@@ -29,7 +30,7 @@ import { AwsService } from './aws/aws.service';
     PostModule,
   ],
   controllers: [AppController],
-  providers: [AppService, AwsService],
+  providers: [AppService, AwsService, AppGateway],
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer): void {

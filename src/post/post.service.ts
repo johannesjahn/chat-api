@@ -1,12 +1,12 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import {
   CreateCommentDTO,
   CreatePostDTO,
   CreateReplyDTO,
   UpdatePostDTO,
 } from '../dtos/post.dto';
-import { Repository } from 'typeorm';
 import { Comment, Post, Reply } from './post.entity';
 
 @Injectable()

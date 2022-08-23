@@ -9,7 +9,8 @@
         "Repies",
         "timestamptz",
         "typeorm",
-        "typevert"
+        "typevert",
+        "websockets"
     ],
     "sqltools.connections": [
         {

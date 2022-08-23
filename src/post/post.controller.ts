@@ -10,7 +10,6 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
-import { Number } from 'aws-sdk/clients/iot';
 import { CommentMapper, PostMapper, ReplyMapper } from 'src/post/post.mapper';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import {
@@ -27,12 +26,16 @@ import {
   UpdatePostDTO,
   UpdateReplyDTO,
 } from '../dtos/post.dto';
+import { PostGateway } from './post.gateway';
 import { PostService } from './post.service';
 
 @ApiTags('Post')
 @Controller('post')
 export class PostController {
-  constructor(private postService: PostService) {}
+  constructor(
+    private postService: PostService,
+    private postGateway: PostGateway,
+  ) {}
 
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
@@ -43,6 +46,7 @@ export class PostController {
     const mapper = new PostMapper();
 
     const dto = mapper.convert(result);
+    this.postGateway.sendPostToAll(dto);
     return dto;
   }
 
@@ -84,6 +88,7 @@ export class PostController {
     const mapper = new CommentMapper();
 
     const dto = mapper.convert(result);
+    this.postGateway.sendCommentToAll(body.postId);
     return dto;
   }
 
