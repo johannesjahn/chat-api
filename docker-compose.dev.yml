@@ -29,9 +29,9 @@ services:
         ports:
             - 3000:3000
         volumes:
-            - ./dist:/dist
+            - ./linux/dist:/dist
             - ./.dev.env:/.dev.env
-            - ./node_modules:/node_modules
+            - ./linux/node_modules:/node_modules
 
     nginx:
         image: nginx:latest
