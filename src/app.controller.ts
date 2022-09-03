@@ -1,5 +1,5 @@
-import { Controller, Get, UseGuards, Request } from '@nestjs/common';
-import { ApiBearerAuth, ApiCreatedResponse } from '@nestjs/swagger';
+import { Controller, Get, Request } from '@nestjs/common';
+import { ApiBearerAuth } from '@nestjs/swagger';
 import { AppGateway } from './app.gateway';
 import { AppService } from './app.service';
 import { AuthService } from './auth/auth.service';
@@ -16,6 +16,6 @@ export class AppController {
   @Get('/debug')
   async getDebug(@Request() req) {
     this.appGateway.sendToAll('Hello World');
-    return {};
+    return { message: 'Thanks for using the debug endpoint.' };
   }
 }
