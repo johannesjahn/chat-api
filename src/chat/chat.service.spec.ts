@@ -136,6 +136,33 @@ describe('ChatService', () => {
     }
   });
 
+  it('Check more complex messaging', async () => {
+    const authService = app.get(AuthService);
+    const firstUser = await authService.register({
+      username: faker.internet.userName(),
+      password: faker.internet.password(),
+    });
+    const secondUser = await authService.register({
+      username: faker.internet.userName(),
+      password: faker.internet.password(),
+    });
+
+    const chatService = app.get(ChatService);
+    const conversation = await chatService.createOne(firstUser.id, {
+      partnerId: secondUser.id,
+    });
+
+    const text = faker.random.words(100);
+    await chatService.sendMessage(firstUser.id, conversation.id, text, 'TEXT');
+
+    const messages = await chatService.getMessages(
+      secondUser.id,
+      conversation.id,
+    );
+
+    expect(messages.messages).toHaveLength(1);
+  });
+
   it('Check message converter', async () => {
     const authService = app.get(AuthService);
     const firstUser = await authService.register({
