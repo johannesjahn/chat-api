@@ -14,7 +14,7 @@ export class AppController {
 
   @ApiBearerAuth()
   @Get('/debug')
-  async getDebug(@Request() req) {
+  async getDebug() {
     this.appGateway.sendToAll('Hello World');
     return { message: 'Thanks for using the debug endpoint.' };
   }
