@@ -163,6 +163,22 @@ describe('ChatService', () => {
     expect(messages.messages).toHaveLength(1);
   });
 
+  it('Get 404 if conversation not exists', async () => {
+    const authService = app.get(AuthService);
+    const firstUser = await authService.register({
+      username: faker.internet.userName(),
+      password: faker.internet.password(),
+    });
+    const chatService = app.get(ChatService);
+    try {
+      await chatService.getMessages(firstUser.id, 1337);
+    } catch (e) {
+      expect(e).toBeDefined();
+      expect(e).toHaveProperty('status');
+      expect(e['status']).toBe(404);
+    }
+  });
+
   it('Check message converter', async () => {
     const authService = app.get(AuthService);
     const firstUser = await authService.register({
