@@ -77,6 +77,9 @@ export class ChatService {
       where: { id: conversationId },
       relations: ['participants'],
     });
+    if (!conversation) {
+      throw new HttpException('No conversation found', 404);
+    }
     if (!conversation.participants.some((usr) => usr.id == userId))
       throw new HttpException('No access', 403);
 
