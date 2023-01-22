@@ -37,13 +37,13 @@ export const getTestModule = async (dataSource: DataSource) => {
   const conversationRepository = dataSource.getRepository(Conversation);
   const messageRepository = dataSource.getRepository(Message);
 
+  const testModule = JwtModule.register({
+    secret: jwtConstants.getSecret(),
+    signOptions: {},
+  });
+
   return await Test.createTestingModule({
-    imports: [
-      JwtModule.register({
-        secret: jwtConstants.getSecret(),
-        signOptions: {},
-      }),
-    ],
+    imports: [testModule],
     providers: [
       {
         provide: getRepositoryToken(User),
