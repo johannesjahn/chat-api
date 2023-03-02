@@ -16,31 +16,26 @@ services:
   adminer:
     image: adminer
     restart: always
-    depends_on:
-      - db
-    ports:
-      - 8080:8080
+    expose:
+      - 8080
 
   chat:
     build: .
     command: bash -c "node dist/main.js"
-    depends_on:
-      - db
-    ports:
-      - 3000:3000
     volumes:
-      - ./.dev.env:/usr/app/.env
+      - ./.env:/usr/app/.env
+    expose:
+      - 3000
 
   nginx:
-    image: nginx:latest
+    image: jonasal/nginx-certbot:latest
     restart: unless-stopped
-    depends_on:
-      - db
-      - adminer
-      - chat
+    environment:
+      - CERTBOT_EMAIL=johannes.jahn@outlook.com
     ports:
       - 80:80
       - 443:443
     volumes:
-      - ./nginx/user_conf.d/server.dev.conf:/etc/nginx/nginx.conf
+      - ./nginx/nginx_secrets:/etc/letsencrypt
+      - ./nginx/user_conf.d/server.conf:/etc/nginx/user_conf.d/server.conf
       - ./static:/home/app/web/

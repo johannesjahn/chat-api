@@ -39,6 +39,6 @@ nginx/nginx_secrets
 data/
 static/
 
-docker-compose.prod.yml
 deploy.sh
 .env
+.dev.env

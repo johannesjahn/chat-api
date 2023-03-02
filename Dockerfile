@@ -4,7 +4,10 @@ FROM node
 
 WORKDIR /usr/app
 
-COPY ["./", "./"]
-RUN yarn install
+COPY ["./package.json", "./yarn.lock", "./"]
+RUN yarn
+
+COPY ["./tsconfig.json","./tsconfig.build.json", "./nest-cli.json", "./"]
+COPY ./src ./src
 
 RUN yarn build

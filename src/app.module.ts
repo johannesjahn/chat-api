@@ -13,7 +13,7 @@ import { AppGateway } from './app.gateway';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ envFilePath: `${process.env.ENV_PATH}` }),
+    ConfigModule.forRoot({ envFilePath: `${process.env.ENV_PATH ?? '.env'}` }),
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: `${process.env.DATABASE_URL}`,
@@ -33,6 +33,10 @@ import { AppGateway } from './app.gateway';
   providers: [AppService, AwsService, AppGateway],
 })
 export class AppModule {
+  constructor() {
+    console.log(process.env.DATABASE_URL);
+  }
+
   configure(consumer: MiddlewareConsumer): void {
     consumer.apply(AppLoggerMiddleware).forRoutes('*');
   }
