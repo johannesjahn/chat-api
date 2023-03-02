@@ -20,7 +20,7 @@ services:
       - 8080
 
   chat:
-    build: .
+    image: johannesjahn/chat-api:0.0.1
     command: bash -c "node dist/main.js"
     volumes:
       - ./.env:/usr/app/.env

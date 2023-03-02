@@ -22,7 +22,7 @@ services:
       - 8080:8080
 
   chat:
-    build: .
+    image: johannesjahn/chat-api:0.0.1
     command: bash -c "node dist/main.js"
     depends_on:
       - db
