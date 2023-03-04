@@ -3,9 +3,11 @@ import { LocalAuthGuard } from './local-auth.guard';
 import { AuthService } from './auth.service';
 import { RegisterDTO } from '../dtos/register.dto';
 import { LoginDTO, LoginResponseDTO } from '../dtos/login.dto';
-import { ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
 import { UserMapper } from '../users/user.mapper';
 import { UserResponseDTO } from 'src/dtos/user.dto';
+import { JwtAuthGuard } from './jwt-auth.guard';
+import { ChangePasswordDTO } from 'src/dtos/changePassword.dto';
 
 @ApiTags('Auth')
 @Controller('auth/')
@@ -31,6 +33,21 @@ export class AuthController {
     const mapper = new UserMapper();
     const dto = mapper.convert(result);
 
+    return dto;
+  }
+
+  @ApiBearerAuth()
+  @ApiCreatedResponse({ type: [UserResponseDTO] })
+  @UseGuards(JwtAuthGuard)
+  @Post('change-password')
+  async getUsers(@Request() req, @Body() body: ChangePasswordDTO) {
+    const result = await this.authService.changePassword(
+      req.user.userId,
+      body.password,
+    );
+    const mapper = new UserMapper();
+
+    const dto = mapper.convert(result);
     return dto;
   }
 }

@@ -38,6 +38,19 @@ export class AuthService {
     };
   }
 
+  async changePassword(id: number, password: string) {
+    const user = await this.userRepository.findOne({
+      where: { id },
+      relations: ['userAuth'],
+    });
+    if (!user) throw new HttpException({ error: 'User not found' }, 400);
+    const pw = await hash(password, hashConstants.saltRounds);
+    user.userAuth.password = pw;
+    await this.userAuthRepository.save(user.userAuth);
+    delete user.userAuth;
+    return user;
+  }
+
   async register(registerDTO: RegisterDTO) {
     const user = await this.usersService.findUser(registerDTO.username);
     if (user) throw new HttpException({ error: 'User already exists' }, 400);
