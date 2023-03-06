@@ -51,4 +51,22 @@ describe('AuthService', () => {
 
     await authService.validateUser(username, password);
   });
+
+  it('Check password change', async () => {
+    const authService = app.get(AuthService);
+
+    const username = faker.internet.userName();
+    const password = faker.internet.password();
+    const newPassword = faker.internet.password();
+
+    await authService.register({
+      username: username,
+      password: password,
+    });
+
+    const user = await authService.validateUser(username, password);
+    await authService.changePassword(user.id, newPassword);
+
+    await authService.validateUser(username, newPassword);
+  });
 });
