@@ -67,6 +67,7 @@ describe('AuthService', () => {
     const user = await authService.validateUser(username, password);
     await authService.changePassword(user.id, newPassword);
 
-    await authService.validateUser(username, newPassword);
+    const result = await authService.validateUser(username, newPassword);
+    expect(result).not.toBeNull();
   });
 });
