@@ -1,4 +1,11 @@
-import { Controller, Post, UseGuards, Request, Body } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  UseGuards,
+  Request,
+  Body,
+  HttpException,
+} from '@nestjs/common';
 import { LocalAuthGuard } from './local-auth.guard';
 import { AuthService } from './auth.service';
 import { RegisterDTO } from '../dtos/register.dto';
@@ -41,6 +48,9 @@ export class AuthController {
   @UseGuards(JwtAuthGuard)
   @Post('change-password')
   async getUsers(@Request() req, @Body() body: ChangePasswordDTO) {
+    if (body.password !== body.passwordConfirm)
+      throw new HttpException('passwords do not match', 400);
+
     const result = await this.authService.changePassword(
       req.user.userId,
       body.password,
