@@ -24,6 +24,8 @@ services:
     command: bash -c "node dist/main.js"
     volumes:
       - ./.env:/usr/app/.env
+      - ./avatars/:/usr/app/avatars/
+      - ./res/:/usr/app/res/
     expose:
       - 3000
 
