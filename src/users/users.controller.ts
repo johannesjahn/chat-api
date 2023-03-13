@@ -67,7 +67,9 @@ export class UsersController {
   async uploadAvatar(
     @UploadedFile(
       new ParseFilePipe({
-        validators: [new FileTypeValidator({ fileType: 'image' })],
+        validators: [
+          new FileTypeValidator({ fileType: 'application/octet-stream' }),
+        ],
       }),
     )
     file: Express.Multer.File,
