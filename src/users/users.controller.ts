@@ -1,8 +1,32 @@
-import { Controller, Get, UseGuards, Request } from '@nestjs/common';
-import { ApiBearerAuth, ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
-import { UserMapper } from './user.mapper';
+import {
+  Controller,
+  FileTypeValidator,
+  Get,
+  HttpException,
+  Param,
+  ParseFilePipe,
+  Post,
+  Query,
+  Request,
+  StreamableFile,
+  UploadedFile,
+  UseGuards,
+  UseInterceptors,
+} from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiConsumes,
+  ApiCreatedResponse,
+  ApiTags,
+} from '@nestjs/swagger';
+import * as fs from 'fs';
+import * as path from 'path';
+import * as sharp from 'sharp';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { UserResponseDTO } from '../dtos/user.dto';
+import { UserMapper } from './user.mapper';
 import { UsersService } from './users.service';
 
 @ApiTags('User')
@@ -21,5 +45,71 @@ export class UsersController {
 
     const dtos = result.map((u) => mapper.convert(u));
     return dtos;
+  }
+
+  @ApiBearerAuth()
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        file: {
+          type: 'string',
+          format: 'binary',
+        },
+      },
+    },
+  })
+  @ApiCreatedResponse()
+  @Post('upload-avatar')
+  @UseGuards(JwtAuthGuard)
+  @UseInterceptors(FileInterceptor('file'))
+  async uploadAvatar(
+    @UploadedFile(
+      new ParseFilePipe({
+        validators: [new FileTypeValidator({ fileType: 'image' })],
+      }),
+    )
+    file: Express.Multer.File,
+    @Request() req,
+  ) {
+    const userId: string = req.user.userId;
+
+    await Promise.all([
+      sharp(file.buffer)
+        .resize(800)
+        .webp({ effort: 6, quality: 30 })
+        .toFile(path.join('avatars', userId + '_800.webp')),
+      sharp(file.buffer)
+        .resize(400)
+        .webp({ effort: 6, quality: 30 })
+        .toFile(path.join('avatars', userId + '_400.webp')),
+      sharp(file.buffer)
+        .resize(200)
+        .webp({ effort: 6, quality: 30 })
+        .toFile(path.join('avatars', userId + '_200.webp')),
+    ]);
+
+    return userId;
+  }
+
+  validSizes = ['200', '400', '800'];
+
+  @Get('avatar/:userId')
+  async getAvatar(
+    @Param('userId') userId: number,
+    @Query('size') size = '200',
+  ) {
+    if (!this.validSizes.includes(size)) {
+      throw new HttpException('invalid size', 400);
+    }
+
+    let file: fs.ReadStream;
+    if (fs.existsSync('avatars/' + userId + '_' + size + '.webp')) {
+      file = fs.createReadStream('avatars/' + userId + '_' + size + '.webp');
+    } else {
+      file = fs.createReadStream('res/default' + '_' + size + '.webp');
+    }
+    return new StreamableFile(file, { type: 'image/webp' });
   }
 }

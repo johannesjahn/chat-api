@@ -38,6 +38,7 @@ lerna-debug.log*
 nginx/nginx_secrets
 data/
 static/
+avatars/
 
 deploy.sh
 .env
