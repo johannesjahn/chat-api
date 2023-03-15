@@ -48,6 +48,18 @@ export class UsersController {
   }
 
   @ApiBearerAuth()
+  @ApiCreatedResponse({ type: UserResponseDTO })
+  @UseGuards(JwtAuthGuard)
+  @Get('me')
+  async getMe(@Request() req) {
+    const result = await this.usersService.findOne(req.user.userId);
+    const mapper = new UserMapper();
+
+    const dto = mapper.convert(result);
+    return dto;
+  }
+
+  @ApiBearerAuth()
   @ApiConsumes('multipart/form-data')
   @ApiBody({
     schema: {
