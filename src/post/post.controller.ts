@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  HttpException,
   Param,
   Post,
   Put,
@@ -84,6 +85,10 @@ export class PostController {
   @UseGuards(JwtAuthGuard)
   @Post('/comment')
   async createComment(@Request() req, @Body() body: CreateCommentDTO) {
+    if (!body.content || body.content.length == 0) {
+      throw new HttpException('Content is required', 400);
+    }
+
     const result = await this.postService.createComment(req.user.userId, body);
     const mapper = new CommentMapper();
 
@@ -130,6 +135,10 @@ export class PostController {
   @UseGuards(JwtAuthGuard)
   @Post('/reply')
   async createReply(@Request() req, @Body() body: CreateReplyDTO) {
+    if (!body.content || body.content.length == 0) {
+      throw new HttpException('Content is required', 400);
+    }
+
     const result = await this.postService.createReply(req.user.userId, body);
     const mapper = new ReplyMapper();
 
