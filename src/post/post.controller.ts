@@ -119,6 +119,10 @@ export class PostController {
   @UseGuards(JwtAuthGuard)
   @Put('/comment')
   async updateComment(@Request() req, @Body() body: UpdateCommentDTO) {
+    if (!body.content || body.content.length == 0) {
+      throw new HttpException('Content is required', 400);
+    }
+
     const result = await this.postService.updateComment(
       req.user.userId,
       body.commentId,
