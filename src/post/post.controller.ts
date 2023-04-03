@@ -172,6 +172,10 @@ export class PostController {
   @UseGuards(JwtAuthGuard)
   @Put('/reply')
   async updateReply(@Request() req, @Body() body: UpdateReplyDTO) {
+    if (!body.content || body.content.length == 0) {
+      throw new HttpException('Content is required', 400);
+    }
+
     const result = await this.postService.updateReply(
       req.user.userId,
       body.replyId,
