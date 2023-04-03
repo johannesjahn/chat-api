@@ -73,6 +73,10 @@ export class PostController {
   @UseGuards(JwtAuthGuard)
   @Put('/')
   async updatePost(@Request() req, @Body() body: UpdatePostDTO) {
+    if (!body.content || body.content.length == 0) {
+      throw new HttpException('Content is required', 400);
+    }
+
     const result = await this.postService.updatePost(req.user.userId, body);
     const mapper = new PostMapper();
 
