@@ -61,9 +61,8 @@ jobs:
           tags: johannesjahn/chat-api:latest
 
   deploy:
-    if: false
     runs-on: ubuntu-latest
-    needs: build
+    needs: build_image
     steps:
       - uses: actions/download-artifact@v2
         with:
@@ -81,4 +80,4 @@ jobs:
           host: chat.johannes-jahn.com
           username: ubuntu
           key: ${{ secrets.EC2_SSH_KEY }}
-          script: cd dev/chat-api && mv dist.zip tmp && mv tmp/dist.zip dist.zip && rm -rf dist && unzip dist.zip && docker-compose -f docker-compose.prod.yml restart chat && rm -rf tmp && rm dist.zip
+          script: cd chat-api && docker-compose -f docker-compose.prod.yml pull && docker-compose -f docker-compose.prod.yml up -d chat
