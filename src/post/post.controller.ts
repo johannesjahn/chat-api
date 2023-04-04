@@ -65,6 +65,9 @@ export class PostController {
   @UseGuards(JwtAuthGuard)
   @Delete('/')
   async deletePost(@Request() req, @Body() body: DeletePostDTO) {
+    if (!body.id) {
+      throw new HttpException('Id is required', 400);
+    }
     return this.postService.deletePost(req.user.userId, body.id);
   }
 
