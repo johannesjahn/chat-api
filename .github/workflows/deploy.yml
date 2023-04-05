@@ -68,4 +68,4 @@ jobs:
           host: chat.johannes-jahn.com
           username: ubuntu
           key: ${{ secrets.EC2_SSH_KEY }}
-          script: cd chat-api && docker-compose -f docker-compose.prod.yml pull && docker-compose -f docker-compose.prod.yml up -d chat
+          script: cd chat-api && docker-compose pull && docker-compose up -d chat
