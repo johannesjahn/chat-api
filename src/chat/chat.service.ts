@@ -52,6 +52,10 @@ export class ChatService {
     content: string,
     contentType: ContentType,
   ) {
+    if (contentType == 'IMAGE_URL' && !content.startsWith('http')) {
+      throw new HttpException('Invalid image url', 400);
+    }
+
     const user = await this.userRepository.findOne({ where: { id: userId } });
     const conversation = await this.conversationRepository.findOne({
       where: { id: conversationId },
