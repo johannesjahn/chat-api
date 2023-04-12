@@ -128,6 +128,14 @@ export class PostService {
     return result;
   }
 
+  async getPostFromCommentId(commentId: number) {
+    const result = await this.commentRepository.findOne({
+      where: { id: commentId },
+      relations: ['post'],
+    });
+    return result.post;
+  }
+
   async getReplies(commentId: number) {
     const result = await this.replyRepository.find({
       where: { comment: { id: commentId } },
