@@ -154,8 +154,7 @@ export class PostController {
     const mapper = new ReplyMapper();
 
     const dto = mapper.convert(result);
-    const post = await this.postService.getPostFromCommentId(body.commentId);
-    this.postGateway.sendCommentToAll(post.id);
+    this.postGateway.sendReplyToAll(result.id);
     return dto;
   }
 

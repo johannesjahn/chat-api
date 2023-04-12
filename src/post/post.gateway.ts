@@ -17,4 +17,8 @@ export class PostGateway {
   sendCommentToAll(postId: number) {
     this.wss.emit('post/comment', postId);
   }
+
+  sendReplyToAll(commentId: number) {
+    this.wss.emit('post/comment/reply', commentId);
+  }
 }
