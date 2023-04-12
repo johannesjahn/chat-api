@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { JwtModule } from '@nestjs/jwt';
+import { JwtModule, JwtService } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from '../users/user.entity';
@@ -11,15 +11,17 @@ import { jwtConstants } from './constants';
 import { JwtStrategy } from './jwt.strategy';
 import { LocalStrategy } from './local.strategy';
 
+export const jwtModule = JwtModule.registerAsync({
+  useFactory: () => {
+    return { secret: jwtConstants.getSecret(), signOptions: {} };
+  },
+});
+
 @Module({
   imports: [
     UsersModule,
     PassportModule,
-    JwtModule.registerAsync({
-      useFactory: () => {
-        return { secret: jwtConstants.getSecret(), signOptions: {} };
-      },
-    }),
+    jwtModule,
     TypeOrmModule.forFeature([User]),
     TypeOrmModule.forFeature([UserAuth]),
   ],

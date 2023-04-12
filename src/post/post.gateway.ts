@@ -1,14 +1,68 @@
-import { WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
+import {
+  OnGatewayConnection,
+  OnGatewayDisconnect,
+  SubscribeMessage,
+  WebSocketGateway,
+  WebSocketServer,
+} from '@nestjs/websockets';
 import { Server } from 'http';
 import { PostResponseDTO } from '../dtos/post.dto';
+import { Socket } from 'socket.io';
+import { DefaultEventsMap } from 'socket.io/dist/typed-events';
+import { JwtStrategy } from 'src/auth/jwt.strategy';
+import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Post } from './post.entity';
+import { Repository } from 'typeorm';
+import { UsersService } from 'src/users/users.service';
+import { JwtService } from '@nestjs/jwt';
 
 @WebSocketGateway({
   cors: {
     origin: '*',
   },
 })
-export class PostGateway {
+@Injectable()
+export class PostGateway
+  implements OnGatewayConnection<Socket>, OnGatewayDisconnect<Socket>
+{
+  constructor(
+    private jwtService: JwtService,
+    @InjectRepository(Post)
+    private postRepository: Repository<Post>,
+  ) {}
+
   @WebSocketServer() wss: Server;
+  clientMap = new Map<number, Socket>();
+
+  async handleConnection(
+    client: Socket<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, any>,
+    ...args: any[]
+  ) {
+    const token = await this.jwtService.verifyAsync(
+      client.handshake.auth.token,
+    );
+    this.clientMap.set(token.sub, client);
+    console.log('connected');
+  }
+  async handleDisconnect(
+    client: Socket<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, any>,
+  ) {
+    const token = await this.jwtService.verifyAsync(
+      client.handshake.auth.token,
+    );
+    this.clientMap.delete(token.sub);
+    console.log('disconnected');
+  }
+
+  updateMessagesForUsers(userIds: number[]) {
+    for (const userId of userIds) {
+      if (this.clientMap.has(userId)) {
+        const client = this.clientMap.get(userId);
+        client.emit('message', 'new message');
+      }
+    }
+  }
 
   sendPostToAll(post: PostResponseDTO) {
     this.wss.emit('post', post);
