@@ -1,21 +1,18 @@
+import { Injectable } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
+import { InjectRepository } from '@nestjs/typeorm';
 import {
   OnGatewayConnection,
   OnGatewayDisconnect,
-  SubscribeMessage,
   WebSocketGateway,
   WebSocketServer,
 } from '@nestjs/websockets';
 import { Server } from 'http';
-import { PostResponseDTO } from '../dtos/post.dto';
 import { Socket } from 'socket.io';
 import { DefaultEventsMap } from 'socket.io/dist/typed-events';
-import { JwtStrategy } from 'src/auth/jwt.strategy';
-import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Post } from './post.entity';
 import { Repository } from 'typeorm';
-import { UsersService } from 'src/users/users.service';
-import { JwtService } from '@nestjs/jwt';
+import { PostResponseDTO } from '../dtos/post.dto';
+import { Post } from './post.entity';
 
 @WebSocketGateway({
   cors: {
