@@ -11,7 +11,6 @@ import { faker } from '@faker-js/faker';
 import { ChatService } from './chat.service';
 import { HttpException } from '@nestjs/common';
 import { MessageMapper } from './chat.mapper';
-import { PostGateway } from 'src/post/post.gateway';
 
 describe('ChatService', () => {
   let app: TestingModule;
