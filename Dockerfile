@@ -17,5 +17,6 @@ FROM node:slim
 
 WORKDIR /usr/app
 
+COPY --from=builder /usr/app/package.json /usr/app/package.json
 COPY --from=builder /usr/app/node_modules /usr/app/node_modules
 COPY --from=builder /usr/app/dist /usr/app/dist
