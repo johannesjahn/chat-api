@@ -35,10 +35,10 @@ jobs:
         with:
           node-version: 16
       - run: |
-        git config --global user.name 'Johannes Jahn'
-        git config --global user.email 'johannes.jahn@outlook.com'
-        npm version patch
-        git push
+          git config --global user.name 'Johannes Jahn'
+          git config --global user.email 'johannes.jahn@outlook.com'
+          npm version patch
+          git push
   build:
     runs-on: ubuntu-latest
     needs: [version_bump]
