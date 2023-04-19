@@ -10,10 +10,13 @@ async function bootstrap() {
 
   app.setGlobalPrefix('/app');
 
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const pjson = require('../../package.json');
+
   const config = new DocumentBuilder()
     .setTitle('Chat - API')
     .setDescription('Chat - API Description')
-    .setVersion('0.0.34')
+    .setVersion(pjson.version)
     .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, config);
