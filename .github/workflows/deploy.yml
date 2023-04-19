@@ -85,4 +85,4 @@ jobs:
           host: chat.johannes-jahn.com
           username: ubuntu
           key: ${{ secrets.EC2_SSH_KEY }}
-          script: cd chat-api && docker-compose pull && docker-compose up -d chat && YES | docker image prune -a
+          script: cd chat-api && docker-compose pull && docker-compose up -d chat && yes | docker image prune -a
