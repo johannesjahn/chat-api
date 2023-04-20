@@ -72,10 +72,6 @@ import { JwtStrategy } from './auth/jwt.strategy';
   providers: [AppService, AwsService, AppGateway],
 })
 export class AppModule {
-  constructor() {
-    console.log(process.env.DATABASE_URL);
-  }
-
   configure(consumer: MiddlewareConsumer): void {
     consumer.apply(AppLoggerMiddleware).forRoutes('*');
   }
