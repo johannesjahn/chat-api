@@ -1,13 +1,13 @@
 import { Controller, Get } from '@nestjs/common';
-import { AppGateway } from './app.gateway';
+import { AppService } from './app.service';
 
 @Controller()
 export class AppController {
-  constructor(private appGateway: AppGateway) {}
+  constructor(private appService: AppService) {}
 
   @Get('/debug')
   async getDebug() {
-    this.appGateway.sendToAll('Hello World');
-    return { message: 'Thanks for using the debug endpoint.' };
+    const result = await this.appService.debug();
+    return { message: result };
   }
 }
