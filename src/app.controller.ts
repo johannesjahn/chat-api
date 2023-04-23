@@ -8,6 +8,7 @@ export class AppController {
   @Get('/debug')
   async getDebug() {
     const result = await this.appService.debug();
+    console.log(result);
     return { message: result };
   }
 }
