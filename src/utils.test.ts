@@ -79,6 +79,7 @@ export const getTestModule = async (dataSource: DataSource) => {
       AuthService,
       PostService,
       ChatService,
+      PostService,
       PostGateway,
     ],
   }).compile();
