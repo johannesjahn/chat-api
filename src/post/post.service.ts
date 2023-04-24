@@ -43,7 +43,7 @@ export class PostService {
       ],
       order: {
         createdAt: 'DESC',
-        comments: { createdAt: 'DESC', replies: { createdAt: 'DESC' } },
+        comments: { createdAt: 'ASC', replies: { createdAt: 'ASC' } },
       },
     });
     return result;
@@ -90,7 +90,7 @@ export class PostService {
   async getComments(postId: number) {
     const result = await this.commentRepository.find({
       where: { post: { id: postId } },
-      order: { createdAt: 'DESC' },
+      order: { createdAt: 'ASC' },
       relations: ['author', 'replies', 'replies.author'],
     });
     return result;
@@ -142,7 +142,7 @@ export class PostService {
   async getReplies(commentId: number) {
     const result = await this.replyRepository.find({
       where: { comment: { id: commentId } },
-      order: { createdAt: 'DESC' },
+      order: { createdAt: 'ASC' },
       relations: ['author'],
     });
     return result;

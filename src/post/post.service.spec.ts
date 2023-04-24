@@ -169,4 +169,97 @@ describe('PostService', () => {
 
     expect(result).not.toBeNull();
   });
+
+  it('Check order on posts', async () => {
+    const authService = app.get(AuthService);
+    const ownUser = await authService.register({
+      username: faker.internet.userName(),
+      password: faker.internet.password(),
+    });
+    const postService = app.get(PostService);
+    await postService.createPost(ownUser.id, {
+      content: 'Test post 1',
+      contentType: 'TEXT',
+    });
+
+    // wait for 1 second to make sure the createdAt is different
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+
+    await postService.createPost(ownUser.id, {
+      content: 'Test post 2',
+      contentType: 'TEXT',
+    });
+
+    const posts = await postService.getPosts();
+
+    expect(posts[0].content).toBe('Test post 2');
+    expect(posts[1].content).toBe('Test post 1');
+  });
+
+  it('Check order on comments', async () => {
+    const authService = app.get(AuthService);
+    const ownUser = await authService.register({
+      username: faker.internet.userName(),
+      password: faker.internet.password(),
+    });
+    const postService = app.get(PostService);
+    const post = await postService.createPost(ownUser.id, {
+      content: 'Test post',
+      contentType: 'TEXT',
+    });
+
+    await postService.createComment(ownUser.id, {
+      postId: post.id,
+      content: 'Test comment 1',
+    });
+
+    // wait for 1 second to make sure the createdAt is different
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+
+    await postService.createComment(ownUser.id, {
+      postId: post.id,
+      content: 'Test comment 2',
+    });
+
+    const posts = await postService.getPosts();
+
+    expect(posts[0].comments[0].content).toBe('Test comment 1');
+    expect(posts[0].comments[1].content).toBe('Test comment 2');
+  });
+
+  it('Check order on replies', async () => {
+    const authService = app.get(AuthService);
+    const ownUser = await authService.register({
+      username: faker.internet.userName(),
+      password: faker.internet.password(),
+    });
+    const postService = app.get(PostService);
+    const post = await postService.createPost(ownUser.id, {
+      content: 'Test post',
+      contentType: 'TEXT',
+    });
+
+    const comment = await postService.createComment(ownUser.id, {
+      postId: post.id,
+      content: 'Test comment',
+    });
+
+    await postService.createReply(ownUser.id, {
+      commentId: comment.id,
+      content: 'Test reply 1',
+    });
+
+    // wait for 1 second to make sure the createdAt is different
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+
+    await postService.createReply(ownUser.id, {
+      commentId: comment.id,
+      content: 'Test reply 2',
+    });
+
+    const posts = await postService.getPosts();
+
+    expect(posts[0].comments[0].replies[0].content).toBe('Test reply 1');
+    expect(posts[0].comments[0].replies[1].content).toBe('Test reply 2');
+  });
 });
