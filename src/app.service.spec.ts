@@ -7,8 +7,9 @@ import {
   getTestModule,
   populateDB,
 } from './utils.test';
+import { AppService } from './app.service';
 
-describe('AppController', () => {
+describe('AppService', () => {
   let app: TestingModule;
   let dataSource: DataSource;
 
@@ -18,7 +19,7 @@ describe('AppController', () => {
   });
 
   afterAll(() => {
-    dataSource.close();
+    dataSource.destroy();
   });
 
   beforeEach(async () => {
@@ -33,5 +34,10 @@ describe('AppController', () => {
     const repo = dataSource.getRepository(UserAuth);
     const result = await repo.find();
     expect(result).not.toHaveLength(0);
+  });
+
+  it('check Version', async () => {
+    const appService = app.get(AppService);
+    expect(appService.getVersion().length).toBeGreaterThan(0);
   });
 });

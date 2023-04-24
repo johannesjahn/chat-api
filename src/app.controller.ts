@@ -11,4 +11,10 @@ export class AppController {
     console.log(result);
     return { message: result };
   }
+
+  @Get('/version')
+  getVersion() {
+    const result = this.appService.getVersion();
+    return { version: result };
+  }
 }
