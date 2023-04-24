@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateConversationRequestDTO {
-  @ApiProperty()
+  @ApiProperty({ type: 'array', items: { type: 'number' } })
   partnerIds: number[];
 }
