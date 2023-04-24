@@ -19,7 +19,7 @@ export class ChatService {
   ) {}
 
   async createOne(
-    createrId: number,
+    creatorId: number,
     request: CreateConversationRequestDTO,
   ): Promise<Conversation> {
     const partnerUsers = await this.userRepository.find({
@@ -28,12 +28,12 @@ export class ChatService {
 
     if (partnerUsers.length !== request.partnerIds.length)
       throw new HttpException('User not found', 404);
-    const creater = await this.userRepository.findOne({
-      where: { id: createrId },
+    const creator = await this.userRepository.findOne({
+      where: { id: creatorId },
     });
 
     const conversation = new Conversation();
-    conversation.participants = [creater, ...partnerUsers];
+    conversation.participants = [creator, ...partnerUsers];
     const t = await this.conversationRepository.save(conversation);
 
     return t;
