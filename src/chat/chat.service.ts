@@ -47,6 +47,7 @@ export class ChatService {
         'conversation.id in (SELECT "conversationId" FROM conversation_participants_user WHERE "userId" = :id)',
         { id: userId },
       )
+      .orderBy({ 'conversation.updatedAt': 'DESC' })
       .getMany();
   }
 
