@@ -41,7 +41,10 @@ export class PostService {
         'comments.replies',
         'comments.replies.author',
       ],
-      order: { createdAt: 'DESC' },
+      order: {
+        createdAt: 'DESC',
+        comments: { createdAt: 'DESC', replies: { createdAt: 'DESC' } },
+      },
     });
     return result;
   }
