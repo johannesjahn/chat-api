@@ -13,6 +13,7 @@ import { UserAuth } from './users/userAuth.entity';
 import { UsersService } from './users/users.service';
 import { PostGateway } from './post/post.gateway';
 import { PostModule } from './post/post.module';
+import { ChatGateway } from './chat/chat.gateway';
 
 export const getTestDataSource = async () => {
   const ds = await new DataSource({
@@ -81,6 +82,7 @@ export const getTestModule = async (dataSource: DataSource) => {
       ChatService,
       PostService,
       PostGateway,
+      ChatGateway,
     ],
   }).compile();
 };

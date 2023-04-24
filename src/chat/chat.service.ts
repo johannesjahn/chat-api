@@ -4,7 +4,7 @@ import { CreateConversationRequestDTO } from '../dtos/conversation.dto';
 import { User } from '../users/user.entity';
 import { Repository, MoreThan, FindOptionsWhere } from 'typeorm';
 import { ContentType, Conversation, Message } from './chat.entity';
-import { PostGateway } from '../post/post.gateway';
+import { ChatGateway } from './chat.gateway';
 
 @Injectable()
 export class ChatService {
@@ -15,7 +15,7 @@ export class ChatService {
     private userRepository: Repository<User>,
     @InjectRepository(Message)
     private messageRepository: Repository<Message>,
-    private readonly postGateway: PostGateway,
+    private readonly chatGateway: ChatGateway,
   ) {}
 
   async createOne(
@@ -71,7 +71,7 @@ export class ChatService {
     message.conversation = conversation;
     message.contentType = contentType;
     const result = await this.messageRepository.save(message);
-    this.postGateway.updateMessagesForUsers(
+    this.chatGateway.updateMessagesForUsers(
       conversation.participants.map((p) => p.id).filter((id) => id != userId),
     );
     return result;
