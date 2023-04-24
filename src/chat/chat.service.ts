@@ -22,16 +22,18 @@ export class ChatService {
     createrId: number,
     request: CreateConversationRequestDTO,
   ): Promise<Conversation> {
-    const partnerUser = await this.userRepository.findOne({
-      where: { id: request.partnerId },
+    const partnerUsers = await this.userRepository.find({
+      where: request.partnerIds.map((id) => ({ id })),
     });
-    if (!partnerUser) throw new HttpException('User not found', 404);
+
+    if (partnerUsers.length !== request.partnerIds.length)
+      throw new HttpException('User not found', 404);
     const creater = await this.userRepository.findOne({
       where: { id: createrId },
     });
 
     const conversation = new Conversation();
-    conversation.participants = [creater, partnerUser];
+    conversation.participants = [creater, ...partnerUsers];
     const t = await this.conversationRepository.save(conversation);
 
     return t;

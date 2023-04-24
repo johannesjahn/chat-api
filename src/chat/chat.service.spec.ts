@@ -45,7 +45,7 @@ describe('ChatService', () => {
     });
 
     const chatService = app.get(ChatService);
-    await chatService.createOne(firstUser.id, { partnerId: secondUser.id });
+    await chatService.createOne(firstUser.id, { partnerIds: [secondUser.id] });
 
     const chats = await chatService.getConversationListForUser(firstUser.id);
 
@@ -69,7 +69,7 @@ describe('ChatService', () => {
 
     const chatService = app.get(ChatService);
     const conversation = await chatService.createOne(firstUser.id, {
-      partnerId: secondUser.id,
+      partnerIds: [secondUser.id],
     });
 
     const text = faker.random.words(100);
@@ -120,7 +120,7 @@ describe('ChatService', () => {
 
     const chatService = app.get(ChatService);
     const conversation = await chatService.createOne(firstUser.id, {
-      partnerId: secondUser.id,
+      partnerIds: [secondUser.id],
     });
 
     const text = faker.random.words(100);
@@ -149,7 +149,7 @@ describe('ChatService', () => {
 
     const chatService = app.get(ChatService);
     const conversation = await chatService.createOne(firstUser.id, {
-      partnerId: secondUser.id,
+      partnerIds: [secondUser.id],
     });
 
     const text = faker.random.words(100);
@@ -192,7 +192,7 @@ describe('ChatService', () => {
 
     const chatService = app.get(ChatService);
     const conversation = await chatService.createOne(firstUser.id, {
-      partnerId: secondUser.id,
+      partnerIds: [secondUser.id],
     });
 
     const text = faker.random.words(100);
