@@ -39,6 +39,7 @@ jobs:
           git config --global user.email 'johannes.jahn@outlook.com'
           npm version patch -m "[RELEASE] %s"
           git push
+          git push --tags
   build:
     runs-on: ubuntu-latest
     needs: [version_bump]
