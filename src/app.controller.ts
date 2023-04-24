@@ -1,5 +1,7 @@
 import { Controller, Get } from '@nestjs/common';
 import { AppService } from './app.service';
+import { ApiCreatedResponse } from '@nestjs/swagger';
+import { VersionDTO } from './dtos/version.dto';
 
 @Controller()
 export class AppController {
@@ -12,6 +14,7 @@ export class AppController {
     return { message: result };
   }
 
+  @ApiCreatedResponse({ type: VersionDTO })
   @Get('/version')
   getVersion() {
     const result = this.appService.getVersion();
