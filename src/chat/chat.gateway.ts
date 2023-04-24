@@ -22,6 +22,7 @@ export class ChatGateway
   constructor(private jwtService: JwtService) {}
 
   @WebSocketServer() wss: Server;
+
   clientMap = new Map<number, Socket>();
 
   async handleConnection(
