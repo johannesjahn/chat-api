@@ -59,4 +59,7 @@ export class ConversationResponseDTO {
 
   @ApiProperty({ type: MessageResponseDTO, isArray: true })
   messages: MessageResponseDTO[];
+
+  @ApiProperty({ type: MessageResponseDTO, nullable: true })
+  lastMessage: MessageResponseDTO | null;
 }

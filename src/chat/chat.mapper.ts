@@ -57,6 +57,11 @@ export class MessageMapper extends Converter<Message, MessageResponseDTO> {}
     converter: MessageMapper,
     isCollection: true,
   },
+  {
+    source: 'lastMessage',
+    target: 'lastMessage',
+    converter: MessageMapper,
+  },
 ])
 export class ConversationMapper extends Converter<
   Conversation,
