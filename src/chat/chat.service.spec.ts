@@ -1,6 +1,6 @@
 import { TestingModule } from '@nestjs/testing';
 import { AuthService } from '../auth/auth.service';
-import { DataSource } from 'typeorm';
+import { DataSource, Repository } from 'typeorm';
 import {
   cleanupDB,
   getTestDataSource,
@@ -11,6 +11,8 @@ import { faker } from '@faker-js/faker';
 import { ChatService } from './chat.service';
 import { HttpException } from '@nestjs/common';
 import { MessageMapper } from './chat.mapper';
+import { Conversation } from './chat.entity';
+import { getRepositoryToken } from '@nestjs/typeorm';
 
 describe('ChatService', () => {
   let app: TestingModule;
@@ -160,7 +162,33 @@ describe('ChatService', () => {
       conversation.id,
     );
 
+    const conversationRepo: Repository<Conversation> = app.get(
+      getRepositoryToken(Conversation),
+    );
+    const firstMessageSent = await conversationRepo.find({
+      where: { id: conversation.id },
+      relations: ['lastMessage'],
+    });
+
     expect(messages.messages).toHaveLength(1);
+
+    // wait for 1 second to make sure the timestamp is different
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+
+    await chatService.sendMessage(firstUser.id, conversation.id, text, 'TEXT');
+
+    const secondMessageSent = await conversationRepo.find({
+      where: { id: conversation.id },
+      relations: ['lastMessage'],
+    });
+
+    expect(firstMessageSent[0].lastMessage.id).not.toBe(
+      secondMessageSent[0].lastMessage.id,
+    );
+    expect(
+      firstMessageSent[0].updatedAt.getTime() -
+        secondMessageSent[0].updatedAt.getTime(),
+    ).toBeLessThan(0);
   });
 
   it('Get 404 if conversation not exists', async () => {

@@ -73,6 +73,11 @@ export class ChatService {
     message.conversation = conversation;
     message.contentType = contentType;
     const result = await this.messageRepository.save(message);
+    conversation.lastMessage = result;
+    await this.conversationRepository.save({
+      ...conversation,
+      lastMessage: result,
+    });
     this.chatGateway.updateMessagesForUsers(
       conversation.participants.map((p) => p.id).filter((id) => id != userId),
     );
