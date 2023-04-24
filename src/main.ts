@@ -1,8 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const helmet = require('helmet');
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
@@ -23,8 +21,6 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
-
-  app.use(helmet());
 
   await app.listen(3000);
 }
