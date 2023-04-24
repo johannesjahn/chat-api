@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { InjectRepository } from '@nestjs/typeorm';
 import {
   OnGatewayConnection,
   OnGatewayDisconnect,
@@ -10,9 +9,7 @@ import {
 import { Server } from 'http';
 import { Socket } from 'socket.io';
 import { DefaultEventsMap } from 'socket.io/dist/typed-events';
-import { Repository } from 'typeorm';
 import { PostResponseDTO } from '../dtos/post.dto';
-import { Post } from './post.entity';
 
 @WebSocketGateway({
   cors: {
@@ -23,18 +20,13 @@ import { Post } from './post.entity';
 export class PostGateway
   implements OnGatewayConnection<Socket>, OnGatewayDisconnect<Socket>
 {
-  constructor(
-    private jwtService: JwtService,
-    @InjectRepository(Post)
-    private postRepository: Repository<Post>,
-  ) {}
+  constructor(private jwtService: JwtService) {}
 
   @WebSocketServer() wss: Server;
   clientMap = new Map<number, Socket>();
 
   async handleConnection(
     client: Socket<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, any>,
-    ...args: any[]
   ) {
     const token = await this.jwtService.verifyAsync(
       client.handshake.auth.token,
