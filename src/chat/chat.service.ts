@@ -44,6 +44,7 @@ export class ChatService {
       .createQueryBuilder('conversation')
       .leftJoinAndSelect('conversation.participants', 'user')
       .leftJoinAndSelect('conversation.lastMessage', 'message')
+      .leftJoinAndSelect('message.author', 'author')
       .where(
         'conversation.id in (SELECT "conversationId" FROM conversation_participants_user WHERE "userId" = :id)',
         { id: userId },
@@ -93,7 +94,7 @@ export class ChatService {
   ) {
     const conversation = await this.conversationRepository.findOne({
       where: { id: conversationId },
-      relations: ['participants', 'lastMessage'],
+      relations: ['participants', 'lastMessage', 'lastMessage.author'],
     });
     if (!conversation) {
       throw new HttpException('No conversation found', 404);

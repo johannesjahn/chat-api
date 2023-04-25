@@ -244,4 +244,73 @@ describe('ChatService', () => {
 
     expect(dtos.length).toBe(messages.messages.length);
   });
+
+  it('Check last message in conversation', async () => {
+    const authService = app.get(AuthService);
+    const firstUser = await authService.register({
+      username: faker.internet.userName(),
+      password: faker.internet.password(),
+    });
+    const secondUser = await authService.register({
+      username: faker.internet.userName(),
+      password: faker.internet.password(),
+    });
+
+    const chatService = app.get(ChatService);
+    const conversation = await chatService.createOne(firstUser.id, {
+      partnerIds: [secondUser.id],
+    });
+
+    const text = faker.random.words(100);
+    await chatService.sendMessage(firstUser.id, conversation.id, text, 'TEXT');
+
+    const messages = await chatService.getMessages(
+      secondUser.id,
+      conversation.id,
+      null,
+    );
+
+    expect(messages.lastMessage.author.id).toBe(firstUser.id);
+
+    await chatService.sendMessage(
+      secondUser.id,
+      conversation.id,
+      faker.lorem.paragraph(100),
+      'TEXT',
+    );
+
+    const messages2 = await chatService.getMessages(
+      secondUser.id,
+      conversation.id,
+      null,
+    );
+
+    expect(messages2.lastMessage.author.id).toBe(secondUser.id);
+  });
+
+  it('Check last message of conversation list for user', async () => {
+    const authService = app.get(AuthService);
+    const firstUser = await authService.register({
+      username: faker.internet.userName(),
+      password: faker.internet.password(),
+    });
+    const secondUser = await authService.register({
+      username: faker.internet.userName(),
+      password: faker.internet.password(),
+    });
+
+    const chatService = app.get(ChatService);
+    const conversation = await chatService.createOne(firstUser.id, {
+      partnerIds: [secondUser.id],
+    });
+
+    const text = faker.random.words(100);
+    await chatService.sendMessage(firstUser.id, conversation.id, text, 'TEXT');
+
+    const conversations = await chatService.getConversationListForUser(
+      firstUser.id,
+    );
+
+    expect(conversations[0].lastMessage.author.id).toBe(firstUser.id);
+  });
 });
