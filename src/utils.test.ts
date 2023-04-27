@@ -2,19 +2,18 @@ import { JwtModule } from '@nestjs/jwt';
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
+import { AppService } from './app.service';
 import { AuthService } from './auth/auth.service';
 import { jwtConstants } from './auth/constants';
 import { Conversation, Message } from './chat/chat.entity';
+import { ChatGateway } from './chat/chat.gateway';
 import { ChatService } from './chat/chat.service';
-import { Post, Comment, Reply } from './post/post.entity';
+import { Comment, Post, Reply } from './post/post.entity';
+import { PostGateway } from './post/post.gateway';
 import { PostService } from './post/post.service';
 import { User } from './users/user.entity';
 import { UserAuth } from './users/userAuth.entity';
 import { UsersService } from './users/users.service';
-import { PostGateway } from './post/post.gateway';
-import { PostModule } from './post/post.module';
-import { ChatGateway } from './chat/chat.gateway';
-import { AppService } from './app.service';
 
 export const getTestDataSource = async () => {
   const ds = await new DataSource({
