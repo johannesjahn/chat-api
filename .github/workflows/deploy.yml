@@ -16,6 +16,21 @@ jobs:
       - uses: c-hive/gha-yarn-cache@v2
       - run: yarn install
       - run: yarn test
+  test_coverage:
+    runs-on: ubuntu-latest
+    needs: [test]
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 16
+      - uses: c-hive/gha-yarn-cache@v2
+      - run: yarn install
+      - run: yarn test:cov
+      - uses: actions/upload-artifact@master
+        with:
+          name: coverage
+          path: coverage
   lint:
     runs-on: ubuntu-latest
     steps:
