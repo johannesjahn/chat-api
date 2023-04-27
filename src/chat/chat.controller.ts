@@ -7,7 +7,12 @@ import {
   Request,
   UseGuards,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiCreatedResponse,
+  ApiOperation,
+  ApiTags,
+} from '@nestjs/swagger';
 import { ConversationMapper, MessageMapper } from 'src/chat/chat.mapper';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import {
@@ -27,6 +32,7 @@ export class ChatController {
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @ApiCreatedResponse({ type: MessageResponseDTO })
+  @ApiOperation({ summary: 'Send a message to a conversation' })
   @Post('/send-message')
   async sendMessage(@Request() req, @Body() body: CreateMessageDTO) {
     if (body.contentType !== 'TEXT' && body.contentType !== 'IMAGE_URL') {
