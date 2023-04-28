@@ -59,6 +59,9 @@ export class ChatController {
 
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
+  @ApiOperation({
+    summary: 'Endpoint to get messages relevant for the authenticated user',
+  })
   @ApiCreatedResponse({
     type: ConversationResponseDTO,
     description: 'Fetches the messages for a given conversation.',
