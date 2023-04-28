@@ -154,7 +154,7 @@ export class PostController {
     const mapper = new ReplyMapper();
 
     const dto = mapper.convert(result);
-    this.postGateway.sendReplyToAll(result.id);
+    this.postGateway.sendReplyToAll(body.commentId);
     return dto;
   }
 
