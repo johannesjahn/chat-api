@@ -10,7 +10,12 @@ import {
   Request,
   UseGuards,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiCreatedResponse,
+  ApiOperation,
+  ApiTags,
+} from '@nestjs/swagger';
 import { CommentMapper, PostMapper, ReplyMapper } from 'src/post/post.mapper';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import {
@@ -143,6 +148,7 @@ export class PostController {
 
   @ApiBearerAuth()
   @ApiCreatedResponse({ type: ReplyResponseDTO })
+  @ApiOperation({ summary: 'Create reply with the authenticated user' })
   @UseGuards(JwtAuthGuard)
   @Post('/reply')
   async createReply(@Request() req, @Body() body: CreateReplyDTO) {
