@@ -81,6 +81,10 @@ export class ChatController {
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @Post('/create-conversation')
+  @ApiOperation({
+    summary:
+      'Endpoint to create a new conversation with two or more participants',
+  })
   @ApiCreatedResponse({ type: ConversationResponseDTO })
   async createConversation(
     @Request() req,
