@@ -66,6 +66,7 @@ export class ChatController {
     type: ConversationResponseDTO,
     description: 'Fetches the messages for a given conversation.',
   })
+  @ApiOperation({ summary: 'Get messages for a conversation' })
   @Post('/get-messages')
   async getMessages(@Request() req, @Body() body: GetMessagesDTO) {
     const result = await this.chatService.getMessages(
