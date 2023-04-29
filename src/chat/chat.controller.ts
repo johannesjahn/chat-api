@@ -100,6 +100,9 @@ export class ChatController {
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @ApiCreatedResponse({ type: [ConversationResponseDTO] })
+  @ApiOperation({
+    summary: 'Endpoint to get all conversations for the authenticated user',
+  })
   @Get('/get-conversations')
   async getConversations(@Request() req) {
     const result = await this.chatService.getConversationListForUser(
