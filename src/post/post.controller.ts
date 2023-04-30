@@ -165,6 +165,7 @@ export class PostController {
   }
 
   @ApiCreatedResponse({ type: ReplyResponseDTO, isArray: true })
+  @ApiOperation({ summary: 'Get replies of a comment' })
   @Get('/reply/:commentId')
   async getReplies(@Param('commentId') commentId: number) {
     const result = await this.postService.getReplies(commentId);
