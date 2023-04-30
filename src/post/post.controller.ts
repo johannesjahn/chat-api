@@ -185,6 +185,7 @@ export class PostController {
 
   @ApiBearerAuth()
   @ApiCreatedResponse({ type: ReplyResponseDTO })
+  @ApiOperation({ summary: 'Update reply with the authenticated user' })
   @UseGuards(JwtAuthGuard)
   @Put('/reply')
   async updateReply(@Request() req, @Body() body: UpdateReplyDTO) {
