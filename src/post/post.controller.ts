@@ -57,6 +57,7 @@ export class PostController {
   }
 
   @Get('/')
+  @ApiOperation({ summary: 'Get all posts' })
   @ApiCreatedResponse({ type: PostResponseDTO, isArray: true })
   async getPosts() {
     const result = await this.postService.getPosts();
