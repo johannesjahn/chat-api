@@ -177,6 +177,7 @@ export class PostController {
 
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
+  @ApiOperation({ summary: 'Delete reply with the authenticated user' })
   @Delete('/reply')
   async deleteReply(@Request() req, @Body() body: DeleteReplyDTO) {
     return this.postService.deleteReply(req.user.userId, body.replyId);
