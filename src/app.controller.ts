@@ -1,6 +1,6 @@
 import { Controller, Get } from '@nestjs/common';
 import { AppService } from './app.service';
-import { ApiCreatedResponse } from '@nestjs/swagger';
+import { ApiCreatedResponse, ApiOperation } from '@nestjs/swagger';
 import { VersionDTO } from './dtos/version.dto';
 
 @Controller()
@@ -14,6 +14,7 @@ export class AppController {
   }
 
   @ApiCreatedResponse({ type: VersionDTO })
+  @ApiOperation({ summary: 'Get version' })
   @Get('/version')
   getVersion() {
     const result = this.appService.getVersion();
