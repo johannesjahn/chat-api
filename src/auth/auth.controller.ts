@@ -39,6 +39,7 @@ export class AuthController {
   }
 
   @ApiCreatedResponse({ type: UserResponseDTO })
+  @ApiOperation({ summary: 'Register a new user' })
   @Post('register')
   async register(@Body() req: RegisterDTO) {
     const result = await this.authService.register(req);
