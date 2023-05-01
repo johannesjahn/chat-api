@@ -10,7 +10,12 @@ import { LocalAuthGuard } from './local-auth.guard';
 import { AuthService } from './auth.service';
 import { RegisterDTO } from '../dtos/register.dto';
 import { LoginDTO, LoginResponseDTO } from '../dtos/login.dto';
-import { ApiBearerAuth, ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiCreatedResponse,
+  ApiOperation,
+  ApiTags,
+} from '@nestjs/swagger';
 import { UserMapper } from '../users/user.mapper';
 import { UserResponseDTO } from 'src/dtos/user.dto';
 import { JwtAuthGuard } from './jwt-auth.guard';
@@ -23,6 +28,7 @@ export class AuthController {
 
   @ApiCreatedResponse({ type: LoginResponseDTO })
   @UseGuards(LocalAuthGuard)
+  @ApiOperation({ summary: 'Login with username and password' })
   @Post('login')
   async login(
     @Request() req,
