@@ -38,6 +38,7 @@ export class UsersController {
 
   @ApiBearerAuth()
   @ApiCreatedResponse({ type: [UserResponseDTO] })
+  @ApiOperation({ summary: 'Get all users without self' })
   @UseGuards(JwtAuthGuard)
   @Get()
   async getUsers(@Request() req) {
