@@ -75,6 +75,7 @@ export class UsersController {
   })
   @ApiCreatedResponse()
   @Post('upload-avatar')
+  @ApiOperation({ summary: 'Upload avatar for current authenticated user' })
   @UseGuards(JwtAuthGuard)
   @UseInterceptors(FileInterceptor('file'))
   async uploadAvatar(
