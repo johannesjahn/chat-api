@@ -53,6 +53,7 @@ export class AuthController {
   @ApiBearerAuth()
   @ApiCreatedResponse({ type: [UserResponseDTO] })
   @UseGuards(JwtAuthGuard)
+  @ApiOperation({ summary: 'Change password' })
   @Post('change-password')
   async getUsers(@Request() req, @Body() body: ChangePasswordDTO) {
     if (body.password !== body.passwordConfirm)
