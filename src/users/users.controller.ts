@@ -19,6 +19,7 @@ import {
   ApiBody,
   ApiConsumes,
   ApiCreatedResponse,
+  ApiOperation,
   ApiTags,
 } from '@nestjs/swagger';
 import * as fs from 'fs';
@@ -110,6 +111,7 @@ export class UsersController {
   validSizes = ['200', '400', '800'];
 
   @Get('avatar/:userId')
+  @ApiOperation({ summary: 'Get avatar for a specific user' })
   async getAvatar(
     @Param('userId') userId: number,
     @Query('size') size = '200',
