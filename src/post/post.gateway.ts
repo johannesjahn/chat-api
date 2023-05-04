@@ -12,6 +12,11 @@ import { PostResponseDTO } from '../dtos/post.dto';
 export class PostGateway {
   @WebSocketServer() wss: Server;
 
+  /**
+   *
+   * @param post PostResponseDTO
+   * Send post to all connected clients
+   */
   sendPostToAll(post: PostResponseDTO) {
     this.wss.emit('post', post);
   }
