@@ -282,10 +282,14 @@ describe('PostService', () => {
       content: faker.lorem.paragraph(),
       contentType: 'TEXT',
     });
+    // wait for 1 second to make sure the createdAt is different
+    await new Promise((resolve) => setTimeout(resolve, 1000));
     await postService.createPost(secondUser.id, {
       content: faker.lorem.paragraph(),
       contentType: 'TEXT',
     });
+    // wait for 1 second to make sure the createdAt is different
+    await new Promise((resolve) => setTimeout(resolve, 1000));
     await postService.createPost(thirdUser.id, {
       content: faker.lorem.paragraph(),
       contentType: 'TEXT',
@@ -293,8 +297,8 @@ describe('PostService', () => {
 
     const posts = await postService.getPosts();
     expect(posts).toHaveLength(3);
-    expect(posts[0].author.id).toBe(firstUser.id);
+    expect(posts[0].author.id).toBe(thirdUser.id);
     expect(posts[1].author.id).toBe(secondUser.id);
-    expect(posts[2].author.id).toBe(thirdUser.id);
+    expect(posts[2].author.id).toBe(firstUser.id);
   });
 });
