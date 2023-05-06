@@ -262,4 +262,39 @@ describe('PostService', () => {
     expect(posts[0].comments[0].replies[0].content).toBe('Test reply 1');
     expect(posts[0].comments[0].replies[1].content).toBe('Test reply 2');
   });
+
+  it('Check three posters', async () => {
+    const authService = app.get(AuthService);
+    const firstUser = await authService.register({
+      username: faker.internet.userName(),
+      password: faker.internet.password(),
+    });
+    const secondUser = await authService.register({
+      username: faker.internet.userName(),
+      password: faker.internet.password(),
+    });
+    const thirdUser = await authService.register({
+      username: faker.internet.userName(),
+      password: faker.internet.password(),
+    });
+    const postService = app.get(PostService);
+    await postService.createPost(firstUser.id, {
+      content: faker.lorem.paragraph(),
+      contentType: 'TEXT',
+    });
+    await postService.createPost(secondUser.id, {
+      content: faker.lorem.paragraph(),
+      contentType: 'TEXT',
+    });
+    await postService.createPost(thirdUser.id, {
+      content: faker.lorem.paragraph(),
+      contentType: 'TEXT',
+    });
+
+    const posts = await postService.getPosts();
+    expect(posts).toHaveLength(3);
+    expect(posts[0].author.id).toBe(firstUser.id);
+    expect(posts[1].author.id).toBe(secondUser.id);
+    expect(posts[2].author.id).toBe(thirdUser.id);
+  });
 });
