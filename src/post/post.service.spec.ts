@@ -261,6 +261,8 @@ describe('PostService', () => {
 
     expect(posts[0].comments[0].replies[0].content).toBe('Test reply 1');
     expect(posts[0].comments[0].replies[1].content).toBe('Test reply 2');
+    expect(posts[0].comments[0].replies[1].author.id).toBe(ownUser.id);
+    expect(posts[0].comments[0].replies[1].author.id).toBe(ownUser.id);
   });
 
   it('Check three posters order', async () => {
