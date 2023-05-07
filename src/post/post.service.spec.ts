@@ -263,7 +263,7 @@ describe('PostService', () => {
     expect(posts[0].comments[0].replies[1].content).toBe('Test reply 2');
   });
 
-  it('Check three posters', async () => {
+  it('Check three posters order', async () => {
     const authService = app.get(AuthService);
     const firstUser = await authService.register({
       username: faker.internet.userName(),
