@@ -101,6 +101,7 @@ export class PostController {
 
   @ApiBearerAuth()
   @ApiCreatedResponse({ type: CommentResponseDTO })
+  @ApiOperation({ summary: 'Create comment with the authenticated user' })
   @UseGuards(JwtAuthGuard)
   @Post('/comment')
   async createComment(@Request() req, @Body() body: CreateCommentDTO) {
