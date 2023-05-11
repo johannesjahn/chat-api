@@ -8,7 +8,10 @@ export class AppController {
   constructor(private appService: AppService) {}
 
   @Get('/debug')
-  @ApiOperation({ summary: 'Debug' })
+  @ApiOperation({
+    summary: 'Debug',
+    description: 'This is our debug endpoint. It just returns text.',
+  })
   async getDebug() {
     const result = await this.appService.debug();
     return { message: result };
