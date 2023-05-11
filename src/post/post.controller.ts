@@ -69,6 +69,9 @@ export class PostController {
 
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
+  @ApiOperation({
+    summary: 'Delete a post that belongs to the currently authenticated user',
+  })
   @Delete('/')
   async deletePost(@Request() req, @Body() body: DeletePostDTO) {
     if (!body.id) {
