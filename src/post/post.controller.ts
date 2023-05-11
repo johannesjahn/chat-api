@@ -82,6 +82,9 @@ export class PostController {
 
   @ApiBearerAuth()
   @ApiCreatedResponse({ type: PostResponseDTO })
+  @ApiOperation({
+    summary: 'Update a post that belongs to the currently authenticated user',
+  })
   @UseGuards(JwtAuthGuard)
   @Put('/')
   async updatePost(@Request() req, @Body() body: UpdatePostDTO) {
