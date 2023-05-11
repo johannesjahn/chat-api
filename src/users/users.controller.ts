@@ -51,6 +51,7 @@ export class UsersController {
 
   @ApiBearerAuth()
   @ApiCreatedResponse({ type: UserResponseDTO })
+  @ApiOperation({ summary: 'Get current authenticated user' })
   @UseGuards(JwtAuthGuard)
   @Get('me')
   async getMe(@Request() req) {
