@@ -21,6 +21,10 @@ export class PostGateway {
     this.wss.emit('post', post);
   }
 
+  /**
+   * @param postId id of the post to be notified about
+   * Send comment to all connected clients
+   */
   sendCommentToAll(postId: number) {
     this.wss.emit('post/comment', postId);
   }
