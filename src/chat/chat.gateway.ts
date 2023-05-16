@@ -32,7 +32,7 @@ export class ChatGateway
       client.handshake.auth.token,
     );
     this.clientMap.set(token.sub, client);
-    console.log('connected');
+    console.log('connected ws');
   }
   async handleDisconnect(
     client: Socket<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, any>,
@@ -41,7 +41,7 @@ export class ChatGateway
       client.handshake.auth.token,
     );
     this.clientMap.delete(token.sub);
-    console.log('disconnected');
+    console.log('disconnected ws');
   }
 
   updateMessagesForUsers(userIds: number[]) {
