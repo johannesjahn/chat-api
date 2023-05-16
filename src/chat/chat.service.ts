@@ -83,6 +83,7 @@ export class ChatService {
     });
     this.chatGateway.updateMessagesForUsers(
       conversation.participants.map((p) => p.id).filter((id) => id != userId),
+      conversationId,
     );
     return result;
   }

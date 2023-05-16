@@ -44,7 +44,8 @@ export class ChatGateway
     console.log('disconnected ws');
   }
 
-  updateMessagesForUsers(userIds: number[]) {
+  updateMessagesForUsers(userIds: number[], conversationId: number) {
+    console.log('Sending message to users for conversation', conversationId);
     for (const userId of userIds) {
       if (this.clientMap.has(userId)) {
         const client = this.clientMap.get(userId);
