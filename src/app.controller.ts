@@ -9,7 +9,6 @@ export class AppController {
 
   @Get('/debug')
   @ApiOperation({
-    summary: 'Debug',
     description: 'This is our debug endpoint. It just returns text.',
   })
   async getDebug() {
@@ -18,7 +17,7 @@ export class AppController {
   }
 
   @ApiCreatedResponse({ type: VersionDTO })
-  @ApiOperation({ summary: 'Get version' })
+  @ApiOperation({ description: 'Get version of the current backend' })
   @Get('/version')
   getVersion() {
     const result = this.appService.getVersion();
