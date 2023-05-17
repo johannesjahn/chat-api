@@ -45,6 +45,7 @@ export class PostController {
 
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
+  @ApiOperation({ description: 'Create post with the authenticated user' })
   @ApiCreatedResponse({ type: PostResponseDTO })
   @Post('/')
   async createPost(@Request() req, @Body() body: CreatePostDTO) {
@@ -120,6 +121,7 @@ export class PostController {
   }
 
   @Get('/comment/:postId')
+  @ApiOperation({ description: 'Get comments of a post' })
   @ApiCreatedResponse({ type: CommentResponseDTO, isArray: true })
   async getComments(@Param('postId') postId: number) {
     const result = await this.postService.getComments(postId);
@@ -131,6 +133,10 @@ export class PostController {
 
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
+  @ApiOperation({
+    description:
+      'Delete a comment that belongs to the currently authenticated user',
+  })
   @Delete('/comment')
   async deleteComment(@Request() req, @Body() body: DeleteCommentDTO) {
     return this.postService.deleteComment(req.user.userId, body.commentId);
@@ -138,6 +144,10 @@ export class PostController {
 
   @ApiBearerAuth()
   @ApiCreatedResponse({ type: CommentResponseDTO })
+  @ApiOperation({
+    description:
+      'Update a comment that belongs to the currently authenticated user',
+  })
   @UseGuards(JwtAuthGuard)
   @Put('/comment')
   async updateComment(@Request() req, @Body() body: UpdateCommentDTO) {
