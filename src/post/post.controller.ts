@@ -57,7 +57,7 @@ export class PostController {
   }
 
   @Get('/')
-  @ApiOperation({ summary: 'Get all posts' })
+  @ApiOperation({ description: 'Get all posts' })
   @ApiCreatedResponse({ type: PostResponseDTO, isArray: true })
   async getPosts() {
     const result = await this.postService.getPosts();
@@ -70,7 +70,8 @@ export class PostController {
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @ApiOperation({
-    summary: 'Delete a post that belongs to the currently authenticated user',
+    description:
+      'Delete a post that belongs to the currently authenticated user',
   })
   @Delete('/')
   async deletePost(@Request() req, @Body() body: DeletePostDTO) {
@@ -83,7 +84,8 @@ export class PostController {
   @ApiBearerAuth()
   @ApiCreatedResponse({ type: PostResponseDTO })
   @ApiOperation({
-    summary: 'Update a post that belongs to the currently authenticated user',
+    description:
+      'Update a post that belongs to the currently authenticated user',
   })
   @UseGuards(JwtAuthGuard)
   @Put('/')
@@ -101,7 +103,7 @@ export class PostController {
 
   @ApiBearerAuth()
   @ApiCreatedResponse({ type: CommentResponseDTO })
-  @ApiOperation({ summary: 'Create comment with the authenticated user' })
+  @ApiOperation({ description: 'Create comment with the authenticated user' })
   @UseGuards(JwtAuthGuard)
   @Post('/comment')
   async createComment(@Request() req, @Body() body: CreateCommentDTO) {
@@ -156,7 +158,7 @@ export class PostController {
 
   @ApiBearerAuth()
   @ApiCreatedResponse({ type: ReplyResponseDTO })
-  @ApiOperation({ summary: 'Create reply with the authenticated user' })
+  @ApiOperation({ description: 'Create reply with the authenticated user' })
   @UseGuards(JwtAuthGuard)
   @Post('/reply')
   async createReply(@Request() req, @Body() body: CreateReplyDTO) {
@@ -173,7 +175,7 @@ export class PostController {
   }
 
   @ApiCreatedResponse({ type: ReplyResponseDTO, isArray: true })
-  @ApiOperation({ summary: 'Get replies of a comment' })
+  @ApiOperation({ description: 'Get replies of a comment' })
   @Get('/reply/:commentId')
   async getReplies(@Param('commentId') commentId: number) {
     const result = await this.postService.getReplies(commentId);
@@ -185,7 +187,7 @@ export class PostController {
 
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
-  @ApiOperation({ summary: 'Delete reply with the authenticated user' })
+  @ApiOperation({ description: 'Delete reply with the authenticated user' })
   @Delete('/reply')
   async deleteReply(@Request() req, @Body() body: DeleteReplyDTO) {
     return this.postService.deleteReply(req.user.userId, body.replyId);
@@ -193,7 +195,7 @@ export class PostController {
 
   @ApiBearerAuth()
   @ApiCreatedResponse({ type: ReplyResponseDTO })
-  @ApiOperation({ summary: 'Update reply with the authenticated user' })
+  @ApiOperation({ description: 'Update reply with the authenticated user' })
   @UseGuards(JwtAuthGuard)
   @Put('/reply')
   async updateReply(@Request() req, @Body() body: UpdateReplyDTO) {
