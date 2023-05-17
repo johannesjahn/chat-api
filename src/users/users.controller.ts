@@ -38,7 +38,7 @@ export class UsersController {
 
   @ApiBearerAuth()
   @ApiCreatedResponse({ type: [UserResponseDTO] })
-  @ApiOperation({ summary: 'Get all users without self' })
+  @ApiOperation({ description: 'Get all users without self' })
   @UseGuards(JwtAuthGuard)
   @Get()
   async getUsers(@Request() req) {
@@ -51,7 +51,7 @@ export class UsersController {
 
   @ApiBearerAuth()
   @ApiCreatedResponse({ type: UserResponseDTO })
-  @ApiOperation({ summary: 'Get current authenticated user' })
+  @ApiOperation({ description: 'Get current authenticated user' })
   @UseGuards(JwtAuthGuard)
   @Get('me')
   async getMe(@Request() req) {
@@ -77,7 +77,7 @@ export class UsersController {
   })
   @ApiCreatedResponse()
   @Post('upload-avatar')
-  @ApiOperation({ summary: 'Upload avatar for current authenticated user' })
+  @ApiOperation({ description: 'Upload avatar for current authenticated user' })
   @UseGuards(JwtAuthGuard)
   @UseInterceptors(FileInterceptor('file'))
   async uploadAvatar(
@@ -114,7 +114,7 @@ export class UsersController {
   validSizes = ['200', '400', '800'];
 
   @Get('avatar/:userId')
-  @ApiOperation({ summary: 'Get avatar for a specific user' })
+  @ApiOperation({ description: 'Get avatar for a specific user' })
   async getAvatar(
     @Param('userId') userId: number,
     @Query('size') size = '200',
