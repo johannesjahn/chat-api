@@ -32,7 +32,7 @@ export class ChatController {
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @ApiCreatedResponse({ type: MessageResponseDTO })
-  @ApiOperation({ summary: 'Send a message to a conversation' })
+  @ApiOperation({ description: 'Send a message to a conversation' })
   @Post('/send-message')
   async sendMessage(@Request() req, @Body() body: CreateMessageDTO) {
     if (body.contentType !== 'TEXT' && body.contentType !== 'IMAGE_URL') {
@@ -60,13 +60,13 @@ export class ChatController {
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @ApiOperation({
-    summary: 'Endpoint to get messages relevant for the authenticated user',
+    description: 'Endpoint to get messages relevant for the authenticated user',
   })
   @ApiCreatedResponse({
     type: ConversationResponseDTO,
     description: 'Fetches the messages for a given conversation.',
   })
-  @ApiOperation({ summary: 'Get messages for a conversation' })
+  @ApiOperation({ description: 'Get messages for a conversation' })
   @Post('/get-messages')
   async getMessages(@Request() req, @Body() body: GetMessagesDTO) {
     const result = await this.chatService.getMessages(
@@ -83,7 +83,7 @@ export class ChatController {
   @UseGuards(JwtAuthGuard)
   @Post('/create-conversation')
   @ApiOperation({
-    summary:
+    description:
       'Endpoint to create a new conversation with two or more participants',
   })
   @ApiCreatedResponse({ type: ConversationResponseDTO })
@@ -102,7 +102,7 @@ export class ChatController {
   @UseGuards(JwtAuthGuard)
   @ApiCreatedResponse({ type: [ConversationResponseDTO] })
   @ApiOperation({
-    summary: 'Endpoint to get all conversations for the authenticated user',
+    description: 'Endpoint to get all conversations for the authenticated user',
   })
   @Get('/get-conversations')
   async getConversations(@Request() req) {

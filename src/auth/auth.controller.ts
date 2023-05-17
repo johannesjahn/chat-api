@@ -28,7 +28,7 @@ export class AuthController {
 
   @ApiCreatedResponse({ type: LoginResponseDTO })
   @UseGuards(LocalAuthGuard)
-  @ApiOperation({ summary: 'Login with username and password' })
+  @ApiOperation({ description: 'Login with username and password' })
   @Post('login')
   async login(
     @Request() req,
@@ -39,7 +39,7 @@ export class AuthController {
   }
 
   @ApiCreatedResponse({ type: UserResponseDTO })
-  @ApiOperation({ summary: 'Register a new user' })
+  @ApiOperation({ description: 'Register a new user' })
   @Post('register')
   async register(@Body() req: RegisterDTO) {
     const result = await this.authService.register(req);
@@ -53,7 +53,7 @@ export class AuthController {
   @ApiBearerAuth()
   @ApiCreatedResponse({ type: [UserResponseDTO] })
   @UseGuards(JwtAuthGuard)
-  @ApiOperation({ summary: 'Change password' })
+  @ApiOperation({ description: 'Change password' })
   @Post('change-password')
   async getUsers(@Request() req, @Body() body: ChangePasswordDTO) {
     if (body.password !== body.passwordConfirm)
