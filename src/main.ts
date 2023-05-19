@@ -17,6 +17,7 @@ async function bootstrap() {
     .setTitle('Chat - API')
     .setDescription('Chat - API Description')
     .setVersion(pjson.version)
+    .addServer('https://chat.johannes-jahn.com')
     .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, config);
