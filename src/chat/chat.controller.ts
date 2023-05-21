@@ -91,7 +91,10 @@ export class ChatController {
     @Request() req,
     @Body() body: CreateConversationRequestDTO,
   ) {
-    const result = await this.chatService.createOne(req.user.userId, body);
+    const result = await this.chatService.createConversation(
+      req.user.userId,
+      body,
+    );
 
     const mapper = new ConversationMapper();
     const dto = mapper.convert(result);

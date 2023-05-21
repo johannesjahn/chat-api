@@ -47,7 +47,9 @@ describe('ChatService', () => {
     });
 
     const chatService = app.get(ChatService);
-    await chatService.createOne(firstUser.id, { partnerIds: [secondUser.id] });
+    await chatService.createConversation(firstUser.id, {
+      partnerIds: [secondUser.id],
+    });
 
     const chats = await chatService.getConversationListForUser(firstUser.id);
 
@@ -70,7 +72,7 @@ describe('ChatService', () => {
     });
 
     const chatService = app.get(ChatService);
-    const conversation = await chatService.createOne(firstUser.id, {
+    const conversation = await chatService.createConversation(firstUser.id, {
       partnerIds: [secondUser.id],
     });
 
@@ -121,7 +123,7 @@ describe('ChatService', () => {
     });
 
     const chatService = app.get(ChatService);
-    const conversation = await chatService.createOne(firstUser.id, {
+    const conversation = await chatService.createConversation(firstUser.id, {
       partnerIds: [secondUser.id],
     });
 
@@ -150,7 +152,7 @@ describe('ChatService', () => {
     });
 
     const chatService = app.get(ChatService);
-    const conversation = await chatService.createOne(firstUser.id, {
+    const conversation = await chatService.createConversation(firstUser.id, {
       partnerIds: [secondUser.id],
     });
 
@@ -219,7 +221,7 @@ describe('ChatService', () => {
     });
 
     const chatService = app.get(ChatService);
-    const conversation = await chatService.createOne(firstUser.id, {
+    const conversation = await chatService.createConversation(firstUser.id, {
       partnerIds: [secondUser.id],
     });
 
@@ -257,7 +259,7 @@ describe('ChatService', () => {
     });
 
     const chatService = app.get(ChatService);
-    const conversation = await chatService.createOne(firstUser.id, {
+    const conversation = await chatService.createConversation(firstUser.id, {
       partnerIds: [secondUser.id],
     });
 
@@ -300,7 +302,7 @@ describe('ChatService', () => {
     });
 
     const chatService = app.get(ChatService);
-    const conversation = await chatService.createOne(firstUser.id, {
+    const conversation = await chatService.createConversation(firstUser.id, {
       partnerIds: [secondUser.id],
     });
 

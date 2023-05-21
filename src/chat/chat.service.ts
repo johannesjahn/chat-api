@@ -18,7 +18,7 @@ export class ChatService {
     private readonly chatGateway: ChatGateway,
   ) {}
 
-  async createOne(
+  async createConversation(
     creatorId: number,
     request: CreateConversationRequestDTO,
   ): Promise<Conversation> {
