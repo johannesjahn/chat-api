@@ -84,7 +84,7 @@ export class ChatController {
   @Post('/create-conversation')
   @ApiOperation({
     description:
-      'Endpoint to create a new conversation with two or more participants',
+      'Endpoint to create a new conversation with two or more participants (authenticated user is automatically added to the conversation)',
   })
   @ApiCreatedResponse({ type: ConversationResponseDTO })
   async createConversation(
