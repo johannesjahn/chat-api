@@ -22,12 +22,17 @@ export class ChatService {
     creatorId: number,
     request: CreateConversationRequestDTO,
   ): Promise<Conversation> {
+    if (request.partnerIds.length === 0)
+      throw new HttpException("Can't create chat with self", 400);
+
     const partnerUsers = await this.userRepository.find({
       where: request.partnerIds.map((id) => ({ id })),
     });
 
     if (partnerUsers.length !== request.partnerIds.length)
       throw new HttpException('User not found', 404);
+    if (request.partnerIds.findIndex((v) => v === creatorId) !== -1)
+      throw new HttpException("Can't create chat with self", 400);
     const creator = await this.userRepository.findOne({
       where: { id: creatorId },
     });

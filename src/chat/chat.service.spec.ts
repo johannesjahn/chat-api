@@ -60,6 +60,34 @@ describe('ChatService', () => {
     expect(chats2.length).toBe(1);
   });
 
+  it('Create a chat with self', async () => {
+    const authService = app.get(AuthService);
+    const firstUser = await authService.register({
+      username: faker.internet.userName(),
+      password: faker.internet.password(),
+    });
+    const chatService = app.get(ChatService);
+    expect(
+      chatService.createConversation(firstUser.id, {
+        partnerIds: [firstUser.id],
+      }),
+    ).rejects.toThrow("Can't create chat with self");
+  });
+
+  it('Create a chat with empty participant list', async () => {
+    const authService = app.get(AuthService);
+    const firstUser = await authService.register({
+      username: faker.internet.userName(),
+      password: faker.internet.password(),
+    });
+    const chatService = app.get(ChatService);
+    expect(
+      chatService.createConversation(firstUser.id, {
+        partnerIds: [],
+      }),
+    ).rejects.toThrow("Can't create chat with self");
+  });
+
   it('Write a message', async () => {
     const authService = app.get(AuthService);
     const firstUser = await authService.register({
