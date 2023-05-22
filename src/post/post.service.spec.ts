@@ -69,6 +69,193 @@ describe('PostService', () => {
     expect(postsAfterDelete.length).toBe(0);
   });
 
+  it('Create and update a post', async () => {
+    const authService = app.get(AuthService);
+    const ownUser = await authService.register({
+      username: faker.internet.userName(),
+      password: faker.internet.password(),
+    });
+    const postService = app.get(PostService);
+    const post = await postService.createPost(ownUser.id, {
+      content: faker.lorem.paragraph(),
+      contentType: 'TEXT',
+    });
+
+    const posts = await postService.getPosts();
+    expect(posts).toHaveLength(1);
+    expect(posts[0].content).toBe(post.content);
+
+    const updatedContent = faker.lorem.paragraph();
+    await postService.updatePost(ownUser.id, {
+      id: post.id,
+      content: updatedContent,
+      contentType: 'TEXT',
+    });
+
+    const postsAfterUpdate = await postService.getPosts();
+    expect(postsAfterUpdate.length).toBe(1);
+    expect(postsAfterUpdate[0].content).toBe(updatedContent);
+  });
+
+  it('Create post, comment, and update comment', async () => {
+    const authService = app.get(AuthService);
+    const ownUser = await authService.register({
+      username: faker.internet.userName(),
+      password: faker.internet.password(),
+    });
+    const postService = app.get(PostService);
+    const post = await postService.createPost(ownUser.id, {
+      content: 'Test post',
+      contentType: 'TEXT',
+    });
+
+    const comment = await postService.createComment(ownUser.id, {
+      postId: post.id,
+      content: 'Test comment',
+    });
+
+    const posts = await postService.getPosts();
+
+    expect(posts[0].content).toBe('Test post');
+    expect(posts[0].comments[0].content).toBe('Test comment');
+
+    const updatedComment = faker.lorem.paragraph();
+    await postService.updateComment(ownUser.id, comment.id, updatedComment);
+
+    const postsAfterUpdate = await postService.getPosts();
+    expect(postsAfterUpdate.length).toBe(1);
+    expect(postsAfterUpdate[0].comments[0].content).toBe(updatedComment);
+  });
+
+  it('Create post, comment, and delete comment', async () => {
+    const authService = app.get(AuthService);
+    const ownUser = await authService.register({
+      username: faker.internet.userName(),
+      password: faker.internet.password(),
+    });
+    const postService = app.get(PostService);
+    const post = await postService.createPost(ownUser.id, {
+      content: 'Test post',
+      contentType: 'TEXT',
+    });
+
+    const comment = await postService.createComment(ownUser.id, {
+      postId: post.id,
+      content: 'Test comment',
+    });
+
+    const posts = await postService.getPosts();
+
+    expect(posts[0].content).toBe('Test post');
+    expect(posts[0].comments[0].content).toBe('Test comment');
+
+    await postService.deleteComment(ownUser.id, comment.id);
+
+    const postsAfterUpdate = await postService.getPosts();
+    expect(postsAfterUpdate.length).toBe(1);
+    expect(postsAfterUpdate[0].comments.length).toBe(0);
+  });
+
+  it('Create post, comment, and get post id for comment', async () => {
+    const authService = app.get(AuthService);
+    const ownUser = await authService.register({
+      username: faker.internet.userName(),
+      password: faker.internet.password(),
+    });
+    const postService = app.get(PostService);
+    const post = await postService.createPost(ownUser.id, {
+      content: 'Test post',
+      contentType: 'TEXT',
+    });
+
+    const comment = await postService.createComment(ownUser.id, {
+      postId: post.id,
+      content: 'Test comment',
+    });
+
+    const posts = await postService.getPosts();
+
+    expect(posts[0].content).toBe('Test post');
+    expect(posts[0].comments[0].content).toBe('Test comment');
+
+    const retrievedPost = await postService.getPostFromCommentId(comment.id);
+
+    expect(retrievedPost.id).toBe(post.id);
+  });
+
+  it('Create post, comment, reply, and update reply', async () => {
+    const authService = app.get(AuthService);
+    const ownUser = await authService.register({
+      username: faker.internet.userName(),
+      password: faker.internet.password(),
+    });
+    const postService = app.get(PostService);
+    const post = await postService.createPost(ownUser.id, {
+      content: 'Test post',
+      contentType: 'TEXT',
+    });
+
+    const comment = await postService.createComment(ownUser.id, {
+      postId: post.id,
+      content: 'Test comment',
+    });
+
+    const reply = await postService.createReply(ownUser.id, {
+      commentId: comment.id,
+      content: 'Test reply',
+    });
+
+    const posts = await postService.getPosts();
+
+    expect(posts[0].content).toBe('Test post');
+    expect(posts[0].comments[0].content).toBe('Test comment');
+    expect(posts[0].comments[0].replies[0].content).toBe('Test reply');
+
+    const updatedReply = faker.lorem.paragraph();
+    await postService.updateReply(ownUser.id, reply.id, updatedReply);
+
+    const postsAfterUpdate = await postService.getPosts();
+    expect(postsAfterUpdate.length).toBe(1);
+    expect(postsAfterUpdate[0].comments[0].replies[0].content).toBe(
+      updatedReply,
+    );
+  });
+
+  it('Create post, comment, reply, and delete reply', async () => {
+    const authService = app.get(AuthService);
+    const ownUser = await authService.register({
+      username: faker.internet.userName(),
+      password: faker.internet.password(),
+    });
+    const postService = app.get(PostService);
+    const post = await postService.createPost(ownUser.id, {
+      content: 'Test post',
+      contentType: 'TEXT',
+    });
+
+    const comment = await postService.createComment(ownUser.id, {
+      postId: post.id,
+      content: 'Test comment',
+    });
+
+    const reply = await postService.createReply(ownUser.id, {
+      commentId: comment.id,
+      content: 'Test reply',
+    });
+
+    const posts = await postService.getPosts();
+
+    expect(posts[0].content).toBe('Test post');
+    expect(posts[0].comments[0].content).toBe('Test comment');
+    expect(posts[0].comments[0].replies[0].content).toBe('Test reply');
+
+    await postService.deleteReply(ownUser.id, reply.id);
+
+    const postsAfterUpdate = await postService.getPosts();
+    expect(postsAfterUpdate.length).toBe(1);
+    expect(postsAfterUpdate[0].comments[0].replies.length).toBe(0);
+  });
+
   it('Check if can create post, comment, and reply to the comment', async () => {
     const authService = app.get(AuthService);
     const ownUser = await authService.register({
