@@ -104,20 +104,23 @@ describe('PostService', () => {
       password: faker.internet.password(),
     });
     const postService = app.get(PostService);
+
+    const postContent = faker.lorem.paragraph();
     const post = await postService.createPost(ownUser.id, {
-      content: 'Test post',
+      content: postContent,
       contentType: 'TEXT',
     });
 
+    const commentContent = faker.lorem.paragraph();
     const comment = await postService.createComment(ownUser.id, {
       postId: post.id,
-      content: 'Test comment',
+      content: commentContent,
     });
 
     const posts = await postService.getPosts();
 
-    expect(posts[0].content).toBe('Test post');
-    expect(posts[0].comments[0].content).toBe('Test comment');
+    expect(posts[0].content).toBe(postContent);
+    expect(posts[0].comments[0].content).toBe(commentContent);
 
     const updatedComment = faker.lorem.paragraph();
     await postService.updateComment(ownUser.id, comment.id, updatedComment);
