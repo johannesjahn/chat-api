@@ -357,24 +357,29 @@ describe('PostService', () => {
       password: '123',
     });
     const postService = app.get(PostService);
+
+    const postContent = faker.lorem.paragraph();
     const post = await postService.createPost(ownUser.id, {
-      content: 'Test post',
+      content: postContent,
       contentType: 'TEXT',
     });
 
+    const commentContent = faker.lorem.paragraph();
     const comment = await postService.createComment(ownUser.id, {
       postId: post.id,
-      content: 'Test comment',
+      content: commentContent,
     });
 
+    const replyContent = faker.lorem.paragraph();
     await postService.createReply(ownUser.id, {
       commentId: comment.id,
-      content: 'Test reply',
+      content: replyContent,
     });
 
+    const secondReplyContent = faker.lorem.paragraph(2);
     await postService.createReply(ownUser.id, {
       commentId: comment.id,
-      content: 'Second reply',
+      content: secondReplyContent,
     });
 
     const comments = await postService.getComments(post.id);
@@ -393,23 +398,26 @@ describe('PostService', () => {
       password: faker.internet.password(),
     });
     const postService = app.get(PostService);
+
+    const firstPostContent = faker.lorem.paragraph();
     await postService.createPost(ownUser.id, {
-      content: 'Test post 1',
+      content: firstPostContent,
       contentType: 'TEXT',
     });
 
     // wait for 1 second to make sure the createdAt is different
     await new Promise((resolve) => setTimeout(resolve, 1000));
 
+    const secondPostContent = faker.lorem.paragraph(4);
     await postService.createPost(ownUser.id, {
-      content: 'Test post 2',
+      content: secondPostContent,
       contentType: 'TEXT',
     });
 
     const posts = await postService.getPosts();
 
-    expect(posts[0].content).toBe('Test post 2');
-    expect(posts[1].content).toBe('Test post 1');
+    expect(posts[0].content).toBe(secondPostContent);
+    expect(posts[1].content).toBe(firstPostContent);
   });
 
   it('Check order on comments', async () => {
