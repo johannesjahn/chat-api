@@ -169,20 +169,23 @@ describe('PostService', () => {
       password: faker.internet.password(),
     });
     const postService = app.get(PostService);
+
+    const postContent = faker.lorem.paragraph();
     const post = await postService.createPost(ownUser.id, {
-      content: 'Test post',
+      content: postContent,
       contentType: 'TEXT',
     });
 
+    const commentContent = faker.lorem.paragraph();
     const comment = await postService.createComment(ownUser.id, {
       postId: post.id,
-      content: 'Test comment',
+      content: commentContent,
     });
 
     const posts = await postService.getPosts();
 
-    expect(posts[0].content).toBe('Test post');
-    expect(posts[0].comments[0].content).toBe('Test comment');
+    expect(posts[0].content).toBe(postContent);
+    expect(posts[0].comments[0].content).toBe(commentContent);
 
     const retrievedPost = await postService.getPostFromCommentId(comment.id);
 
@@ -196,28 +199,32 @@ describe('PostService', () => {
       password: faker.internet.password(),
     });
     const postService = app.get(PostService);
+
+    const postContent = faker.lorem.paragraph();
     const post = await postService.createPost(ownUser.id, {
-      content: 'Test post',
+      content: postContent,
       contentType: 'TEXT',
     });
 
+    const commentContent = faker.lorem.paragraph();
     const comment = await postService.createComment(ownUser.id, {
       postId: post.id,
-      content: 'Test comment',
+      content: commentContent,
     });
 
+    const replyContent = faker.lorem.paragraph();
     const reply = await postService.createReply(ownUser.id, {
       commentId: comment.id,
-      content: 'Test reply',
+      content: replyContent,
     });
 
     const posts = await postService.getPosts();
 
-    expect(posts[0].content).toBe('Test post');
-    expect(posts[0].comments[0].content).toBe('Test comment');
-    expect(posts[0].comments[0].replies[0].content).toBe('Test reply');
+    expect(posts[0].content).toBe(postContent);
+    expect(posts[0].comments[0].content).toBe(commentContent);
+    expect(posts[0].comments[0].replies[0].content).toBe(replyContent);
 
-    const updatedReply = faker.lorem.paragraph();
+    const updatedReply = faker.lorem.paragraph(1);
     await postService.updateReply(ownUser.id, reply.id, updatedReply);
 
     const postsAfterUpdate = await postService.getPosts();
