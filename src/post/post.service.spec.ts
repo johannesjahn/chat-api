@@ -427,28 +427,32 @@ describe('PostService', () => {
       password: faker.internet.password(),
     });
     const postService = app.get(PostService);
+
+    const postContent = faker.lorem.paragraph();
     const post = await postService.createPost(ownUser.id, {
-      content: 'Test post',
+      content: postContent,
       contentType: 'TEXT',
     });
 
+    const firstCommentContent = faker.lorem.paragraph();
     await postService.createComment(ownUser.id, {
       postId: post.id,
-      content: 'Test comment 1',
+      content: firstCommentContent,
     });
 
     // wait for 1 second to make sure the createdAt is different
     await new Promise((resolve) => setTimeout(resolve, 1000));
 
+    const secondCommentContent = faker.lorem.paragraph(4);
     await postService.createComment(ownUser.id, {
       postId: post.id,
-      content: 'Test comment 2',
+      content: secondCommentContent,
     });
 
     const posts = await postService.getPosts();
 
-    expect(posts[0].comments[0].content).toBe('Test comment 1');
-    expect(posts[0].comments[1].content).toBe('Test comment 2');
+    expect(posts[0].comments[0].content).toBe(firstCommentContent);
+    expect(posts[0].comments[1].content).toBe(secondCommentContent);
   });
 
   it('Check order on replies', async () => {
@@ -458,33 +462,38 @@ describe('PostService', () => {
       password: faker.internet.password(),
     });
     const postService = app.get(PostService);
+
+    const postContent = faker.lorem.paragraph();
     const post = await postService.createPost(ownUser.id, {
-      content: 'Test post',
+      content: postContent,
       contentType: 'TEXT',
     });
 
+    const commentContent = faker.lorem.paragraph();
     const comment = await postService.createComment(ownUser.id, {
       postId: post.id,
-      content: 'Test comment',
+      content: commentContent,
     });
 
+    const firstReplyContent = faker.lorem.paragraph();
     await postService.createReply(ownUser.id, {
       commentId: comment.id,
-      content: 'Test reply 1',
+      content: firstReplyContent,
     });
 
     // wait for 1 second to make sure the createdAt is different
     await new Promise((resolve) => setTimeout(resolve, 1000));
 
+    const secondReplyContent = faker.lorem.paragraph(4);
     await postService.createReply(ownUser.id, {
       commentId: comment.id,
-      content: 'Test reply 2',
+      content: secondReplyContent,
     });
 
     const posts = await postService.getPosts();
 
-    expect(posts[0].comments[0].replies[0].content).toBe('Test reply 1');
-    expect(posts[0].comments[0].replies[1].content).toBe('Test reply 2');
+    expect(posts[0].comments[0].replies[0].content).toBe(firstReplyContent);
+    expect(posts[0].comments[0].replies[1].content).toBe(secondReplyContent);
     expect(posts[0].comments[0].replies[1].author.id).toBe(ownUser.id);
     expect(posts[0].comments[0].replies[1].author.id).toBe(ownUser.id);
   });
