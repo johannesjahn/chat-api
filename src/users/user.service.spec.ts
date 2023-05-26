@@ -9,6 +9,7 @@ import {
 } from '../utils.test';
 import { UsersService } from './users.service';
 import { UserMapper } from './user.mapper';
+import { faker } from '@faker-js/faker';
 
 describe('UserService', () => {
   let app: TestingModule;
@@ -41,8 +42,8 @@ describe('UserService', () => {
   it('Check find users', async () => {
     const authService = app.get(AuthService);
     const ownUser = await authService.register({
-      username: 'TestUser',
-      password: '123',
+      username: faker.internet.userName(),
+      password: faker.internet.password(),
     });
     const usersWithSelf = await service.findAll();
     expect(usersWithSelf).toContainEqual(ownUser);
