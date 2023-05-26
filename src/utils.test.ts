@@ -14,6 +14,7 @@ import { PostService } from './post/post.service';
 import { User } from './users/user.entity';
 import { UserAuth } from './users/userAuth.entity';
 import { UsersService } from './users/users.service';
+import { faker } from '@faker-js/faker';
 
 export const getTestDataSource = async () => {
   const ds = await new DataSource({
@@ -88,15 +89,21 @@ export const getTestModule = async (dataSource: DataSource) => {
   }).compile();
 };
 
+export const firstUsername = faker.internet.userName('Nachobar');
+export const secondUsername = faker.internet.userName('Nachobar2');
+
+export const firstPassword = faker.internet.password();
+export const secondPassword = faker.internet.password();
+
 export const populateDB = async (app: TestingModule) => {
   const service = app.get(AuthService);
   await service.register({
-    username: 'Nachobar',
-    password: '123',
+    username: firstUsername,
+    password: firstPassword,
   });
   await service.register({
-    username: 'Nachobar2',
-    password: '123',
+    username: secondUsername,
+    password: secondPassword,
   });
 };
 
