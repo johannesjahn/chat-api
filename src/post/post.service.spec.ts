@@ -10,7 +10,6 @@ import {
 import { PostService } from './post.service';
 import { CommentMapper, ReplyMapper } from './post.mapper';
 import { faker } from '@faker-js/faker';
-import { repl } from '@nestjs/core';
 
 describe('PostService', () => {
   let app: TestingModule;
