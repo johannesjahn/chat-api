@@ -60,7 +60,7 @@ describe('ChatService', () => {
     expect(chats2.length).toBe(1);
   });
 
-  it('Create a chat with self', async () => {
+  it('Create a chat with own ID', async () => {
     const authService = app.get(AuthService);
     const firstUser = await authService.register({
       username: faker.internet.userName(),
