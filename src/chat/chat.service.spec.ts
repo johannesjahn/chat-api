@@ -275,7 +275,7 @@ describe('ChatService', () => {
     expect(dtos.length).toBe(messages.messages.length);
   });
 
-  it('Check last message in conversation', async () => {
+  it('Check last message in a conversation', async () => {
     const authService = app.get(AuthService);
     const firstUser = await authService.register({
       username: faker.internet.userName(),
