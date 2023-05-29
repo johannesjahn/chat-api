@@ -59,5 +59,7 @@ describe('UserService', () => {
 
     const result = converter.convert(user[0]);
     expect(result).not.toBeNull();
+    expect(result).toHaveProperty('id');
+    expect(result).toHaveProperty('username');
   });
 });
