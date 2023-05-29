@@ -64,8 +64,8 @@ export class PostResponseDTO {
   @ApiProperty({ nullable: true })
   author: UserResponseDTO;
 
-  @ApiProperty({ type: CommentResponseDTO, isArray: true })
-  comments: CommentResponseDTO[];
+  @ApiProperty({ type: CommentResponseDTO, isArray: true, nullable: true })
+  comments: CommentResponseDTO[] | null;
 }
 
 export class UpdatePostDTO {
