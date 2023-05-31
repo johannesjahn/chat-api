@@ -6,7 +6,11 @@ export class CreatePostDTO {
   @ApiProperty({ description: 'The content of a post' })
   content: string;
 
-  @ApiProperty()
+  @ApiProperty({
+    description: 'The content type of a post',
+    enum: ['TEXT', 'IMAGE_URL'],
+    enumName: 'ContentType',
+  })
   contentType: ContentType;
 }
 
