@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { ContentType } from 'src/chat/chat.entity';
+import { ContentType, ContentTypeValues } from '../chat/chat.entity';
 import { UserResponseDTO } from './user.dto';
 
 export class CreateMessageDTO {
@@ -9,7 +9,7 @@ export class CreateMessageDTO {
   @ApiProperty()
   content: string;
 
-  @ApiProperty()
+  @ApiProperty({ enum: ContentTypeValues })
   contentType: ContentType;
 }
 
@@ -37,7 +37,7 @@ export class MessageResponseDTO {
   @ApiProperty()
   content: string;
 
-  @ApiProperty()
+  @ApiProperty({ enum: ContentTypeValues })
   contentType: ContentType;
 
   @ApiProperty()

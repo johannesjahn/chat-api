@@ -29,7 +29,8 @@ export class Conversation extends AbstractEntity {
   lastMessage: Relation<Message> | null;
 }
 
-export type ContentType = 'TEXT' | 'IMAGE_URL';
+export const ContentTypeValues = ['TEXT', 'IMAGE_URL'] as const;
+export type ContentType = typeof ContentTypeValues[number];
 
 @Entity()
 export class Message extends AbstractEntity {
