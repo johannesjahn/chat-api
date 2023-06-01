@@ -14,111 +14,130 @@ export class CreatePostDTO {
 }
 
 export class ReplyResponseDTO {
-  @ApiProperty()
+  @ApiProperty({ description: 'The unique id of a reply' })
   id: number;
 
-  @ApiProperty()
+  @ApiProperty({ description: 'The creation date of a reply' })
   createdAt: Date;
 
-  @ApiProperty()
+  @ApiProperty({ description: 'The last update date of a reply' })
   updatedAt: Date;
 
-  @ApiProperty()
+  @ApiProperty({ description: 'The content of a reply' })
   content: string;
 
-  @ApiProperty({ nullable: true })
+  @ApiProperty({ nullable: true, description: 'The author of a reply' })
   author: UserResponseDTO;
 }
 export class CommentResponseDTO {
-  @ApiProperty()
+  @ApiProperty({ description: 'The unique id of a comment' })
   id: number;
 
-  @ApiProperty()
+  @ApiProperty({ description: 'The creation date of a comment' })
   createdAt: Date;
 
-  @ApiProperty()
+  @ApiProperty({ description: 'The last update date of a comment' })
   updatedAt: Date;
 
-  @ApiProperty()
+  @ApiProperty({ description: 'The content of a comment' })
   content: string;
 
-  @ApiProperty({ nullable: true })
+  @ApiProperty({ nullable: true, description: 'The author of a comment' })
   author: UserResponseDTO;
 
-  @ApiProperty({ type: ReplyResponseDTO, isArray: true })
+  @ApiProperty({
+    type: ReplyResponseDTO,
+    isArray: true,
+    description: 'The replies of a comment',
+  })
   replies: ReplyResponseDTO[];
 }
 export class PostResponseDTO {
-  @ApiProperty()
+  @ApiProperty({ description: 'The unique id of a post' })
   id: number;
 
-  @ApiProperty()
+  @ApiProperty({ description: 'The creation date of a post' })
   createdAt: Date;
 
-  @ApiProperty()
+  @ApiProperty({ description: 'The last update date of a post' })
   updatedAt: Date;
 
-  @ApiProperty()
+  @ApiProperty({ description: 'The content of a post' })
   content: string;
 
-  @ApiProperty({ enum: ContentTypeValues })
+  @ApiProperty({
+    enum: ContentTypeValues,
+    description: 'The content type of a post',
+  })
   contentType: ContentType;
 
-  @ApiProperty({ nullable: true })
+  @ApiProperty({ nullable: true, description: 'The author of a post' })
   author: UserResponseDTO;
 
-  @ApiProperty({ type: CommentResponseDTO, isArray: true, nullable: true })
+  @ApiProperty({
+    type: CommentResponseDTO,
+    isArray: true,
+    nullable: true,
+    description: 'The comments of a post',
+  })
   comments: CommentResponseDTO[] | null;
 }
 
 export class UpdatePostDTO {
-  @ApiProperty()
+  @ApiProperty({
+    description: 'The unique id of a post',
+  })
   id: number;
-  @ApiProperty()
+  @ApiProperty({
+    description: 'The content of a post',
+  })
   content: string;
-  @ApiProperty({ enum: ContentTypeValues })
+  @ApiProperty({
+    enum: ContentTypeValues,
+    description: 'The content type of a post',
+  })
   contentType: ContentType;
 }
 
 export class DeletePostDTO {
-  @ApiProperty()
+  @ApiProperty({ description: 'The unique id of the deleted post' })
   id: number;
 }
 
 export class CreateCommentDTO {
-  @ApiProperty()
+  @ApiProperty({ description: 'The unique id of the post' })
   postId: number;
-  @ApiProperty()
+  @ApiProperty({ description: 'The content of the comment' })
   content: string;
 }
 
 export class DeleteCommentDTO {
-  @ApiProperty()
+  @ApiProperty({ description: 'The unique id of the comment' })
   commentId: number;
 }
 
 export class UpdateCommentDTO {
-  @ApiProperty()
+  @ApiProperty({ description: 'The unique id of the comment' })
   commentId: number;
-  @ApiProperty()
+  @ApiProperty({ description: 'The content of the comment' })
   content: string;
 }
 
 export class CreateReplyDTO {
-  @ApiProperty()
+  @ApiProperty({ description: 'The unique id of the comment' })
   commentId: number;
-  @ApiProperty()
+  @ApiProperty({ description: 'The content of the reply' })
   content: string;
 }
 
 export class DeleteReplyDTO {
-  @ApiProperty()
+  @ApiProperty({ description: 'The unique id of the reply' })
   replyId: number;
 }
 
 export class UpdateReplyDTO {
-  @ApiProperty()
+  @ApiProperty({ description: 'The unique id of the reply' })
   replyId: number;
-  @ApiProperty()
+  @ApiProperty({ description: 'The content of the reply' })
   content: string;
 }
