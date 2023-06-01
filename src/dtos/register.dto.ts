@@ -1,8 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 export class RegisterDTO {
-  @ApiProperty()
+  @ApiProperty({ description: 'The username to be registered user' })
   username: string;
-  @ApiProperty()
+  @ApiProperty({ description: 'The password to be registered user' })
   password: string;
 }
