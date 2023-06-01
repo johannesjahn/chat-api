@@ -1,8 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 export class UserResponseDTO {
-  @ApiProperty()
+  @ApiProperty({ description: 'The unique id of a user' })
   id: number;
-  @ApiProperty()
+  @ApiProperty({ description: 'The username of a user' })
   username: string;
 }
