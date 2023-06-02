@@ -1,9 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 export class ChangePasswordDTO {
-  @ApiProperty()
+  @ApiProperty({ description: 'The new password' })
   password: string;
 
-  @ApiProperty()
+  @ApiProperty({ description: 'The new password again' })
   passwordConfirm: string;
 }
