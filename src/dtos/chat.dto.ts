@@ -3,18 +3,22 @@ import { ContentType, ContentTypeValues } from '../chat/chat.entity';
 import { UserResponseDTO } from './user.dto';
 
 export class CreateMessageDTO {
-  @ApiProperty()
+  @ApiProperty({
+    description: 'The id of the conversation the message should be sent to',
+  })
   conversationId: number;
 
-  @ApiProperty()
+  @ApiProperty({ description: 'The content of the message' })
   content: string;
 
-  @ApiProperty({ enum: ContentTypeValues })
+  @ApiProperty({ enum: ContentTypeValues, description: 'The type of content' })
   contentType: ContentType;
 }
 
 export class GetMessagesDTO {
-  @ApiProperty()
+  @ApiProperty({
+    description: 'The id of the conversation to get messages from',
+  })
   conversationId: number;
   @ApiProperty({
     required: false,
@@ -25,41 +29,57 @@ export class GetMessagesDTO {
 }
 
 export class MessageResponseDTO {
-  @ApiProperty()
+  @ApiProperty({ description: 'The id of the message' })
   id: number;
 
-  @ApiProperty()
+  @ApiProperty({
+    description: 'The creation date of a message',
+  })
   createdAt: Date;
 
-  @ApiProperty()
+  @ApiProperty({ description: 'The date of the last update of a message' })
   updatedAt: Date;
 
-  @ApiProperty()
+  @ApiProperty({ description: 'The content of the message' })
   content: string;
 
-  @ApiProperty({ enum: ContentTypeValues })
+  @ApiProperty({ enum: ContentTypeValues, description: 'The type of content' })
   contentType: ContentType;
 
-  @ApiProperty()
+  @ApiProperty({ description: 'The author of the message' })
   author: UserResponseDTO;
 }
 
 export class ConversationResponseDTO {
-  @ApiProperty()
+  @ApiProperty({ description: 'The id of the conversation' })
   id: number;
 
-  @ApiProperty()
+  @ApiProperty({ description: 'The creation date of the conversation' })
   createdAt: Date;
 
-  @ApiProperty()
+  @ApiProperty({
+    description: 'The date of the last update of the conversation',
+  })
   updatedAt: Date;
 
-  @ApiProperty({ type: UserResponseDTO, isArray: true })
+  @ApiProperty({
+    type: UserResponseDTO,
+    isArray: true,
+    description: 'The participants of the conversation',
+  })
   participants: UserResponseDTO[];
 
-  @ApiProperty({ type: MessageResponseDTO, isArray: true })
+  @ApiProperty({
+    type: MessageResponseDTO,
+    isArray: true,
+    description: 'The messages belonging to the conversation',
+  })
   messages: MessageResponseDTO[];
 
-  @ApiProperty({ type: MessageResponseDTO, nullable: true })
+  @ApiProperty({
+    type: MessageResponseDTO,
+    nullable: true,
+    description: 'The last message that was sent within a conversation',
+  })
   lastMessage: MessageResponseDTO | null;
 }
