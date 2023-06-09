@@ -47,6 +47,14 @@ describe('UserService', () => {
     });
     const usersWithSelf = await service.findAll();
     expect(usersWithSelf).toContainEqual(ownUser);
+  });
+
+  it('Check find users without self', async () => {
+    const authService = app.get(AuthService);
+    const ownUser = await authService.register({
+      username: faker.internet.userName(),
+      password: faker.internet.password(),
+    });
 
     const usersWithoutSelf = await service.findAllWithoutSelf(ownUser.id);
     expect(usersWithoutSelf).not.toContainEqual(ownUser);
