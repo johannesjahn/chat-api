@@ -49,7 +49,10 @@ export class ChatGateway
     for (const userId of userIds) {
       if (this.clientMap.has(userId)) {
         const client = this.clientMap.get(userId);
-        client.emit('message', 'new message');
+        client.emit('message', {
+          kind: 'message',
+          conversationId: conversationId,
+        });
       }
     }
   }
