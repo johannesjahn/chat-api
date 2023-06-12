@@ -91,6 +91,19 @@
       "**/*.(t|j)s"
     ],
     "coverageDirectory": "../coverage",
+    "coveragePathIgnorePatterns": [
+      "<rootDir>/build/",
+      "<rootDir>/node_modules/",
+      ".*\\.controller\\.ts",
+      ".*\\.module\\.ts",
+      ".*\\.strategy\\.ts",
+      ".*\\.dto\\.ts",
+      ".*\\.middleware\\.ts",
+      ".*\\.guard\\.ts",
+      ".*\\.gateway\\.ts",
+      "main\\.ts",
+      "utils\\.ts"
+    ],
     "testEnvironment": "node",
     "coverageReporters": [
       "text",
