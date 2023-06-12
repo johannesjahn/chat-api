@@ -49,7 +49,23 @@ describe('AuthService', () => {
       password: password,
     });
 
-    await authService.validateUser(username, password);
+    const user = await authService.validateUser(username, password);
+    expect(user).not.toBeNull();
+  });
+
+  it('Check Login with invalid credentials', async () => {
+    const authService = app.get(AuthService);
+
+    const username = faker.internet.userName();
+    const password = faker.internet.password();
+
+    await authService.register({
+      username: username,
+      password: 'wrong password',
+    });
+
+    const user = await authService.validateUser(username, password);
+    expect(user).toBeNull();
   });
 
   it('Check password change', async () => {
