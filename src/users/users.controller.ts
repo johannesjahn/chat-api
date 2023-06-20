@@ -41,7 +41,7 @@ export class UsersController {
   @ApiOperation({ description: 'Get all users without self' })
   @UseGuards(JwtAuthGuard)
   @Get()
-  async getUsers(@Request() req) {
+  async getUsers(@Request() req: any) {
     const result = await this.usersService.findAllWithoutSelf(req.user.userId);
     const mapper = new UserMapper();
 
@@ -54,9 +54,13 @@ export class UsersController {
   @ApiOperation({ description: 'Get current authenticated user' })
   @UseGuards(JwtAuthGuard)
   @Get('me')
-  async getMe(@Request() req) {
+  async getMe(@Request() req: any) {
     const result = await this.usersService.findOne(req.user.userId);
     const mapper = new UserMapper();
+
+    if (!result) {
+      throw new HttpException('User not found', 404);
+    }
 
     const dto = mapper.convert(result);
     return dto;
@@ -89,7 +93,7 @@ export class UsersController {
       }),
     )
     file: Express.Multer.File,
-    @Request() req,
+    @Request() req: any,
   ) {
     const userId: string = req.user.userId;
 

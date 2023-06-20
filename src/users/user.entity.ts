@@ -30,7 +30,7 @@ export class User {
 
   @OneToOne(() => UserAuth, { onDelete: 'CASCADE' })
   @JoinColumn()
-  userAuth: UserAuth;
+  userAuth: UserAuth | undefined;
 
   @OneToMany(() => Post, (post) => post.author)
   posts: Post[];

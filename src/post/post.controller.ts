@@ -48,7 +48,7 @@ export class PostController {
   @ApiOperation({ description: 'Create post with the authenticated user' })
   @ApiCreatedResponse({ type: PostResponseDTO })
   @Post('/')
-  async createPost(@Request() req, @Body() body: CreatePostDTO) {
+  async createPost(@Request() req: any, @Body() body: CreatePostDTO) {
     const result = await this.postService.createPost(req.user.userId, body);
     const mapper = new PostMapper();
 
@@ -75,7 +75,7 @@ export class PostController {
       'Delete a post that belongs to the currently authenticated user',
   })
   @Delete('/')
-  async deletePost(@Request() req, @Body() body: DeletePostDTO) {
+  async deletePost(@Request() req: any, @Body() body: DeletePostDTO) {
     if (!body.id) {
       throw new HttpException('Id is required', 400);
     }
@@ -90,7 +90,7 @@ export class PostController {
   })
   @UseGuards(JwtAuthGuard)
   @Put('/')
-  async updatePost(@Request() req, @Body() body: UpdatePostDTO) {
+  async updatePost(@Request() req: any, @Body() body: UpdatePostDTO) {
     if (!body.content || body.content.length == 0) {
       throw new HttpException('Content is required', 400);
     }
@@ -107,7 +107,7 @@ export class PostController {
   @ApiOperation({ description: 'Create comment with the authenticated user' })
   @UseGuards(JwtAuthGuard)
   @Post('/comment')
-  async createComment(@Request() req, @Body() body: CreateCommentDTO) {
+  async createComment(@Request() req: any, @Body() body: CreateCommentDTO) {
     if (!body.content || body.content.length == 0) {
       throw new HttpException('Content is required', 400);
     }
@@ -138,7 +138,7 @@ export class PostController {
       'Delete a comment that belongs to the currently authenticated user',
   })
   @Delete('/comment')
-  async deleteComment(@Request() req, @Body() body: DeleteCommentDTO) {
+  async deleteComment(@Request() req: any, @Body() body: DeleteCommentDTO) {
     return this.postService.deleteComment(req.user.userId, body.commentId);
   }
 
@@ -150,7 +150,7 @@ export class PostController {
   })
   @UseGuards(JwtAuthGuard)
   @Put('/comment')
-  async updateComment(@Request() req, @Body() body: UpdateCommentDTO) {
+  async updateComment(@Request() req: any, @Body() body: UpdateCommentDTO) {
     if (!body.content || body.content.length == 0) {
       throw new HttpException('Content is required', 400);
     }
@@ -171,7 +171,7 @@ export class PostController {
   @ApiOperation({ description: 'Create reply with the authenticated user' })
   @UseGuards(JwtAuthGuard)
   @Post('/reply')
-  async createReply(@Request() req, @Body() body: CreateReplyDTO) {
+  async createReply(@Request() req: any, @Body() body: CreateReplyDTO) {
     if (!body.content || body.content.length == 0) {
       throw new HttpException('Content is required', 400);
     }
@@ -199,7 +199,7 @@ export class PostController {
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ description: 'Delete reply with the authenticated user' })
   @Delete('/reply')
-  async deleteReply(@Request() req, @Body() body: DeleteReplyDTO) {
+  async deleteReply(@Request() req: any, @Body() body: DeleteReplyDTO) {
     return this.postService.deleteReply(req.user.userId, body.replyId);
   }
 
@@ -208,7 +208,7 @@ export class PostController {
   @ApiOperation({ description: 'Update reply with the authenticated user' })
   @UseGuards(JwtAuthGuard)
   @Put('/reply')
-  async updateReply(@Request() req, @Body() body: UpdateReplyDTO) {
+  async updateReply(@Request() req: any, @Body() body: UpdateReplyDTO) {
     if (!body.content || body.content.length == 0) {
       throw new HttpException('Content is required', 400);
     }

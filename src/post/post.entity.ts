@@ -12,7 +12,7 @@ export class Post extends AbstractEntity {
   contentType: ContentType;
 
   @ManyToOne(() => User, (user) => user.posts)
-  author: User;
+  author: User | undefined;
 
   @OneToMany(() => Comment, (comment) => comment.post, { onDelete: 'CASCADE' })
   comments: Comment[];
@@ -36,7 +36,7 @@ export class Comment extends AbstractEntity {
     nullable: false,
     onDelete: 'CASCADE',
   })
-  author: User;
+  author: User | undefined;
 }
 
 @Entity('reply')
@@ -54,5 +54,5 @@ export class Reply extends AbstractEntity {
     nullable: false,
     onDelete: 'CASCADE',
   })
-  author: User;
+  author: User | undefined;
 }

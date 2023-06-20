@@ -36,6 +36,9 @@ export class ChatService {
     const creator = await this.userRepository.findOne({
       where: { id: creatorId },
     });
+    if (!creator) {
+      throw new HttpException('Could not find creator by ID', 404);
+    }
 
     const conversation = new Conversation();
     conversation.participants = [creator, ...partnerUsers];
@@ -69,12 +72,19 @@ export class ChatService {
     }
 
     const user = await this.userRepository.findOne({ where: { id: userId } });
+    if (!user) {
+      throw new HttpException('Could not find user', 404);
+    }
     const conversation = await this.conversationRepository.findOne({
       where: { id: conversationId },
       relations: ['participants'],
     });
-    if (!conversation.participants.some((usr) => usr.id == userId))
+    if (!conversation) {
+      throw new HttpException('Could not find conversation', 404);
+    }
+    if (!conversation.participants.some((usr) => usr.id == userId)) {
       throw new HttpException('No access', 403);
+    }
     const message = new Message();
     message.author = user;
     message.content = content;

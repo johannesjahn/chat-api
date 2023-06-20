@@ -25,7 +25,11 @@ export class AuthService {
       where: { username: username },
       relations: ['userAuth'],
     });
-    if (user && (await compare(pass, user.userAuth.password))) {
+    if (
+      user &&
+      user.userAuth &&
+      (await compare(pass, user.userAuth.password))
+    ) {
       return user;
     }
     return null;
@@ -45,6 +49,9 @@ export class AuthService {
     });
     if (!user) throw new HttpException({ error: 'User not found' }, 400);
     const pw = await hash(password, hashConstants.saltRounds);
+    if (!user.userAuth) {
+      throw new HttpException({ error: 'Error updating password' }, 500);
+    }
     user.userAuth.password = pw;
     await this.userAuthRepository.save(user.userAuth);
     delete user.userAuth;

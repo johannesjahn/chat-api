@@ -80,7 +80,9 @@ describe('AuthService', () => {
       password: password,
     });
 
-    const user = await authService.validateUser(username, password);
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const user = (await authService.validateUser(username, password))!;
+
     await authService.changePassword(user.id, newPassword);
 
     const result = await authService.validateUser(username, newPassword);

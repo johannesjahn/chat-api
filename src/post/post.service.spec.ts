@@ -189,7 +189,7 @@ describe('PostService', () => {
 
     const retrievedPost = await postService.getPostFromCommentId(comment.id);
 
-    expect(retrievedPost.id).toBe(post.id);
+    expect(retrievedPost?.id).toBe(post.id);
   });
 
   it('Create post, comment, reply, and update reply', async () => {

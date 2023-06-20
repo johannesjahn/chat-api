@@ -24,5 +24,6 @@
       "username": "chat",
       "password": "qpA09M6Ro51K3"
     }
-  ]
+  ],
+  "typescript.tsdk": "node_modules/typescript/lib"
 }

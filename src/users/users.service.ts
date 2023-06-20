@@ -35,7 +35,7 @@ export class UsersService {
    * @param id The id of the user to find
    * @returns The user with the given id
    */
-  findOne(id: number): Promise<User> {
+  findOne(id: number): Promise<User | null> {
     return this.usersRepository.findOne({ where: { id: id } });
   }
 

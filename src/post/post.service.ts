@@ -136,7 +136,7 @@ export class PostService {
       where: { id: commentId },
       relations: ['post'],
     });
-    return result.post;
+    return result?.post;
   }
 
   async getReplies(commentId: number) {

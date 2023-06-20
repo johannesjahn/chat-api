@@ -110,7 +110,7 @@ describe('ChatService', () => {
     const messages = await chatService.getMessages(
       secondUser.id,
       conversation.id,
-      null,
+      undefined,
     );
 
     expect(messages.messages.length).toBe(1);
@@ -127,7 +127,7 @@ describe('ChatService', () => {
     const messages2 = await chatService.getMessages(
       secondUser.id,
       conversation.id,
-      null,
+      undefined,
     );
 
     expect(messages2.messages.length).toBe(2);
@@ -212,8 +212,10 @@ describe('ChatService', () => {
       relations: ['lastMessage'],
     });
 
-    expect(firstMessageSent[0].lastMessage.id).not.toBe(
-      secondMessageSent[0].lastMessage.id,
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    expect(firstMessageSent[0].lastMessage!.id).not.toBe(
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      secondMessageSent[0].lastMessage!.id,
     );
     expect(
       firstMessageSent[0].updatedAt.getTime() -
@@ -266,7 +268,7 @@ describe('ChatService', () => {
     const messages = await chatService.getMessages(
       secondUser.id,
       conversation.id,
-      null,
+      undefined,
     );
 
     const mapper = new MessageMapper();
@@ -297,10 +299,10 @@ describe('ChatService', () => {
     const messages = await chatService.getMessages(
       secondUser.id,
       conversation.id,
-      null,
+      undefined,
     );
 
-    expect(messages.lastMessage.author.id).toBe(firstUser.id);
+    expect(messages.lastMessage?.author.id).toBe(firstUser.id);
 
     await chatService.sendMessage(
       secondUser.id,
@@ -312,10 +314,10 @@ describe('ChatService', () => {
     const messages2 = await chatService.getMessages(
       secondUser.id,
       conversation.id,
-      null,
+      undefined,
     );
 
-    expect(messages2.lastMessage.author.id).toBe(secondUser.id);
+    expect(messages2.lastMessage?.author.id).toBe(secondUser.id);
   });
 
   it('Check last message of conversation list for user', async () => {
@@ -341,6 +343,6 @@ describe('ChatService', () => {
       firstUser.id,
     );
 
-    expect(conversations[0].lastMessage.author.id).toBe(firstUser.id);
+    expect(conversations[0].lastMessage?.author.id).toBe(firstUser.id);
   });
 });
