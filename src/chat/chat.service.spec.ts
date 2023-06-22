@@ -45,6 +45,10 @@ describe('ChatService', () => {
       username: faker.internet.userName(),
       password: faker.internet.password(),
     });
+    const thirdUser = await authService.register({
+      username: faker.internet.userName(),
+      password: faker.internet.password(),
+    });
 
     const chatService = app.get(ChatService);
     await chatService.createConversation(firstUser.id, {
@@ -58,6 +62,10 @@ describe('ChatService', () => {
     const chats2 = await chatService.getConversationListForUser(secondUser.id);
 
     expect(chats2.length).toBe(1);
+
+    const chats3 = await chatService.getConversationListForUser(thirdUser.id);
+
+    expect(chats3.length).toBe(0);
   });
 
   it('Create a chat with own user', async () => {
