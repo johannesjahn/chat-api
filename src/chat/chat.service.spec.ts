@@ -176,7 +176,7 @@ describe('ChatService', () => {
     }
   });
 
-  it('Check more complex messaging', async () => {
+  it('Check if last message updates correctly', async () => {
     const authService = app.get(AuthService);
     const firstUser = await authService.register({
       username: faker.internet.userName(),
