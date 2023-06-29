@@ -231,7 +231,7 @@ describe('ChatService', () => {
     ).toBeLessThan(0);
   });
 
-  it('Get 404 if conversation not exists', async () => {
+  it('Get not found (404) if conversation not exists', async () => {
     const authService = app.get(AuthService);
     const firstUser = await authService.register({
       username: faker.internet.userName(),
