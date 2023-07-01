@@ -263,7 +263,7 @@ describe('ChatService', () => {
       partnerIds: [secondUser.id],
     });
 
-    const text = faker.random.words(100);
+    const text = faker.lorem.paragraph(100);
     await chatService.sendMessage(firstUser.id, conversation.id, text, 'TEXT');
 
     await chatService.sendMessage(
