@@ -14,7 +14,7 @@ import { MessageMapper } from './chat.mapper';
 import { Conversation } from './chat.entity';
 import { getRepositoryToken } from '@nestjs/typeorm';
 
-describe('ChatService', () => {
+describe('ChatService Test', () => {
   let app: TestingModule;
   let dataSource: DataSource;
 
