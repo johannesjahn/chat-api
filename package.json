@@ -44,7 +44,7 @@
     "postgres": "^3.3.3",
     "reflect-metadata": "^0.1.13",
     "rimraf": "4.1.1",
-    "rxjs": "^7.8.0",
+    "rxjs": "^7.8.1",
     "sharp": "^0.31.3",
     "swagger-ui-express": "^4.6.0",
     "typeorm": "^0.3.11",
