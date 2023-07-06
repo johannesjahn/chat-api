@@ -2,19 +2,19 @@
 version: '3.1'
 
 services:
-    db:
-        image: postgres
-        restart: always
-        environment:
-            POSTGRES_PASSWORD: qpA09M6Ro51K3
-            POSTGRES_USER: chat
-            POSTGRES_DB: chat
-        volumes:
-            - ./data:/var/lib/postgresql/data
-        ports:
-            - 5432:5432
-    adminer:
-        image: adminer
-        restart: always
-        ports:
-            - 8080:8080
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: qpA09M6Ro51K3
+      POSTGRES_USER: chat
+      POSTGRES_DB: chat
+    volumes:
+      - ./data:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
