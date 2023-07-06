@@ -3,12 +3,12 @@ import { User } from './user.entity';
 
 @Entity()
 export class UserAuth {
-  @PrimaryGeneratedColumn()
-  id: number;
+	@PrimaryGeneratedColumn()
+	id: number;
 
-  @Column()
-  password: string;
+	@Column()
+	password: string;
 
-  @OneToOne(() => User, (user) => user.userAuth, { onDelete: 'CASCADE' })
-  user: User;
+	@OneToOne(() => User, (user) => user.userAuth, { onDelete: 'CASCADE' })
+	user: User;
 }

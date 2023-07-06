@@ -1,25 +1,25 @@
 import {
-  MessageBody,
-  SubscribeMessage,
-  WebSocketGateway,
-  WebSocketServer,
+	MessageBody,
+	SubscribeMessage,
+	WebSocketGateway,
+	WebSocketServer,
 } from '@nestjs/websockets';
 import { Server } from 'http';
 
 @WebSocketGateway({
-  cors: {
-    origin: '*',
-  },
+	cors: {
+		origin: '*',
+	},
 })
 export class AppGateway {
-  @WebSocketServer() wss: Server;
+	@WebSocketServer() wss: Server;
 
-  @SubscribeMessage('identity')
-  handleEvent(@MessageBody() data: string): string {
-    return data;
-  }
+	@SubscribeMessage('identity')
+	handleEvent(@MessageBody() data: string): string {
+		return data;
+	}
 
-  sendToAll(data: any) {
-    this.wss.emit('message', data);
-  }
+	sendToAll(data: any) {
+		this.wss.emit('message', data);
+	}
 }

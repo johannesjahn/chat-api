@@ -17,76 +17,76 @@ import { UsersService } from './users/users.service';
 import { faker } from '@faker-js/faker';
 
 export const getTestDataSource = async () => {
-  const ds = await new DataSource({
-    type: 'sqlite',
-    database: ':memory:',
-    dropSchema: true,
-    entities: ['./**/*.entity.ts'],
-    synchronize: true,
-    logging: false,
-    name: 'default',
-  }).initialize();
+	const ds = await new DataSource({
+		type: 'sqlite',
+		database: ':memory:',
+		dropSchema: true,
+		entities: ['./**/*.entity.ts'],
+		synchronize: true,
+		logging: false,
+		name: 'default',
+	}).initialize();
 
-  return ds;
+	return ds;
 };
 
 export const getTestModule = async (dataSource: DataSource) => {
-  const userRepository = dataSource.getRepository(User);
-  const authRepository = dataSource.getRepository(UserAuth);
+	const userRepository = dataSource.getRepository(User);
+	const authRepository = dataSource.getRepository(UserAuth);
 
-  const postRepository = dataSource.getRepository(Post);
-  const commentRepository = dataSource.getRepository(Comment);
-  const replyRepository = dataSource.getRepository(Reply);
+	const postRepository = dataSource.getRepository(Post);
+	const commentRepository = dataSource.getRepository(Comment);
+	const replyRepository = dataSource.getRepository(Reply);
 
-  const conversationRepository = dataSource.getRepository(Conversation);
-  const messageRepository = dataSource.getRepository(Message);
+	const conversationRepository = dataSource.getRepository(Conversation);
+	const messageRepository = dataSource.getRepository(Message);
 
-  const testModule = JwtModule.register({
-    secret: jwtConstants.getSecret(),
-    signOptions: {},
-  });
+	const testModule = JwtModule.register({
+		secret: jwtConstants.getSecret(),
+		signOptions: {},
+	});
 
-  return await Test.createTestingModule({
-    imports: [testModule],
-    providers: [
-      {
-        provide: getRepositoryToken(User),
-        useValue: userRepository,
-      },
-      {
-        provide: getRepositoryToken(UserAuth),
-        useValue: authRepository,
-      },
-      {
-        provide: getRepositoryToken(Post),
-        useValue: postRepository,
-      },
-      {
-        provide: getRepositoryToken(Comment),
-        useValue: commentRepository,
-      },
-      {
-        provide: getRepositoryToken(Reply),
-        useValue: replyRepository,
-      },
-      {
-        provide: getRepositoryToken(Conversation),
-        useValue: conversationRepository,
-      },
-      {
-        provide: getRepositoryToken(Message),
-        useValue: messageRepository,
-      },
-      UsersService,
-      AuthService,
-      PostService,
-      ChatService,
-      PostService,
-      PostGateway,
-      ChatGateway,
-      AppService,
-    ],
-  }).compile();
+	return await Test.createTestingModule({
+		imports: [testModule],
+		providers: [
+			{
+				provide: getRepositoryToken(User),
+				useValue: userRepository,
+			},
+			{
+				provide: getRepositoryToken(UserAuth),
+				useValue: authRepository,
+			},
+			{
+				provide: getRepositoryToken(Post),
+				useValue: postRepository,
+			},
+			{
+				provide: getRepositoryToken(Comment),
+				useValue: commentRepository,
+			},
+			{
+				provide: getRepositoryToken(Reply),
+				useValue: replyRepository,
+			},
+			{
+				provide: getRepositoryToken(Conversation),
+				useValue: conversationRepository,
+			},
+			{
+				provide: getRepositoryToken(Message),
+				useValue: messageRepository,
+			},
+			UsersService,
+			AuthService,
+			PostService,
+			ChatService,
+			PostService,
+			PostGateway,
+			ChatGateway,
+			AppService,
+		],
+	}).compile();
 };
 
 export const firstUsername = faker.internet.userName('Nachobar');
@@ -96,22 +96,22 @@ export const firstPassword = faker.internet.password();
 export const secondPassword = faker.internet.password();
 
 export const populateDB = async (app: TestingModule) => {
-  const service = app.get(AuthService);
-  await service.register({
-    username: firstUsername,
-    password: firstPassword,
-  });
-  await service.register({
-    username: secondUsername,
-    password: secondPassword,
-  });
+	const service = app.get(AuthService);
+	await service.register({
+		username: firstUsername,
+		password: firstPassword,
+	});
+	await service.register({
+		username: secondUsername,
+		password: secondPassword,
+	});
 };
 
 export const cleanupDB = async (dataSource: DataSource) => {
-  const entities = dataSource.entityMetadatas;
+	const entities = dataSource.entityMetadatas;
 
-  for (const entity of entities) {
-    const repository = dataSource.getRepository(entity.name); // Get repository
-    await repository.clear(); // Clear each entity table's content
-  }
+	for (const entity of entities) {
+		const repository = dataSource.getRepository(entity.name); // Get repository
+		await repository.clear(); // Clear each entity table's content
+	}
 };

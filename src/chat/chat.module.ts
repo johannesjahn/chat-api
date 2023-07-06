@@ -9,15 +9,15 @@ import { ChatGateway } from './chat.gateway';
 import { jwtModule } from 'src/auth/auth.module';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([User]),
-    TypeOrmModule.forFeature([Conversation]),
-    TypeOrmModule.forFeature([Message]),
-    PostModule,
-    jwtModule,
-  ],
-  controllers: [ChatController],
-  providers: [ChatService, ChatGateway],
-  exports: [ChatGateway],
+	imports: [
+		TypeOrmModule.forFeature([User]),
+		TypeOrmModule.forFeature([Conversation]),
+		TypeOrmModule.forFeature([Message]),
+		PostModule,
+		jwtModule,
+	],
+	controllers: [ChatController],
+	providers: [ChatService, ChatGateway],
+	exports: [ChatGateway],
 })
 export class ChatModule {}

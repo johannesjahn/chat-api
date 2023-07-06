@@ -1,20 +1,20 @@
 import {
-  Controller,
-  Post,
-  UseGuards,
-  Request,
-  Body,
-  HttpException,
+	Controller,
+	Post,
+	UseGuards,
+	Request,
+	Body,
+	HttpException,
 } from '@nestjs/common';
 import { LocalAuthGuard } from './local-auth.guard';
 import { AuthService } from './auth.service';
 import { RegisterDTO } from '../dtos/register.dto';
 import { LoginDTO, LoginResponseDTO } from '../dtos/login.dto';
 import {
-  ApiBearerAuth,
-  ApiCreatedResponse,
-  ApiOperation,
-  ApiTags,
+	ApiBearerAuth,
+	ApiCreatedResponse,
+	ApiOperation,
+	ApiTags,
 } from '@nestjs/swagger';
 import { UserMapper } from '../users/user.mapper';
 import { UserResponseDTO } from 'src/dtos/user.dto';
@@ -24,48 +24,48 @@ import { ChangePasswordDTO } from 'src/dtos/changePassword.dto';
 @ApiTags('Auth')
 @Controller('auth/')
 export class AuthController {
-  constructor(private authService: AuthService) {}
+	constructor(private authService: AuthService) {}
 
-  @ApiCreatedResponse({ type: LoginResponseDTO })
-  @UseGuards(LocalAuthGuard)
-  @ApiOperation({ description: 'Login with username and password' })
-  @Post('login')
-  async login(
-    @Request() req,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    @Body() _body: LoginDTO,
-  ): Promise<LoginResponseDTO> {
-    return this.authService.login(req.user.username, req.user.id);
-  }
+	@ApiCreatedResponse({ type: LoginResponseDTO })
+	@UseGuards(LocalAuthGuard)
+	@ApiOperation({ description: 'Login with username and password' })
+	@Post('login')
+	async login(
+		@Request() req,
+		// eslint-disable-next-line @typescript-eslint/no-unused-vars
+		@Body() _body: LoginDTO,
+	): Promise<LoginResponseDTO> {
+		return this.authService.login(req.user.username, req.user.id);
+	}
 
-  @ApiCreatedResponse({ type: UserResponseDTO })
-  @ApiOperation({ description: 'Register a new user' })
-  @Post('register')
-  async register(@Body() req: RegisterDTO) {
-    const result = await this.authService.register(req);
+	@ApiCreatedResponse({ type: UserResponseDTO })
+	@ApiOperation({ description: 'Register a new user' })
+	@Post('register')
+	async register(@Body() req: RegisterDTO) {
+		const result = await this.authService.register(req);
 
-    const mapper = new UserMapper();
-    const dto = mapper.convert(result);
+		const mapper = new UserMapper();
+		const dto = mapper.convert(result);
 
-    return dto;
-  }
+		return dto;
+	}
 
-  @ApiBearerAuth()
-  @ApiCreatedResponse({ type: [UserResponseDTO] })
-  @UseGuards(JwtAuthGuard)
-  @ApiOperation({ description: 'Change password' })
-  @Post('change-password')
-  async getUsers(@Request() req, @Body() body: ChangePasswordDTO) {
-    if (body.password !== body.passwordConfirm)
-      throw new HttpException('passwords do not match', 400);
+	@ApiBearerAuth()
+	@ApiCreatedResponse({ type: [UserResponseDTO] })
+	@UseGuards(JwtAuthGuard)
+	@ApiOperation({ description: 'Change password' })
+	@Post('change-password')
+	async getUsers(@Request() req, @Body() body: ChangePasswordDTO) {
+		if (body.password !== body.passwordConfirm)
+			throw new HttpException('passwords do not match', 400);
 
-    const result = await this.authService.changePassword(
-      req.user.userId,
-      body.password,
-    );
-    const mapper = new UserMapper();
+		const result = await this.authService.changePassword(
+			req.user.userId,
+			body.password,
+		);
+		const mapper = new UserMapper();
 
-    const dto = mapper.convert(result);
-    return dto;
-  }
+		const dto = mapper.convert(result);
+		return dto;
+	}
 }

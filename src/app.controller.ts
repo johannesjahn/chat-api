@@ -5,22 +5,22 @@ import { VersionDTO } from './dtos/version.dto';
 
 @Controller()
 export class AppController {
-  constructor(private appService: AppService) {}
+	constructor(private appService: AppService) {}
 
-  @Get('/debug')
-  @ApiOperation({
-    description: 'This is the debug endpoint. It just returns text.',
-  })
-  async getDebug() {
-    const result = await this.appService.debug();
-    return { message: result };
-  }
+	@Get('/debug')
+	@ApiOperation({
+		description: 'This is the debug endpoint. It just returns text.',
+	})
+	async getDebug() {
+		const result = await this.appService.debug();
+		return { message: result };
+	}
 
-  @ApiCreatedResponse({ type: VersionDTO })
-  @ApiOperation({ description: 'Get version of the current backend' })
-  @Get('/version')
-  getVersion() {
-    const result = this.appService.getVersion();
-    return { version: result };
-  }
+	@ApiCreatedResponse({ type: VersionDTO })
+	@ApiOperation({ description: 'Get version of the current backend' })
+	@Get('/version')
+	getVersion() {
+		const result = this.appService.getVersion();
+		return { version: result };
+	}
 }

@@ -12,21 +12,21 @@ import { JwtStrategy } from './jwt.strategy';
 import { LocalStrategy } from './local.strategy';
 
 export const jwtModule = JwtModule.registerAsync({
-  useFactory: () => {
-    return { secret: jwtConstants.getSecret(), signOptions: {} };
-  },
+	useFactory: () => {
+		return { secret: jwtConstants.getSecret(), signOptions: {} };
+	},
 });
 
 @Module({
-  imports: [
-    UsersModule,
-    PassportModule,
-    jwtModule,
-    TypeOrmModule.forFeature([User]),
-    TypeOrmModule.forFeature([UserAuth]),
-  ],
-  providers: [AuthService, LocalStrategy, JwtStrategy],
-  exports: [AuthService],
-  controllers: [AuthController],
+	imports: [
+		UsersModule,
+		PassportModule,
+		jwtModule,
+		TypeOrmModule.forFeature([User]),
+		TypeOrmModule.forFeature([UserAuth]),
+	],
+	providers: [AuthService, LocalStrategy, JwtStrategy],
+	exports: [AuthService],
+	controllers: [AuthController],
 })
 export class AuthModule {}

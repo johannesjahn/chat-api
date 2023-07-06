@@ -6,9 +6,9 @@ import { PostGateway } from './post.gateway';
 import { PostService } from './post.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Post, Comment, Reply])],
-  controllers: [PostController],
-  providers: [PostService, PostGateway],
-  exports: [PostGateway],
+	imports: [TypeOrmModule.forFeature([Post, Comment, Reply])],
+	controllers: [PostController],
+	providers: [PostService, PostGateway],
+	exports: [PostGateway],
 })
 export class PostModule {}
