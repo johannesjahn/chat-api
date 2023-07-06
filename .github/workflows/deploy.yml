@@ -100,6 +100,6 @@ jobs:
       - uses: appleboy/ssh-action@master
         with:
           host: chat.johannes-jahn.com
-          username: ubuntu
+          username: docker
           key: ${{ secrets.EC2_SSH_KEY }}
           script: cd chat-api && docker-compose pull && docker-compose up -d chat && yes | docker image prune -a
