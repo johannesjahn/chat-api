@@ -65,6 +65,7 @@ export class ChatController {
 	@ApiCreatedResponse({
 		type: ConversationResponseDTO,
 		description: 'Fetches the messages for a given conversation.',
+		status: 200,
 	})
 	@ApiOperation({ description: 'Get messages for a conversation' })
 	@Post('/get-messages')
