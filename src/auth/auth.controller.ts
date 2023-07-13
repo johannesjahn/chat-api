@@ -51,7 +51,7 @@ export class AuthController {
 	}
 
 	@ApiBearerAuth()
-	@ApiCreatedResponse({ type: [UserResponseDTO] })
+	@ApiCreatedResponse({ type: UserResponseDTO })
 	@UseGuards(JwtAuthGuard)
 	@ApiOperation({ description: 'Change password' })
 	@Post('change-password')
