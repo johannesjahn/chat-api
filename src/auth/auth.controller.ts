@@ -55,7 +55,7 @@ export class AuthController {
 	@UseGuards(JwtAuthGuard)
 	@ApiOperation({ description: 'Change password' })
 	@Post('change-password')
-	async getUsers(@Request() req, @Body() body: ChangePasswordDTO) {
+	async changePassword(@Request() req, @Body() body: ChangePasswordDTO) {
 		if (body.password !== body.passwordConfirm)
 			throw new HttpException('passwords do not match', 400);
 
