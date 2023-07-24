@@ -77,7 +77,7 @@ export class PostController {
 	@Delete('/')
 	async deletePost(@Request() req: any, @Body() body: DeletePostDTO) {
 		if (!body.id) {
-			throw new HttpException('Id is required', 400);
+			throw new HttpException({ error: 'Id is required' }, 400);
 		}
 		return this.postService.deletePost(req.user.userId, body.id);
 	}
@@ -92,7 +92,7 @@ export class PostController {
 	@Put('/')
 	async updatePost(@Request() req: any, @Body() body: UpdatePostDTO) {
 		if (!body.content || body.content.length == 0) {
-			throw new HttpException('Content is required', 400);
+			throw new HttpException({ error: 'Content is required' }, 400);
 		}
 
 		const result = await this.postService.updatePost(req.user.userId, body);
@@ -152,7 +152,7 @@ export class PostController {
 	@Put('/comment')
 	async updateComment(@Request() req: any, @Body() body: UpdateCommentDTO) {
 		if (!body.content || body.content.length == 0) {
-			throw new HttpException('Content is required', 400);
+			throw new HttpException({ error: 'Content is required' }, 400);
 		}
 
 		const result = await this.postService.updateComment(
@@ -173,7 +173,7 @@ export class PostController {
 	@Post('/reply')
 	async createReply(@Request() req: any, @Body() body: CreateReplyDTO) {
 		if (!body.content || body.content.length == 0) {
-			throw new HttpException('Content is required', 400);
+			throw new HttpException({ error: 'Content is required' }, 400);
 		}
 
 		const result = await this.postService.createReply(req.user.userId, body);
@@ -210,7 +210,7 @@ export class PostController {
 	@Put('/reply')
 	async updateReply(@Request() req: any, @Body() body: UpdateReplyDTO) {
 		if (!body.content || body.content.length == 0) {
-			throw new HttpException('Content is required', 400);
+			throw new HttpException({ error: 'Content is required' }, 400);
 		}
 
 		const result = await this.postService.updateReply(

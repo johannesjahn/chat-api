@@ -55,7 +55,8 @@ export class PostService {
 			author: { id: userId },
 		});
 
-		if (result.affected === 0) throw new HttpException('Post not found', 404);
+		if (result.affected === 0)
+			throw new HttpException({ error: 'Post not found' }, 404);
 		return { success: 'Post deleted' };
 	}
 
@@ -64,14 +65,14 @@ export class PostService {
 			where: { id: postDTO.id, author: { id: userId } },
 		});
 
-		if (!post) throw new HttpException('Post not found', 404);
+		if (!post) throw new HttpException({ error: 'Post not found' }, 404);
 		post.content = postDTO.content;
 		post.contentType = postDTO.contentType;
 
 		const result = await this.postRepository.update(postDTO.id, post);
 
 		if (result.affected === 0)
-			throw new HttpException('Could not update post', 400);
+			throw new HttpException({ error: 'Could not update post' }, 400);
 		return post;
 	}
 
@@ -100,12 +101,12 @@ export class PostService {
 		const comment = await this.commentRepository.findOne({
 			where: { id: commentId, author: { id: userId } },
 		});
-		if (!comment) throw new HttpException('Comment not found', 404);
+		if (!comment) throw new HttpException({ error: 'Comment not found' }, 404);
 		comment.content = content;
 
 		const result = await this.commentRepository.update(commentId, comment);
 		if (result.affected === 0)
-			throw new HttpException('Could not update comment', 400);
+			throw new HttpException({ error: 'Could not update comment' }, 400);
 		return comment;
 	}
 
@@ -115,7 +116,7 @@ export class PostService {
 			author: { id: userId },
 		});
 		if (result.affected === 0)
-			throw new HttpException('Comment not found', 404);
+			throw new HttpException({ error: 'Comment not found' }, 404);
 		return { success: 'Comment deleted' };
 	}
 
@@ -152,12 +153,12 @@ export class PostService {
 		const reply = await this.replyRepository.findOne({
 			where: { id: replyId, author: { id: userId } },
 		});
-		if (!reply) throw new HttpException('Reply not found', 404);
+		if (!reply) throw new HttpException({ error: 'Reply not found' }, 404);
 		reply.content = content;
 
 		const result = await this.replyRepository.update(replyId, reply);
 		if (result.affected === 0)
-			throw new HttpException('Could not update reply', 400);
+			throw new HttpException({ error: 'Could not update reply' }, 400);
 		return reply;
 	}
 
@@ -166,7 +167,8 @@ export class PostService {
 			id: replyId,
 			author: { id: userId },
 		});
-		if (result.affected === 0) throw new HttpException('Reply not found', 404);
+		if (result.affected === 0)
+			throw new HttpException({ error: 'Reply not found' }, 404);
 		return { success: 'Reply deleted' };
 	}
 }

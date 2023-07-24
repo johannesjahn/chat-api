@@ -36,13 +36,13 @@ export class ChatController {
 	@Post('/send-message')
 	async sendMessage(@Request() req, @Body() body: CreateMessageDTO) {
 		if (body.contentType !== 'TEXT' && body.contentType !== 'IMAGE_URL') {
-			throw new HttpException('Invalid content type', 400);
+			throw new HttpException({ error: 'Invalid content type' }, 400);
 		}
 		if (body.contentType === 'IMAGE_URL' && !body.content.startsWith('http')) {
-			throw new HttpException('Invalid image url', 400);
+			throw new HttpException({ error: 'Invalid image url' }, 400);
 		}
 		if (body.contentType === 'TEXT' && !body.content) {
-			throw new HttpException('Message content is invalid', 400);
+			throw new HttpException({ error: 'Message content is invalid' }, 400);
 		}
 
 		const result = await this.chatService.sendMessage(

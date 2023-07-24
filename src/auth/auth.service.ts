@@ -53,7 +53,7 @@ export class AuthService {
 			throw new HttpException({ error: 'Error updating password' }, 500);
 		}
 		if (user.userAuth.password === pw) {
-			throw new HttpException("Password can't be the same", 400);
+			throw new HttpException({ error: "Password can't be the same" }, 400);
 		}
 		user.userAuth.password = pw;
 		await this.userAuthRepository.save(user.userAuth);

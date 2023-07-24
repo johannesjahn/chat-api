@@ -79,7 +79,7 @@ describe('ChatService Test', () => {
 			chatService.createConversation(firstUser.id, {
 				partnerIds: [firstUser.id],
 			}),
-		).rejects.toThrow("Can't create chat with self");
+		).rejects.toThrowError('Http Exception');
 	});
 
 	it('Create a chat with empty participant list', async () => {
@@ -93,7 +93,7 @@ describe('ChatService Test', () => {
 			chatService.createConversation(firstUser.id, {
 				partnerIds: [],
 			}),
-		).rejects.toThrow("Can't create chat with self");
+		).rejects.toThrow('Http Exception');
 	});
 
 	it('Write a message', async () => {

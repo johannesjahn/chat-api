@@ -23,21 +23,21 @@ export class ChatService {
 		request: CreateConversationRequestDTO,
 	): Promise<Conversation> {
 		if (request.partnerIds.length === 0)
-			throw new HttpException("Can't create chat with self", 400);
+			throw new HttpException({ error: "Can't create chat with self" }, 400);
 
 		const partnerUsers = await this.userRepository.find({
 			where: request.partnerIds.map((id) => ({ id })),
 		});
 
 		if (partnerUsers.length !== request.partnerIds.length)
-			throw new HttpException('User not found', 404);
+			throw new HttpException({ error: 'User not found' }, 404);
 		if (request.partnerIds.findIndex((v) => v === creatorId) !== -1)
-			throw new HttpException("Can't create chat with self", 400);
+			throw new HttpException({ error: "Can't create chat with self" }, 400);
 		const creator = await this.userRepository.findOne({
 			where: { id: creatorId },
 		});
 		if (!creator) {
-			throw new HttpException('Could not find creator by ID', 404);
+			throw new HttpException({ error: 'Could not find creator by ID' }, 404);
 		}
 
 		const conversation = new Conversation();
@@ -68,22 +68,22 @@ export class ChatService {
 		contentType: ContentType,
 	) {
 		if (contentType == 'IMAGE_URL' && !content.startsWith('http')) {
-			throw new HttpException('Invalid image url', 400);
+			throw new HttpException({ error: 'Invalid image url' }, 400);
 		}
 
 		const user = await this.userRepository.findOne({ where: { id: userId } });
 		if (!user) {
-			throw new HttpException('Could not find user', 404);
+			throw new HttpException({ error: 'Could not find user' }, 404);
 		}
 		const conversation = await this.conversationRepository.findOne({
 			where: { id: conversationId },
 			relations: ['participants'],
 		});
 		if (!conversation) {
-			throw new HttpException('Could not find conversation', 404);
+			throw new HttpException({ error: 'Could not find conversation' }, 404);
 		}
 		if (!conversation.participants.some((usr) => usr.id == userId)) {
-			throw new HttpException('No access', 403);
+			throw new HttpException({ error: 'No access' }, 403);
 		}
 		const message = new Message();
 		message.author = user;
@@ -113,10 +113,10 @@ export class ChatService {
 			relations: ['participants', 'lastMessage', 'lastMessage.author'],
 		});
 		if (!conversation) {
-			throw new HttpException('No conversation found', 404);
+			throw new HttpException({ error: 'No conversation found' }, 404);
 		}
 		if (!conversation.participants.some((usr) => usr.id == userId))
-			throw new HttpException('No access', 403);
+			throw new HttpException({ error: 'No access' }, 403);
 
 		let findConditions: FindOptionsWhere<Message>;
 

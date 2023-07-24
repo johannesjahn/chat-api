@@ -59,7 +59,7 @@ export class UsersController {
 		const mapper = new UserMapper();
 
 		if (!result) {
-			throw new HttpException('User not found', 404);
+			throw new HttpException({ error: 'User not found' }, 404);
 		}
 
 		const dto = mapper.convert(result);
@@ -124,7 +124,7 @@ export class UsersController {
 		@Query('size') size = '200',
 	) {
 		if (!this.validSizes.includes(size)) {
-			throw new HttpException('invalid size', 400);
+			throw new HttpException({ error: 'invalid size' }, 400);
 		}
 
 		let file: fs.ReadStream;
