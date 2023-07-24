@@ -40,4 +40,10 @@ describe('AppService', () => {
 		const appService = app.get(AppService);
 		expect(appService.getVersion().length).toBeGreaterThan(0);
 	});
+
+	it('test Debug', async () => {
+		const appService = app.get(AppService);
+		const result = await appService.debug();
+		expect(result).toBe('Thanks for using the debug endpoint.');
+	});
 });
