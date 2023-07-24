@@ -3,6 +3,7 @@ import { AuthService } from '../auth/auth.service';
 import { DataSource } from 'typeorm';
 import {
 	cleanupDB,
+	firstUsername,
 	getTestDataSource,
 	getTestModule,
 	populateDB,
@@ -69,5 +70,12 @@ describe('UserService', () => {
 		expect(result).not.toBeNull();
 		expect(result).toHaveProperty('id');
 		expect(result).toHaveProperty('username');
+	});
+
+	it('Check find one user', async () => {
+		const allUsers = await service.findAll();
+		const theUser = await service.findOne(allUsers[0].id);
+		expect(theUser.id).toBe(allUsers[0].id);
+		expect(theUser.username).toBe(allUsers[0].username);
 	});
 });
