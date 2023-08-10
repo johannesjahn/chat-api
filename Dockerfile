@@ -5,7 +5,7 @@ FROM node:slim as builder
 WORKDIR /usr/app
 
 COPY ["./package.json", "./yarn.lock", "./"]
-RUN yarn
+RUN yarn install --frozen-lockfile
 
 COPY ["./tsconfig.json","./tsconfig.build.json", "./nest-cli.json", "./"]
 COPY ./src ./src
