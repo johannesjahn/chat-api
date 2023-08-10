@@ -34,6 +34,8 @@ describe('AppService', () => {
 		const repo = dataSource.getRepository(UserAuth);
 		const result = await repo.find();
 		expect(result).not.toHaveLength(0);
+		expect(result[0]).toBeDefined();
+		expect(result[0]).not.toBeNull();
 	});
 
 	it('check Version', async () => {
