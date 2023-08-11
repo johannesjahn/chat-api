@@ -79,7 +79,7 @@ describe('PostService', () => {
 		const postService = app.get(PostService);
 		const post = await postService.createPost(ownUser.id, {
 			content: faker.lorem.paragraph(),
-			contentType: 'TEXT',
+			contentType: ContentTypeValues[0],
 		});
 
 		const posts = await postService.getPosts();
