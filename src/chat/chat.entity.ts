@@ -30,7 +30,7 @@ export class Conversation extends AbstractEntity {
 }
 
 export const ContentTypeValues = ['TEXT', 'IMAGE_URL'] as const;
-export type ContentType = typeof ContentTypeValues[number];
+export type ContentType = (typeof ContentTypeValues)[number];
 
 @Entity()
 export class Message extends AbstractEntity {

@@ -10,6 +10,7 @@ import {
 import { PostService } from './post.service';
 import { CommentMapper, ReplyMapper } from './post.mapper';
 import { faker } from '@faker-js/faker';
+import { ContentTypeValues } from 'src/chat/chat.entity';
 
 describe('PostService', () => {
 	let app: TestingModule;
@@ -89,7 +90,7 @@ describe('PostService', () => {
 		await postService.updatePost(ownUser.id, {
 			id: post.id,
 			content: updatedContent,
-			contentType: 'TEXT',
+			contentType: ContentTypeValues[0],
 		});
 
 		const postsAfterUpdate = await postService.getPosts();
