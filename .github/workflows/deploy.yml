@@ -13,6 +13,7 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 16
+          cache: 'yarn'
       - run: yarn install
       - run: yarn test
   test_coverage:
@@ -23,6 +24,7 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 16
+          cache: 'yarn'
       - run: yarn install
       - run: yarn test:cov
       - uses: actions/upload-artifact@master
@@ -36,6 +38,7 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 16
+          cache: 'yarn'
       - run: yarn install
       - run: yarn lint
   version_bump:
@@ -49,6 +52,7 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 16
+          cache: 'yarn'
       - run: |
           git config --global user.name 'Johannes Jahn'
           git config --global user.email 'johannes.jahn@outlook.com'
@@ -63,6 +67,7 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 16
+          cache: 'yarn'
       - run: yarn install
       - run: yarn build
       - uses: montudor/action-zip@v1
