@@ -33,7 +33,7 @@ describe('PostService', () => {
 		await cleanupDB(dataSource);
 	});
 
-	it('Create a post', async () => {
+	it('Create a post.', async () => {
 		const authService = app.get(AuthService);
 		const ownUser = await authService.register({
 			username: faker.internet.userName(),
