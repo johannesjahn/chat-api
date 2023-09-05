@@ -49,7 +49,7 @@ describe('PostService', () => {
 		expect(posts).toHaveLength(1);
 	});
 
-	it('Create and delete a post', async () => {
+	it('Create and delete a post.', async () => {
 		const authService = app.get(AuthService);
 		const ownUser = await authService.register({
 			username: faker.internet.userName(),
