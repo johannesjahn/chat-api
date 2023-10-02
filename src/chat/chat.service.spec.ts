@@ -142,7 +142,7 @@ describe('ChatService Test', () => {
 		expect(messages2.messages[1].author.id).toBe(secondUser.id);
 	});
 
-	it('Write a message in the wrong conversation', async () => {
+	it('Write a message in a wrong conversation', async () => {
 		const authService = app.get(AuthService);
 		const firstUser = await authService.register({
 			username: faker.internet.userName(),
