@@ -16,7 +16,10 @@ export class AppController {
 		return { message: result };
 	}
 
-	@ApiCreatedResponse({ type: VersionDTO })
+	@ApiCreatedResponse({
+		type: VersionDTO,
+		description: 'Version of the current backend',
+	})
 	@ApiOperation({ description: 'Get version of the current backend' })
 	@Get('/version')
 	getVersion() {
