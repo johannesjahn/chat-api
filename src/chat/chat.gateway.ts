@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import {
 	OnGatewayConnection,
@@ -24,6 +24,7 @@ export class ChatGateway
 	@WebSocketServer() wss: Server;
 
 	clientMap = new Map<number, Socket>();
+	private logger = new Logger('Chat Gateway');
 
 	async handleConnection(
 		client: Socket<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, any>,
@@ -32,7 +33,7 @@ export class ChatGateway
 			client.handshake.auth.token,
 		);
 		this.clientMap.set(token.sub, client);
-		console.log('connected ws');
+		this.logger.log('connected ws');
 	}
 	async handleDisconnect(
 		client: Socket<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, any>,
@@ -41,11 +42,14 @@ export class ChatGateway
 			client.handshake.auth.token,
 		);
 		this.clientMap.delete(token.sub);
-		console.log('disconnected ws');
+		this.logger.log('disconnected ws');
 	}
 
 	updateMessagesForUsers(userIds: number[], conversationId: number) {
-		console.log('Sending message to users for conversation', conversationId);
+		this.logger.log(
+			'Sending message to users for conversation',
+			conversationId,
+		);
 		for (const userId of userIds) {
 			if (this.clientMap.has(userId)) {
 				const client = this.clientMap.get(userId);
