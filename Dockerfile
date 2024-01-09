@@ -6,6 +6,7 @@ WORKDIR /usr/app
 
 COPY ["./package.json", "./yarn.lock", "./"]
 RUN yarn install
+RUN yarn add sharp
 
 COPY ["./tsconfig.json","./tsconfig.build.json", "./nest-cli.json", "./"]
 COPY ./src ./src
