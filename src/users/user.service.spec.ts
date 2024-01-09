@@ -3,7 +3,6 @@ import { AuthService } from '../auth/auth.service';
 import { DataSource } from 'typeorm';
 import {
 	cleanupDB,
-	firstUsername,
 	getTestDataSource,
 	getTestModule,
 	populateDB,
