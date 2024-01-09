@@ -240,7 +240,7 @@ describe('ChatService Test', () => {
 		const chatService = app.get(ChatService);
 		try {
 			await chatService.getMessages(firstUser.id, 1337);
-		} catch (e) {
+		} catch (e: any) {
 			expect(e).toBeDefined();
 			expect(e).toHaveProperty('status');
 			expect(e['status']).toBe(404);

@@ -34,7 +34,7 @@ export class ChatController {
 	@ApiCreatedResponse({ type: MessageResponseDTO })
 	@ApiOperation({ description: 'Send a message to a conversation' })
 	@Post('/send-message')
-	async sendMessage(@Request() req, @Body() body: CreateMessageDTO) {
+	async sendMessage(@Request() req: any, @Body() body: CreateMessageDTO) {
 		if (body.contentType !== 'TEXT' && body.contentType !== 'IMAGE_URL') {
 			throw new HttpException({ error: 'Invalid content type' }, 400);
 		}
@@ -69,7 +69,7 @@ export class ChatController {
 	})
 	@ApiOperation({ description: 'Get messages for a conversation' })
 	@Post('/get-messages')
-	async getMessages(@Request() req, @Body() body: GetMessagesDTO) {
+	async getMessages(@Request() req: any, @Body() body: GetMessagesDTO) {
 		const result = await this.chatService.getMessages(
 			req.user.userId,
 			body.conversationId,
@@ -89,7 +89,7 @@ export class ChatController {
 	})
 	@ApiCreatedResponse({ type: ConversationResponseDTO })
 	async createConversation(
-		@Request() req,
+		@Request() req: any,
 		@Body() body: CreateConversationRequestDTO,
 	) {
 		const result = await this.chatService.createConversation(
@@ -109,7 +109,7 @@ export class ChatController {
 		description: 'Endpoint to get all conversations for the authenticated user',
 	})
 	@Get('/get-conversations')
-	async getConversations(@Request() req) {
+	async getConversations(@Request() req: any) {
 		const result = await this.chatService.getConversationListForUser(
 			req.user.userId,
 		);

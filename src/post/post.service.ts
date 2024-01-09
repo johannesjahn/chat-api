@@ -21,7 +21,7 @@ export class PostService {
 	) {}
 
 	async createPost(userId: number, post: CreatePostDTO) {
-		const createdPost = await this.postRepository.save({
+		const createdPost: Post = await this.postRepository.save({
 			content: post.content,
 			contentType: post.contentType,
 			author: { id: userId },
@@ -77,7 +77,7 @@ export class PostService {
 	}
 
 	async createComment(userId: number, createCommentDTO: CreateCommentDTO) {
-		const result = await this.commentRepository.save({
+		const result: Comment = await this.commentRepository.save({
 			author: { id: userId },
 			post: { id: createCommentDTO.postId },
 			content: createCommentDTO.content,
@@ -121,7 +121,7 @@ export class PostService {
 	}
 
 	async createReply(userId: number, createReplyDTO: CreateReplyDTO) {
-		const result = await this.replyRepository.save({
+		const result: Reply = await this.replyRepository.save({
 			author: { id: userId },
 			comment: { id: createReplyDTO.commentId },
 			content: createReplyDTO.content,

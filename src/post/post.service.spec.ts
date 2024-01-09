@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { TestingModule } from '@nestjs/testing';
 import { AuthService } from '../auth/auth.service';
 import { DataSource } from 'typeorm';
@@ -494,8 +495,8 @@ describe('PostService', () => {
 
 		expect(posts[0].comments[0].replies[0].content).toBe(firstReplyContent);
 		expect(posts[0].comments[0].replies[1].content).toBe(secondReplyContent);
-		expect(posts[0].comments[0].replies[1].author.id).toBe(ownUser.id);
-		expect(posts[0].comments[0].replies[1].author.id).toBe(ownUser.id);
+		expect(posts[0].comments[0].replies[1].author!.id).toBe(ownUser.id);
+		expect(posts[0].comments[0].replies[1].author!.id).toBe(ownUser.id);
 	});
 
 	it('Check three posters order', async () => {
@@ -532,8 +533,8 @@ describe('PostService', () => {
 
 		const posts = await postService.getPosts();
 		expect(posts).toHaveLength(3);
-		expect(posts[0].author.id).toBe(thirdUser.id);
-		expect(posts[1].author.id).toBe(secondUser.id);
-		expect(posts[2].author.id).toBe(firstUser.id);
+		expect(posts[0].author!.id).toBe(thirdUser.id);
+		expect(posts[1].author!.id).toBe(secondUser.id);
+		expect(posts[2].author!.id).toBe(firstUser.id);
 	});
 });

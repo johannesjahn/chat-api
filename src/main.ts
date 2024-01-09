@@ -13,7 +13,7 @@ async function bootstrap() {
 	const config = new DocumentBuilder()
 		.setTitle('Chat - API')
 		.setDescription('Chat - API Description')
-		.setVersion(process.env.npm_package_version)
+		.setVersion(process.env.npm_package_version ?? '0.0.0')
 		.addServer('https://chat.johannes-jahn.com')
 		.addBearerAuth()
 		.build();

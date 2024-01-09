@@ -31,7 +31,7 @@ export class AuthController {
 	@ApiOperation({ description: 'Login with username and password' })
 	@Post('login')
 	async login(
-		@Request() req,
+		@Request() req: any,
 		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		@Body() _body: LoginDTO,
 	): Promise<LoginResponseDTO> {
@@ -55,7 +55,7 @@ export class AuthController {
 	@UseGuards(JwtAuthGuard)
 	@ApiOperation({ description: 'Change password' })
 	@Post('change-password')
-	async changePassword(@Request() req, @Body() body: ChangePasswordDTO) {
+	async changePassword(@Request() req: any, @Body() body: ChangePasswordDTO) {
 		if (body.password !== body.passwordConfirm)
 			throw new HttpException('passwords do not match', 400);
 

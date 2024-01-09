@@ -19,7 +19,7 @@ import { StatusMonitorModule } from 'nestjs-status-monitor';
 			title: 'Nacho Chat Status', // Default title
 			path: '/status',
 			socketPath: '/status-socket.io', // In case you use a custom path
-			port: null, // Defaults to NestJS port
+			port: 3000, // Defaults to NestJS port
 			spans: [
 				{
 					interval: 1, // Every second
