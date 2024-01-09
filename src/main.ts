@@ -10,13 +10,10 @@ async function bootstrap() {
 
 	app.setGlobalPrefix('/app');
 
-	// eslint-disable-next-line @typescript-eslint/no-var-requires
-	const pjson = require('../package.json');
-
 	const config = new DocumentBuilder()
 		.setTitle('Chat - API')
 		.setDescription('Chat - API Description')
-		.setVersion(pjson.version)
+		.setVersion(process.env.npm_package_version)
 		.addServer('https://chat.johannes-jahn.com')
 		.addBearerAuth()
 		.build();

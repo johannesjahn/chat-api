@@ -41,5 +41,4 @@ static/
 avatars/
 
 deploy.sh
-.env
-.dev.env
+*.env
