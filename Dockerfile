@@ -11,12 +11,3 @@ COPY ["./tsconfig.json","./tsconfig.build.json", "./nest-cli.json", "./"]
 COPY ./src ./src
 
 RUN yarn build
-
-
-FROM node:slim
-
-WORKDIR /usr/app
-
-COPY --from=builder /usr/app/package.json /usr/app/package.json
-COPY --from=builder /usr/app/node_modules /usr/app/node_modules
-COPY --from=builder /usr/app/dist /usr/app/dist
