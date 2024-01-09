@@ -112,7 +112,7 @@ describe('ChatService Test', () => {
 			partnerIds: [secondUser.id],
 		});
 
-		const text = faker.random.words(100);
+		const text = faker.lorem.words(100);
 		await chatService.sendMessage(firstUser.id, conversation.id, text, 'TEXT');
 
 		const messages = await chatService.getMessages(
@@ -163,7 +163,7 @@ describe('ChatService Test', () => {
 			partnerIds: [secondUser.id],
 		});
 
-		const text = faker.random.words(100);
+		const text = faker.lorem.words(100);
 		try {
 			await chatService.sendMessage(
 				thirdUser.id,
@@ -192,7 +192,7 @@ describe('ChatService Test', () => {
 			partnerIds: [secondUser.id],
 		});
 
-		const text = faker.random.words(100);
+		const text = faker.lorem.words(100);
 		await chatService.sendMessage(firstUser.id, conversation.id, text, 'TEXT');
 
 		const messages = await chatService.getMessages(
@@ -301,7 +301,7 @@ describe('ChatService Test', () => {
 			partnerIds: [secondUser.id],
 		});
 
-		const text = faker.random.words(100);
+		const text = faker.lorem.words(100);
 		await chatService.sendMessage(firstUser.id, conversation.id, text, 'TEXT');
 
 		const messages = await chatService.getMessages(
@@ -344,7 +344,7 @@ describe('ChatService Test', () => {
 			partnerIds: [secondUser.id],
 		});
 
-		const text = faker.random.words(100);
+		const text = faker.lorem.words(100);
 		await chatService.sendMessage(firstUser.id, conversation.id, text, 'TEXT');
 
 		const conversations = await chatService.getConversationListForUser(
