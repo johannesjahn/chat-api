@@ -197,14 +197,20 @@ export class ChatService {
 
 		const user = conversation.participants.find((usr) => usr.id == userId)!;
 
+		let changed = false;
+
 		conversation.messages.forEach((message) => {
 			if (
 				!message.readBy.some((usr) => usr.id == userId) &&
 				message.author.id != userId
 			) {
 				message.readBy.push(user);
+				changed = true;
 			}
 		});
+
+		if (!changed) return;
+
 		await this.messageRepository.save(conversation.messages);
 
 		this.chatGateway.updateConversationsForUsers(
