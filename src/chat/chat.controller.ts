@@ -149,7 +149,7 @@ export class ChatController {
 		@Request() req: any,
 		@Body() body: MarkConversationAsReadDTO,
 	) {
-		await this.chatService.markMessageAsRead(
+		await this.chatService.markConversationAsRead(
 			req.user.userId,
 			body.conversationId,
 		);

@@ -111,7 +111,12 @@ export class ChatService {
 	) {
 		const conversation = await this.conversationRepository.findOne({
 			where: { id: conversationId },
-			relations: ['participants', 'lastMessage', 'lastMessage.author'],
+			relations: [
+				'participants',
+				'lastMessage',
+				'lastMessage.author',
+				'lastMessage.readBy',
+			],
 		});
 		if (!conversation) {
 			throw new HttpException({ error: 'No conversation found' }, 404);
