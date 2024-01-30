@@ -154,4 +154,18 @@ export class ChatController {
 			body.conversationId,
 		);
 	}
+
+	@ApiBearerAuth()
+	@UseGuards(JwtAuthGuard)
+	@ApiOperation({
+		description:
+			'Endpoint to get the number of unread messages for the authenticated user',
+	})
+	@Get('/get-number-of-unread-messages')
+	async getNumberOfUnreadMessages(@Request() req: any) {
+		const result = await this.chatService.getUnreadMessagesCount(
+			req.user.userId,
+		);
+		return { numberOfUnreadMessages: result };
+	}
 }
