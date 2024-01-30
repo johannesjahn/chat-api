@@ -95,3 +95,10 @@ export class ConversationResponseDTO {
 	})
 	lastMessage: MessageResponseDTO | null;
 }
+
+export class NumberOfUnreadMessagesResponseDTO {
+	@ApiProperty({
+		description: 'The number of unread messages for the authenticated user',
+	})
+	count: number;
+}

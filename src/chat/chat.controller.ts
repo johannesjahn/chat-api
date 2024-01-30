@@ -22,6 +22,7 @@ import {
 	GetMessagesDTO,
 	MarkMessageAsReadDTO,
 	MessageResponseDTO,
+	NumberOfUnreadMessagesResponseDTO,
 } from '../dtos/chat.dto';
 import {
 	CreateConversationRequestDTO,
@@ -160,6 +161,12 @@ export class ChatController {
 	@ApiOperation({
 		description:
 			'Endpoint to get the number of unread messages for the authenticated user',
+	})
+	@ApiCreatedResponse({
+		type: NumberOfUnreadMessagesResponseDTO,
+		description:
+			'Gets the number of unread messages for the authenticated user',
+		status: 200,
 	})
 	@Get('/get-number-of-unread-messages')
 	async getNumberOfUnreadMessages(@Request() req: any) {
