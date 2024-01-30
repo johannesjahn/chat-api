@@ -12,6 +12,7 @@ import { PostService } from './post.service';
 import { CommentMapper, ReplyMapper } from './post.mapper';
 import { faker } from '@faker-js/faker';
 import { ContentTypeValues } from '../chat/chat.entity';
+import { HttpException } from '@nestjs/common';
 
 describe('PostService', () => {
 	let app: TestingModule;
@@ -536,5 +537,12 @@ describe('PostService', () => {
 		expect(posts[0].author!.id).toBe(thirdUser.id);
 		expect(posts[1].author!.id).toBe(secondUser.id);
 		expect(posts[2].author!.id).toBe(firstUser.id);
+	});
+
+	it('Check error when deleting a post that does not exist', async () => {
+		const postService = app.get(PostService);
+		await expect(postService.deletePost(1, 1)).rejects.toThrow(
+			new HttpException({ error: 'Post not found' }, 404),
+		);
 	});
 });
