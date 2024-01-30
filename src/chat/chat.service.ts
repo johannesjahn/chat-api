@@ -165,6 +165,13 @@ export class ChatService {
 			message.readBy.push(user);
 			await this.messageRepository.save(message);
 		}
+
+		this.chatGateway.updateConversationsForUsers(
+			message.conversation.participants
+				.map((p) => p.id)
+				.filter((id) => id != userId),
+			message.conversation.id,
+		);
 	}
 
 	async markConversationAsRead(userId: number, conversationId: number) {
@@ -194,6 +201,11 @@ export class ChatService {
 			}
 		});
 		await this.messageRepository.save(conversation.messages);
+
+		this.chatGateway.updateConversationsForUsers(
+			conversation.participants.map((p) => p.id).filter((id) => id != userId),
+			conversation.id,
+		);
 	}
 
 	async getUnreadMessagesCount(userId: number) {

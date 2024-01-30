@@ -60,4 +60,17 @@ export class ChatGateway
 			}
 		}
 	}
+
+	updateConversationsForUsers(userIds: number[], conversationId: number) {
+		this.logger.log('Sending conversation update to users', conversationId);
+		for (const userId of userIds) {
+			if (this.clientMap.has(userId)) {
+				const client = this.clientMap.get(userId);
+				client?.emit('conversation', {
+					kind: 'conversation',
+					conversationId: conversationId,
+				});
+			}
+		}
+	}
 }
