@@ -40,6 +40,13 @@ export class Message extends AbstractEntity {
 	@Column({ default: 'TEXT' })
 	contentType: ContentType;
 
+	@ManyToMany(() => User, (user) => user.readMessages, {
+		onDelete: 'CASCADE',
+		onUpdate: 'CASCADE',
+	})
+	@JoinTable()
+	readBy: User[];
+
 	@ManyToOne(() => User, (user) => user.messages, { onDelete: 'CASCADE' })
 	author: User;
 

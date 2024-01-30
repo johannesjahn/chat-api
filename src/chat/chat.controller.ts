@@ -4,6 +4,7 @@ import {
 	Get,
 	HttpException,
 	Post,
+	Put,
 	Request,
 	UseGuards,
 } from '@nestjs/common';
@@ -19,9 +20,13 @@ import {
 	ConversationResponseDTO,
 	CreateMessageDTO,
 	GetMessagesDTO,
+	MarkMessageAsReadDTO,
 	MessageResponseDTO,
 } from '../dtos/chat.dto';
-import { CreateConversationRequestDTO } from '../dtos/conversation.dto';
+import {
+	CreateConversationRequestDTO,
+	MarkConversationAsReadDTO,
+} from '../dtos/conversation.dto';
 import { ChatService } from './chat.service';
 
 @ApiTags('Chat')
@@ -117,5 +122,36 @@ export class ChatController {
 		const dtos = result.map((v) => mapper.convert(v));
 
 		return dtos;
+	}
+
+	@ApiBearerAuth()
+	@UseGuards(JwtAuthGuard)
+	@ApiOperation({
+		description:
+			'Endpoint to mark a message as read for the authenticated user',
+	})
+	@Put('/mark-message-as-read')
+	async markMessageAsRead(
+		@Request() req: any,
+		@Body() body: MarkMessageAsReadDTO,
+	) {
+		await this.chatService.markMessageAsRead(req.user.userId, body.messageId);
+	}
+
+	@ApiBearerAuth()
+	@UseGuards(JwtAuthGuard)
+	@ApiOperation({
+		description:
+			'Endpoint to mark a conversation as read for the authenticated user',
+	})
+	@Put('/mark-conversation-as-read')
+	async markConversationAsRead(
+		@Request() req: any,
+		@Body() body: MarkConversationAsReadDTO,
+	) {
+		await this.chatService.markMessageAsRead(
+			req.user.userId,
+			body.conversationId,
+		);
 	}
 }

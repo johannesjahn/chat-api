@@ -29,6 +29,12 @@ import { UserMapper } from '../users/user.mapper';
 		source: 'contentType',
 		target: 'contentType',
 	},
+	{
+		source: 'readBy',
+		target: 'readBy',
+		converter: UserMapper,
+		isCollection: true,
+	},
 ])
 export class MessageMapper extends Converter<Message, MessageResponseDTO> {}
 

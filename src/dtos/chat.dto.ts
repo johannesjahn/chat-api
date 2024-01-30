@@ -28,6 +28,11 @@ export class GetMessagesDTO {
 	lastMessage?: number;
 }
 
+export class MarkMessageAsReadDTO {
+	@ApiProperty({ description: 'The id of the message to mark as read' })
+	messageId: number;
+}
+
 export class MessageResponseDTO {
 	@ApiProperty({ description: 'The id of the message' })
 	id: number;
@@ -48,6 +53,13 @@ export class MessageResponseDTO {
 
 	@ApiProperty({ description: 'The author of the message' })
 	author: UserResponseDTO;
+
+	@ApiProperty({
+		type: UserResponseDTO,
+		isArray: true,
+		description: 'The users that have read the message',
+	})
+	readBy: UserResponseDTO[];
 }
 
 export class ConversationResponseDTO {

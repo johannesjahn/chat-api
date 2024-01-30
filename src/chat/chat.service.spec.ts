@@ -353,4 +353,164 @@ describe('ChatService Test', () => {
 
 		expect(conversations[0].lastMessage?.author.id).toBe(firstUser.id);
 	});
+
+	it('Mark message as read', async () => {
+		const authService = app.get(AuthService);
+		const firstUser = await authService.register({
+			username: faker.internet.userName(),
+			password: faker.internet.password(),
+		});
+		const secondUser = await authService.register({
+			username: faker.internet.userName(),
+			password: faker.internet.password(),
+		});
+
+		const chatService = app.get(ChatService);
+		const conversation = await chatService.createConversation(firstUser.id, {
+			partnerIds: [secondUser.id],
+		});
+
+		const text = faker.lorem.words(100);
+		await chatService.sendMessage(firstUser.id, conversation.id, text, 'TEXT');
+
+		const messages = await chatService.getMessages(
+			secondUser.id,
+			conversation.id,
+			undefined,
+		);
+
+		await chatService.markMessageAsRead(secondUser.id, messages.messages[0].id);
+
+		const messages2 = await chatService.getMessages(
+			secondUser.id,
+			conversation.id,
+			undefined,
+		);
+
+		expect(messages2.messages[0].readBy.length).toBe(1);
+		expect(messages2.messages[0].readBy[0].id).toBe(secondUser.id);
+	});
+
+	it('Mark all messages as read', async () => {
+		const authService = app.get(AuthService);
+		const firstUser = await authService.register({
+			username: faker.internet.userName(),
+			password: faker.internet.password(),
+		});
+		const secondUser = await authService.register({
+			username: faker.internet.userName(),
+			password: faker.internet.password(),
+		});
+
+		const chatService = app.get(ChatService);
+		const conversation = await chatService.createConversation(firstUser.id, {
+			partnerIds: [secondUser.id],
+		});
+
+		await chatService.sendMessage(
+			firstUser.id,
+			conversation.id,
+			faker.lorem.words(100),
+			'TEXT',
+		);
+		await chatService.sendMessage(
+			secondUser.id,
+			conversation.id,
+			faker.lorem.words(100),
+			'TEXT',
+		);
+		await chatService.sendMessage(
+			firstUser.id,
+			conversation.id,
+			faker.lorem.words(100),
+			'TEXT',
+		);
+
+		await chatService.markConversationAsRead(secondUser.id, conversation.id);
+
+		const messages = await chatService.getMessages(
+			secondUser.id,
+			conversation.id,
+			undefined,
+		);
+
+		expect(messages.messages[0].readBy.length).toBe(1);
+		expect(messages.messages[0].readBy[0].id).toBe(secondUser.id);
+
+		expect(messages.messages[1].readBy.length).toBe(0);
+
+		expect(messages.messages[2].readBy.length).toBe(1);
+		expect(messages.messages[2].readBy[0].id).toBe(secondUser.id);
+	});
+
+	it('Check last message read status of conversation list for user', async () => {
+		const authService = app.get(AuthService);
+		const firstUser = await authService.register({
+			username: faker.internet.userName(),
+			password: faker.internet.password(),
+		});
+		const secondUser = await authService.register({
+			username: faker.internet.userName(),
+			password: faker.internet.password(),
+		});
+
+		const chatService = app.get(ChatService);
+		const conversation = await chatService.createConversation(firstUser.id, {
+			partnerIds: [secondUser.id],
+		});
+
+		const text = faker.lorem.words(100);
+		await chatService.sendMessage(firstUser.id, conversation.id, text, 'TEXT');
+
+		const conversations = await chatService.getConversationListForUser(
+			secondUser.id,
+		);
+
+		await chatService.markConversationAsRead(secondUser.id, conversation.id);
+
+		const conversations2 = await chatService.getConversationListForUser(
+			secondUser.id,
+		);
+
+		expect(conversations[0].lastMessage?.readBy).toHaveLength(0);
+		expect(conversations2[0].lastMessage?.readBy).toHaveLength(1);
+		expect(conversations2[0].lastMessage?.readBy[0].id).toBe(secondUser.id);
+	});
+
+	it('Get unread messages count', async () => {
+		const authService = app.get(AuthService);
+		const firstUser = await authService.register({
+			username: faker.internet.userName(),
+			password: faker.internet.password(),
+		});
+		const secondUser = await authService.register({
+			username: faker.internet.userName(),
+			password: faker.internet.password(),
+		});
+
+		const chatService = app.get(ChatService);
+		const conversation = await chatService.createConversation(firstUser.id, {
+			partnerIds: [secondUser.id],
+		});
+
+		const text = faker.lorem.words(100);
+		await chatService.sendMessage(firstUser.id, conversation.id, text, 'TEXT');
+
+		const messages = await chatService.getMessages(
+			secondUser.id,
+			conversation.id,
+			undefined,
+		);
+
+		const unreadCount = await chatService.getUnreadMessagesCount(secondUser.id);
+
+		await chatService.markMessageAsRead(secondUser.id, messages.messages[0].id);
+
+		const unreadCount2 = await chatService.getUnreadMessagesCount(
+			secondUser.id,
+		);
+
+		expect(unreadCount).toBe(1);
+		expect(unreadCount2).toBe(0);
+	});
 });

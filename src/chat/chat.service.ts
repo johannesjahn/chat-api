@@ -53,6 +53,7 @@ export class ChatService {
 			.leftJoinAndSelect('conversation.participants', 'user')
 			.leftJoinAndSelect('conversation.lastMessage', 'message')
 			.leftJoinAndSelect('message.author', 'author')
+			.leftJoinAndSelect('message.readBy', 'readBy')
 			.where(
 				'conversation.id in (SELECT "conversationId" FROM conversation_participants_user WHERE "userId" = :id)',
 				{ id: userId },
@@ -131,10 +132,89 @@ export class ChatService {
 
 		const m = await this.messageRepository.find({
 			where: findConditions,
-			relations: ['author'],
+			relations: ['author', 'readBy'],
 		});
 
 		conversation.messages = m;
 		return conversation;
+	}
+
+	async markMessageAsRead(userId: number, messageId: number) {
+		const message = await this.messageRepository.findOne({
+			where: { id: messageId },
+			relations: [
+				'author',
+				'readBy',
+				'conversation',
+				'conversation.participants',
+			],
+		});
+		if (!message) {
+			throw new HttpException({ error: 'No message found' }, 404);
+		}
+		if (!message.conversation.participants.some((usr) => usr.id == userId))
+			throw new HttpException({ error: 'No access' }, 403);
+
+		if (message.author.id == userId) return;
+
+		const user = message.conversation.participants.find(
+			(usr) => usr.id == userId,
+		)!;
+
+		if (!message.readBy.some((usr) => usr.id == userId)) {
+			message.readBy.push(user);
+			await this.messageRepository.save(message);
+		}
+	}
+
+	async markConversationAsRead(userId: number, conversationId: number) {
+		const conversation = await this.conversationRepository.findOne({
+			where: { id: conversationId },
+			relations: [
+				'participants',
+				'messages',
+				'messages.author',
+				'messages.readBy',
+			],
+		});
+		if (!conversation) {
+			throw new HttpException({ error: 'No conversation found' }, 404);
+		}
+		if (!conversation.participants.some((usr) => usr.id == userId))
+			throw new HttpException({ error: 'No access' }, 403);
+
+		const user = conversation.participants.find((usr) => usr.id == userId)!;
+
+		conversation.messages.forEach((message) => {
+			if (
+				!message.readBy.some((usr) => usr.id == userId) &&
+				message.author.id != userId
+			) {
+				message.readBy.push(user);
+			}
+		});
+		await this.messageRepository.save(conversation.messages);
+	}
+
+	async getUnreadMessagesCount(userId: number) {
+		const conversations = await this.conversationRepository
+			.createQueryBuilder('conversation')
+			.leftJoinAndSelect('conversation.participants', 'user')
+			.leftJoinAndSelect('conversation.messages', 'message')
+			.leftJoinAndSelect('message.author', 'author')
+			.leftJoinAndSelect('message.readBy', 'readBy')
+			.where(
+				'conversation.id in (SELECT "conversationId" FROM conversation_participants_user WHERE "userId" = :id)',
+				{ id: userId },
+			)
+			.orderBy({ 'conversation.updatedAt': 'DESC' })
+			.getMany();
+
+		return conversations.reduce((prev, curr) => {
+			const unread = curr.messages.filter(
+				(m) => m.author.id != userId && !m.readBy.some((u) => u.id == userId),
+			);
+			return prev + unread.length;
+		}, 0);
 	}
 }

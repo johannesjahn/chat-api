@@ -28,6 +28,12 @@ export class User {
 	})
 	conversations: Conversation[];
 
+	@ManyToMany(() => Message, (message) => message.readBy, {
+		onDelete: 'CASCADE',
+		onUpdate: 'CASCADE',
+	})
+	readMessages: Message[];
+
 	@OneToOne(() => UserAuth, { onDelete: 'CASCADE' })
 	@JoinColumn()
 	userAuth: UserAuth | undefined;

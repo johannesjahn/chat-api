@@ -9,3 +9,8 @@ export class CreateConversationRequestDTO {
 	})
 	partnerIds: number[];
 }
+
+export class MarkConversationAsReadDTO {
+	@ApiProperty({ description: 'The id of the conversation to mark as read' })
+	conversationId: number;
+}
