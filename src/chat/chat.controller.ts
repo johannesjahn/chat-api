@@ -173,6 +173,6 @@ export class ChatController {
 		const result = await this.chatService.getUnreadMessagesCount(
 			req.user.userId,
 		);
-		return { numberOfUnreadMessages: result };
+		return { count: result };
 	}
 }
