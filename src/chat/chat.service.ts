@@ -240,4 +240,16 @@ export class ChatService {
 			return prev + unread.length;
 		}, 0);
 	}
+
+	async hasUnreadMessages(userId: number) {
+		const conversations = await this.getConversationListForUser(userId);
+		const result = conversations.some((c) => {
+			const unread =
+				c.lastMessage?.author.id != userId &&
+				!c.lastMessage?.readBy.some((u) => u.id == userId);
+			return unread;
+		});
+
+		return result;
+	}
 }

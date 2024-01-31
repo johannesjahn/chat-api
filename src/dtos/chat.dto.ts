@@ -102,3 +102,10 @@ export class NumberOfUnreadMessagesResponseDTO {
 	})
 	count: number;
 }
+
+export class HasUnreadMessagesResponseDTO {
+	@ApiProperty({
+		description: 'Whether the authenticated user has unread messages',
+	})
+	hasUnreadMessages: boolean;
+}

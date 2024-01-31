@@ -20,6 +20,7 @@ import {
 	ConversationResponseDTO,
 	CreateMessageDTO,
 	GetMessagesDTO,
+	HasUnreadMessagesResponseDTO,
 	MarkMessageAsReadDTO,
 	MessageResponseDTO,
 	NumberOfUnreadMessagesResponseDTO,
@@ -174,5 +175,22 @@ export class ChatController {
 			req.user.userId,
 		);
 		return { count: result };
+	}
+
+	@ApiBearerAuth()
+	@UseGuards(JwtAuthGuard)
+	@ApiOperation({
+		description:
+			'Endpoint to get the number of unread messages for the authenticated user',
+	})
+	@ApiCreatedResponse({
+		type: HasUnreadMessagesResponseDTO,
+		description: 'Checks whether the authenticated user has unread messages',
+		status: 200,
+	})
+	@Get('/has-unread-messages')
+	async hasUnreadMessages(@Request() req: any) {
+		const result = await this.chatService.hasUnreadMessages(req.user.userId);
+		return { hasUnreadMessages: result };
 	}
 }
