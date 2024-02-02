@@ -40,6 +40,15 @@ export class UsersService {
 	}
 
 	/**
+	 * Set the avatar hash for the user with the given id
+	 * @param userId The id of the user to update
+	 * @param hash The new avatar hash
+	 */
+	async setAvatarHash(userId: number, hash: string): Promise<void> {
+		await this.usersRepository.update(userId, { avatarHash: hash });
+	}
+
+	/**
 	 * Find user by username
 	 * @param username THe username of the user to find
 	 * @returns The user with the given username

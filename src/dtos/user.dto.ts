@@ -5,4 +5,6 @@ export class UserResponseDTO {
 	id: number;
 	@ApiProperty({ description: 'The username of a user' })
 	username: string;
+	@ApiProperty({ description: 'The avatar hash of a user', nullable: true })
+	avatarHash: string;
 }

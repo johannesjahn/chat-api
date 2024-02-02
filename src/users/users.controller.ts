@@ -29,6 +29,7 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { UserResponseDTO } from '../dtos/user.dto';
 import { UserMapper } from './user.mapper';
 import { UsersService } from './users.service';
+import { encode } from 'blurhash';
 
 @ApiTags('User')
 @ApiCreatedResponse({ type: [UserResponseDTO] })
@@ -110,6 +111,15 @@ export class UsersController {
 				.resize(200)
 				.webp({ effort: 6, quality: 30 })
 				.toFile(path.join('avatars', userId + '_200.webp')),
+			sharp(file.buffer)
+				.resize(64, 64)
+				.ensureAlpha()
+				.raw()
+				.toBuffer()
+				.then(async (buf) => {
+					const encoded = encode(new Uint8ClampedArray(buf), 64, 64, 4, 4);
+					await this.usersService.setAvatarHash(parseInt(userId), encoded);
+				}),
 		]);
 
 		return userId;

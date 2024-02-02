@@ -19,6 +19,9 @@ export class User {
 	@Column({ unique: true })
 	username: string;
 
+	@Column({ nullable: true })
+	avatarHash: string;
+
 	@OneToMany(() => Message, (message) => message.author)
 	messages: Message[];
 

@@ -1,29 +1,30 @@
 {
-  "cSpell.words": [
-    "datetime",
-    "dtos",
-    "Metadatas",
-    "Nachobar",
-    "nestjs",
-    "prebuild",
-    "Repies",
-    "Streamable",
-    "timestamptz",
-    "typeorm",
-    "typevert",
-    "websockets"
-  ],
-  "sqltools.connections": [
-    {
-      "previewLimit": 50,
-      "server": "localhost",
-      "port": 5432,
-      "driver": "PostgreSQL",
-      "name": "chat",
-      "database": "chat",
-      "username": "chat",
-      "password": "qpA09M6Ro51K3"
-    }
-  ],
-  "typescript.tsdk": "node_modules/typescript/lib"
+	"cSpell.words": [
+		"blurhash",
+		"datetime",
+		"dtos",
+		"Metadatas",
+		"Nachobar",
+		"nestjs",
+		"prebuild",
+		"Repies",
+		"Streamable",
+		"timestamptz",
+		"typeorm",
+		"typevert",
+		"websockets"
+	],
+	"sqltools.connections": [
+		{
+			"previewLimit": 50,
+			"server": "localhost",
+			"port": 5432,
+			"driver": "PostgreSQL",
+			"name": "chat",
+			"database": "chat",
+			"username": "chat",
+			"password": "qpA09M6Ro51K3"
+		}
+	],
+	"typescript.tsdk": "node_modules/typescript/lib"
 }
