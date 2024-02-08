@@ -80,4 +80,15 @@ describe('UserService', () => {
 		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 		expect(theUser!.username).toBe(allUsers[0].username);
 	});
+
+	it('Check set avatar hash', async () => {
+		const allUsers = await service.findAll();
+		const user = allUsers[0];
+		const avatarHash = faker.string.alphanumeric(32);
+		await service.setAvatarHash(user.id, avatarHash);
+		const updatedUser = await service.findOne(user.id);
+		expect(updatedUser).not.toBeNull();
+		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+		expect(updatedUser!.avatarHash).toBe(avatarHash);
+	});
 });
