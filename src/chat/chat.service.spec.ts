@@ -79,7 +79,7 @@ describe('ChatService Test', () => {
 			chatService.createConversation(firstUser.id, {
 				partnerIds: [firstUser.id],
 			}),
-		).rejects.toThrowError('Http Exception');
+		).rejects.toThrow('Http Exception');
 	});
 
 	it('Create a chat with empty participant list', async () => {
