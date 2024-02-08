@@ -22,7 +22,7 @@ describe('AuthService', () => {
 	});
 
 	afterAll(() => {
-		dataSource.close();
+		dataSource.destroy();
 	});
 
 	beforeEach(async () => {

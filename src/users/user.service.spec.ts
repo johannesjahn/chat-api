@@ -23,7 +23,7 @@ describe('UserService', () => {
 	});
 
 	afterAll(() => {
-		dataSource.close();
+		dataSource.destroy();
 	});
 
 	beforeEach(async () => {
