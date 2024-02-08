@@ -165,6 +165,13 @@ describe('PostService', () => {
 		expect(postsAfterUpdate[0].comments.length).toBe(0);
 	});
 
+	it('Try to delete a non existing comment', async () => {
+		const postService = app.get(PostService);
+		await expect(postService.deleteComment(1338, 1337)).rejects.toThrow(
+			'Http Exception',
+		);
+	});
+
 	it('Create post, comment, and get post id for comment', async () => {
 		const authService = app.get(AuthService);
 		const ownUser = await authService.register({
@@ -277,6 +284,13 @@ describe('PostService', () => {
 		const postsAfterUpdate = await postService.getPosts();
 		expect(postsAfterUpdate.length).toBe(1);
 		expect(postsAfterUpdate[0].comments[0].replies.length).toBe(0);
+	});
+
+	it('Check error when trying to delete a non existing reply', async () => {
+		const postService = app.get(PostService);
+		await expect(postService.deleteReply(1338, 1337)).rejects.toThrow(
+			'Http Exception',
+		);
 	});
 
 	it('Check if can create post, comment, and reply to the comment', async () => {

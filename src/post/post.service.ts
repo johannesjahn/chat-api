@@ -69,10 +69,8 @@ export class PostService {
 		post.content = postDTO.content;
 		post.contentType = postDTO.contentType;
 
-		const result = await this.postRepository.update(postDTO.id, post);
+		await this.postRepository.update(postDTO.id, post);
 
-		if (result.affected === 0)
-			throw new HttpException({ error: 'Could not update post' }, 400);
 		return post;
 	}
 
@@ -104,9 +102,8 @@ export class PostService {
 		if (!comment) throw new HttpException({ error: 'Comment not found' }, 404);
 		comment.content = content;
 
-		const result = await this.commentRepository.update(commentId, comment);
-		if (result.affected === 0)
-			throw new HttpException({ error: 'Could not update comment' }, 400);
+		await this.commentRepository.update(commentId, comment);
+
 		return comment;
 	}
 
@@ -156,9 +153,8 @@ export class PostService {
 		if (!reply) throw new HttpException({ error: 'Reply not found' }, 404);
 		reply.content = content;
 
-		const result = await this.replyRepository.update(replyId, reply);
-		if (result.affected === 0)
-			throw new HttpException({ error: 'Could not update reply' }, 400);
+		await this.replyRepository.update(replyId, reply);
+
 		return reply;
 	}
 
