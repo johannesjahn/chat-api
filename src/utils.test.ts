@@ -4,7 +4,6 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
 import { AppService } from './app.service';
 import { AuthService } from './auth/auth.service';
-import { jwtConstants } from './auth/constants';
 import { Conversation, Message } from './chat/chat.entity';
 import { ChatGateway } from './chat/chat.gateway';
 import { ChatService } from './chat/chat.service';
@@ -42,7 +41,7 @@ export const getTestModule = async (dataSource: DataSource) => {
 	const messageRepository = dataSource.getRepository(Message);
 
 	const testModule = JwtModule.register({
-		secret: jwtConstants.getSecret(),
+		secret: 'Test Secret',
 		signOptions: {},
 	});
 

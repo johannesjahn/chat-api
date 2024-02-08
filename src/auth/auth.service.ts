@@ -48,14 +48,13 @@ export class AuthService {
 			relations: ['userAuth'],
 		});
 		if (!user) throw new HttpException({ error: 'User not found' }, 400);
-		const pw = await hash(password, hashConstants.saltRounds);
 		if (!user.userAuth) {
 			throw new HttpException({ error: 'Error updating password' }, 500);
 		}
-		if (user.userAuth.password === pw) {
+		if (await compare(password, user.userAuth.password)) {
 			throw new HttpException({ error: "Password can't be the same" }, 400);
 		}
-		user.userAuth.password = pw;
+		user.userAuth.password = await hash(password, hashConstants.saltRounds);
 		await this.userAuthRepository.save(user.userAuth);
 		delete user.userAuth;
 		return user;

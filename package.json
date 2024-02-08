@@ -103,7 +103,8 @@
 			".*\\.guard\\.ts",
 			".*\\.gateway\\.ts",
 			"main\\.ts",
-			"utils\\.ts"
+			"utils\\.ts",
+			"constants\\.ts"
 		],
 		"testEnvironment": "node",
 		"coverageReporters": [
