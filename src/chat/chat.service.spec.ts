@@ -548,4 +548,28 @@ describe('ChatService Test', () => {
 		expect(unreadCount).toBe(true);
 		expect(unreadCount2).toBe(false);
 	});
+
+	it('Create conversation for invalid user', async () => {
+		const chatService = app.get(ChatService);
+		expect(
+			chatService.createConversation(1337, {
+				partnerIds: [1337],
+			}),
+		).rejects.toThrow('Http Exception');
+	});
+
+	it('Create conversation with invalid user', async () => {
+		const authService = app.get(AuthService);
+		const theUser = await authService.register({
+			username: faker.internet.userName(),
+			password: faker.internet.password(),
+		});
+
+		const chatService = app.get(ChatService);
+		expect(
+			chatService.createConversation(1337, {
+				partnerIds: [theUser.id],
+			}),
+		).rejects.toThrow('Http Exception');
+	});
 });
