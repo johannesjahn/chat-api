@@ -1,25 +1,25 @@
 import {
-	Controller,
-	Post,
-	UseGuards,
-	Request,
 	Body,
+	Controller,
 	HttpException,
+	Post,
+	Request,
+	UseGuards,
 } from '@nestjs/common';
-import { LocalAuthGuard } from './local-auth.guard';
-import { AuthService } from './auth.service';
-import { RegisterDTO } from '../dtos/register.dto';
-import { LoginDTO, LoginResponseDTO } from '../dtos/login.dto';
 import {
 	ApiBearerAuth,
 	ApiCreatedResponse,
 	ApiOperation,
 	ApiTags,
 } from '@nestjs/swagger';
-import { UserMapper } from '../users/user.mapper';
-import { UserResponseDTO } from 'src/dtos/user.dto';
-import { JwtAuthGuard } from './jwt-auth.guard';
 import { ChangePasswordDTO } from 'src/dtos/changePassword.dto';
+import { UserResponseDTO } from 'src/dtos/user.dto';
+import { LoginDTO, LoginResponseDTO } from '../dtos/login.dto';
+import { RegisterDTO } from '../dtos/register.dto';
+import { UserMapper } from '../users/user.mapper';
+import { AuthService } from './auth.service';
+import { JwtAuthGuard } from './jwt-auth.guard';
+import { LocalAuthGuard } from './local-auth.guard';
 
 @ApiTags('Auth')
 @Controller('auth/')
