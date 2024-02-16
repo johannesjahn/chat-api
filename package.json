@@ -34,7 +34,6 @@
 		"@types/bcrypt": "^5.0.0",
 		"@types/passport-jwt": "^4.0.0",
 		"@types/passport-local": "^1.0.35",
-		"aws-sdk": "^2.1167.0",
 		"bcrypt": "^5.1.0",
 		"blurhash": "^2.0.5",
 		"nestjs-status-monitor": "^1.0.1",

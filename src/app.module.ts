@@ -8,7 +8,6 @@ import { ChatModule } from './chat/chat.module';
 import { AppLoggerMiddleware } from './middleware/app.logger.middleware';
 import { PostModule } from './post/post.module';
 import { UsersModule } from './users/users.module';
-import { AwsService } from './aws/aws.service';
 import { AppGateway } from './app.gateway';
 import { StatusMonitorModule } from 'nestjs-status-monitor';
 
@@ -68,7 +67,7 @@ import { StatusMonitorModule } from 'nestjs-status-monitor';
 		PostModule,
 	],
 	controllers: [AppController],
-	providers: [AppService, AwsService, AppGateway],
+	providers: [AppService, AppGateway],
 })
 export class AppModule {
 	configure(consumer: MiddlewareConsumer): void {
