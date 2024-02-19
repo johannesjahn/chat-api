@@ -125,10 +125,12 @@ describe('ChatService Test', () => {
 		expect(messages.messages[0].author.id).toBe(firstUser.id);
 		expect(messages.messages[0].content).toBe(text);
 
+		const text2 = faker.lorem.paragraph(100);
+
 		await chatService.sendMessage(
 			secondUser.id,
 			conversation.id,
-			faker.lorem.paragraph(100),
+			text2,
 			'TEXT',
 		);
 
@@ -140,6 +142,7 @@ describe('ChatService Test', () => {
 
 		expect(messages2.messages.length).toBe(2);
 		expect(messages2.messages[1].author.id).toBe(secondUser.id);
+		expect(messages2.messages[1].content).toBe(text2);
 	});
 
 	it('Write a message in a wrong conversation', async () => {
