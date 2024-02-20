@@ -575,4 +575,30 @@ describe('ChatService Test', () => {
 			}),
 		).rejects.toThrow('Http Exception');
 	});
+
+	it('Try sending non url image', async () => {
+		const authService = app.get(AuthService);
+		const theUser = await authService.register({
+			username: faker.internet.userName(),
+			password: faker.internet.password(),
+		});
+
+		const chatService = app.get(ChatService);
+
+		expect(
+			chatService.sendMessage(
+				theUser.id,
+				1337,
+				'ftp://example.com',
+				'IMAGE_URL',
+			),
+		).rejects.toThrow('Http Exception');
+	});
+
+	it('Try sending a message with an invalid user', async () => {
+		const chatService = app.get(ChatService);
+		expect(
+			chatService.sendMessage(1338, 1337, 'ftp://example.com', 'IMAGE_URL'),
+		).rejects.toThrow('Http Exception');
+	});
 });
