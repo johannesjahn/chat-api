@@ -589,7 +589,7 @@ describe('ChatService Test', () => {
 			chatService.sendMessage(
 				theUser.id,
 				1337,
-				'ftp://example.com',
+				'ftp://exampley.com',
 				'IMAGE_URL',
 			),
 		).rejects.toThrow('Http Exception');
