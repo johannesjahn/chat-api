@@ -612,7 +612,7 @@ describe('ChatService Test', () => {
 			username: faker.internet.userName(),
 			password: faker.internet.password(),
 		});
-		const thirdUser = await authService.register({
+		const invalidUser = await authService.register({
 			username: faker.internet.userName(),
 			password: faker.internet.password(),
 		});
@@ -624,7 +624,7 @@ describe('ChatService Test', () => {
 		});
 
 		await expect(
-			chatService.markConversationAsRead(thirdUser.id, conversation.id),
+			chatService.markConversationAsRead(invalidUser.id, conversation.id),
 		).rejects.toThrow('Http Exception');
 	});
 });
