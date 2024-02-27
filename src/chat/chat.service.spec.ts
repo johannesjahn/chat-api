@@ -597,8 +597,34 @@ describe('ChatService Test', () => {
 
 	it('Try sending a message with an invalid user', async () => {
 		const chatService = app.get(ChatService);
-		expect(
+		await expect(
 			chatService.sendMessage(1338, 1337, 'ftp://example.com', 'IMAGE_URL'),
+		).rejects.toThrow('Http Exception');
+	});
+
+	it('Mark a conversation as read with user not in the conversation', async () => {
+		const authService = app.get(AuthService);
+		const firstUser = await authService.register({
+			username: faker.internet.userName(),
+			password: faker.internet.password(),
+		});
+		const secondUser = await authService.register({
+			username: faker.internet.userName(),
+			password: faker.internet.password(),
+		});
+		const thirdUser = await authService.register({
+			username: faker.internet.userName(),
+			password: faker.internet.password(),
+		});
+
+		const chatService = app.get(ChatService);
+
+		const conversation = await chatService.createConversation(firstUser.id, {
+			partnerIds: [secondUser.id],
+		});
+
+		await expect(
+			chatService.markConversationAsRead(thirdUser.id, conversation.id),
 		).rejects.toThrow('Http Exception');
 	});
 });
