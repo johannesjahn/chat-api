@@ -627,4 +627,39 @@ describe('ChatService Test', () => {
 			chatService.markConversationAsRead(invalidUser.id, conversation.id),
 		).rejects.toThrow('Http Exception');
 	});
+
+	it('Mark a message as read with user not in the conversation', async () => {
+		const authService = app.get(AuthService);
+		const firstUser = await authService.register({
+			username: faker.internet.userName(),
+			password: faker.internet.password(),
+		});
+		const secondUser = await authService.register({
+			username: faker.internet.userName(),
+			password: faker.internet.password(),
+		});
+		const invalidUser = await authService.register({
+			username: faker.internet.userName(),
+			password: faker.internet.password(),
+		});
+
+		const chatService = app.get(ChatService);
+
+		const conversation = await chatService.createConversation(firstUser.id, {
+			partnerIds: [secondUser.id],
+		});
+
+		const text = faker.lorem.words(100);
+		await chatService.sendMessage(firstUser.id, conversation.id, text, 'TEXT');
+
+		const messages = await chatService.getMessages(
+			secondUser.id,
+			conversation.id,
+			undefined,
+		);
+
+		await expect(
+			chatService.markMessageAsRead(invalidUser.id, messages.messages[0].id),
+		).rejects.toThrow('Http Exception');
+	});
 });
