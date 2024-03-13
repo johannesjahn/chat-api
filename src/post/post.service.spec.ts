@@ -100,7 +100,7 @@ describe('PostService', () => {
 		expect(postsAfterUpdate[0].content).toBe(updatedContent);
 	});
 
-	it('Create post, comment, and update comment', async () => {
+	it('Create post, comment, and update comment.', async () => {
 		const authService = app.get(AuthService);
 		const ownUser = await authService.register({
 			username: faker.internet.userName(),
