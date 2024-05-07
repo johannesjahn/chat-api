@@ -107,4 +107,4 @@ jobs:
           host: chat.johannes-jahn.com
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
-          script: cd chat-api && docker-compose pull && docker-compose up -d chat && yes | docker image prune -a
+          script: cd chat-api && docker compose pull && docker compose up -d chat && yes | docker image prune -a
