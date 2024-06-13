@@ -5,6 +5,7 @@
 	"author": "",
 	"private": true,
 	"license": "MIT",
+	"packageManager": "yarn@1.22.22",
 	"scripts": {
 		"prebuild": "rimraf dist",
 		"build": "nest build",
