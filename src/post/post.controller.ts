@@ -59,7 +59,7 @@ export class PostController {
 
 	@Get('/')
 	@ApiOperation({ description: 'Get all posts' })
-	@ApiCreatedResponse({ type: PostResponseDTO, isArray: true })
+	@ApiCreatedResponse({ type: PostResponseDTO, isArray: true, status: 200 })
 	async getPosts() {
 		const result = await this.postService.getPosts();
 		const mapper = new PostMapper();
