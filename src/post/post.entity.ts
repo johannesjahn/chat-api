@@ -16,6 +16,9 @@ export class Post extends AbstractEntity {
 
 	@OneToMany(() => Comment, (comment) => comment.post, { onDelete: 'CASCADE' })
 	comments: Comment[];
+
+	@Column({ default: 0 })
+	likes: number;
 }
 
 @Entity('comment')
@@ -37,6 +40,9 @@ export class Comment extends AbstractEntity {
 		onDelete: 'CASCADE',
 	})
 	author: User | undefined;
+
+	@Column({ default: 0 })
+	likes: number;
 }
 
 @Entity('reply')
@@ -55,4 +61,7 @@ export class Reply extends AbstractEntity {
 		onDelete: 'CASCADE',
 	})
 	author: User | undefined;
+
+	@Column({ default: 0 })
+	likes: number;
 }
