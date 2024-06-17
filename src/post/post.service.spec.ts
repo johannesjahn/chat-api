@@ -559,4 +559,334 @@ describe('PostService', () => {
 			new HttpException({ error: 'Post not found' }, 404),
 		);
 	});
+
+	it('Like post', async () => {
+		const authService = app.get(AuthService);
+		const postService = app.get(PostService);
+		const firstUser = await authService.register({
+			username: faker.internet.userName(),
+			password: faker.internet.password(),
+		});
+		const secondUser = await authService.register({
+			username: faker.internet.userName(),
+			password: faker.internet.password(),
+		});
+		const post = await postService.createPost(firstUser.id, {
+			content: faker.lorem.paragraph(),
+			contentType: 'TEXT',
+		});
+
+		await postService.likePost(secondUser.id, post.id);
+
+		const resultPost = (await postService.getPosts())[0];
+
+		expect(resultPost.likes).toBe(1);
+		expect(resultPost.likedBy[0].id).toBe(secondUser.id);
+	});
+
+	it('Multiple likes post', async () => {
+		const authService = app.get(AuthService);
+		const postService = app.get(PostService);
+		const firstUser = await authService.register({
+			username: faker.internet.userName(),
+			password: faker.internet.password(),
+		});
+		const secondUser = await authService.register({
+			username: faker.internet.userName(),
+			password: faker.internet.password(),
+		});
+		const post = await postService.createPost(firstUser.id, {
+			content: faker.lorem.paragraph(),
+			contentType: 'TEXT',
+		});
+
+		await postService.likePost(firstUser.id, post.id);
+		await postService.likePost(secondUser.id, post.id);
+
+		const resultPost = (await postService.getPosts())[0];
+
+		expect(resultPost.likes).toBe(2);
+		expect(resultPost.likedBy.length).toBe(2);
+	});
+
+	it('Like and undo like post', async () => {
+		const authService = app.get(AuthService);
+		const postService = app.get(PostService);
+		const firstUser = await authService.register({
+			username: faker.internet.userName(),
+			password: faker.internet.password(),
+		});
+		const post = await postService.createPost(firstUser.id, {
+			content: faker.lorem.paragraph(),
+			contentType: 'TEXT',
+		});
+
+		await postService.likePost(firstUser.id, post.id);
+		await postService.likePost(firstUser.id, post.id);
+
+		const resultPost = (await postService.getPosts())[0];
+
+		expect(resultPost.likes).toBe(0);
+		expect(resultPost.likedBy.length).toBe(0);
+	});
+
+	it('Find liked Posts', async () => {
+		const authService = app.get(AuthService);
+		const postService = app.get(PostService);
+		const firstUser = await authService.register({
+			username: faker.internet.userName(),
+			password: faker.internet.password(),
+		});
+		const firstPost = await postService.createPost(firstUser.id, {
+			content: faker.lorem.paragraph(),
+			contentType: 'TEXT',
+		});
+		const secondPost = await postService.createPost(firstUser.id, {
+			content: faker.lorem.paragraph(),
+			contentType: 'TEXT',
+		});
+
+		await postService.likePost(firstUser.id, firstPost.id);
+		await postService.likePost(firstUser.id, secondPost.id);
+
+		const likedPosts = await postService.findLikedPosts(firstUser.id);
+
+		expect(likedPosts).toHaveLength(2);
+	});
+
+	// COMMENT
+
+	it('Like comment', async () => {
+		const authService = app.get(AuthService);
+		const postService = app.get(PostService);
+		const firstUser = await authService.register({
+			username: faker.internet.userName(),
+			password: faker.internet.password(),
+		});
+		const secondUser = await authService.register({
+			username: faker.internet.userName(),
+			password: faker.internet.password(),
+		});
+		const post = await postService.createPost(firstUser.id, {
+			content: faker.lorem.paragraph(),
+			contentType: 'TEXT',
+		});
+		const comment = await postService.createComment(firstUser.id, {
+			content: faker.lorem.paragraph(),
+			postId: post.id,
+		});
+
+		await postService.likeComment(secondUser.id, comment.id);
+
+		const resultComment = (await postService.getComments(post.id))[0];
+
+		expect(resultComment.likes).toBe(1);
+		expect(resultComment.likedBy[0].id).toBe(secondUser.id);
+	});
+
+	it('Multiple likes comment', async () => {
+		const authService = app.get(AuthService);
+		const postService = app.get(PostService);
+		const firstUser = await authService.register({
+			username: faker.internet.userName(),
+			password: faker.internet.password(),
+		});
+		const secondUser = await authService.register({
+			username: faker.internet.userName(),
+			password: faker.internet.password(),
+		});
+		const post = await postService.createPost(firstUser.id, {
+			content: faker.lorem.paragraph(),
+			contentType: 'TEXT',
+		});
+		const comment = await postService.createComment(firstUser.id, {
+			content: faker.lorem.paragraph(),
+			postId: post.id,
+		});
+
+		await postService.likeComment(firstUser.id, comment.id);
+		await postService.likeComment(secondUser.id, comment.id);
+
+		const resultComment = (await postService.getComments(post.id))[0];
+
+		expect(resultComment.likes).toBe(2);
+		expect(resultComment.likedBy).toHaveLength(2);
+	});
+
+	it('Like and undo like comment', async () => {
+		const authService = app.get(AuthService);
+		const postService = app.get(PostService);
+		const firstUser = await authService.register({
+			username: faker.internet.userName(),
+			password: faker.internet.password(),
+		});
+		const post = await postService.createPost(firstUser.id, {
+			content: faker.lorem.paragraph(),
+			contentType: 'TEXT',
+		});
+		const comment = await postService.createComment(firstUser.id, {
+			content: faker.lorem.paragraph(),
+			postId: post.id,
+		});
+
+		await postService.likeComment(firstUser.id, comment.id);
+		await postService.likeComment(firstUser.id, comment.id);
+
+		const resultComment = (await postService.getComments(post.id))[0];
+
+		expect(resultComment.likes).toBe(0);
+		expect(resultComment.likedBy.length).toBe(0);
+	});
+
+	it('Find liked Comments', async () => {
+		const authService = app.get(AuthService);
+		const postService = app.get(PostService);
+		const firstUser = await authService.register({
+			username: faker.internet.userName(),
+			password: faker.internet.password(),
+		});
+		const post = await postService.createPost(firstUser.id, {
+			content: faker.lorem.paragraph(),
+			contentType: 'TEXT',
+		});
+		const firstComment = await postService.createComment(firstUser.id, {
+			content: faker.lorem.paragraph(),
+			postId: post.id,
+		});
+		const secondComment = await postService.createComment(firstUser.id, {
+			content: faker.lorem.paragraph(),
+			postId: post.id,
+		});
+
+		await postService.likeComment(firstUser.id, firstComment.id);
+		await postService.likeComment(firstUser.id, secondComment.id);
+
+		const likedPosts = await postService.findLikedComments(firstUser.id);
+
+		expect(likedPosts).toHaveLength(2);
+	});
+
+	// Replies
+
+	it('Like Reply', async () => {
+		const authService = app.get(AuthService);
+		const postService = app.get(PostService);
+		const firstUser = await authService.register({
+			username: faker.internet.userName(),
+			password: faker.internet.password(),
+		});
+		const post = await postService.createPost(firstUser.id, {
+			content: faker.lorem.paragraph(),
+			contentType: 'TEXT',
+		});
+		const comment = await postService.createComment(firstUser.id, {
+			content: faker.lorem.paragraph(),
+			postId: post.id,
+		});
+		const reply = await postService.createReply(firstUser.id, {
+			content: faker.lorem.paragraph(),
+			commentId: comment.id,
+		});
+
+		await postService.likeReply(firstUser.id, reply.id);
+
+		const resultReply = (await postService.getReplies(comment.id))[0];
+
+		expect(resultReply.likes).toBe(1);
+		expect(resultReply.likedBy[0].id).toBe(firstUser.id);
+	});
+
+	it('Multiple likes Reply', async () => {
+		const authService = app.get(AuthService);
+		const postService = app.get(PostService);
+		const firstUser = await authService.register({
+			username: faker.internet.userName(),
+			password: faker.internet.password(),
+		});
+		const secondUser = await authService.register({
+			username: faker.internet.userName(),
+			password: faker.internet.password(),
+		});
+		const post = await postService.createPost(firstUser.id, {
+			content: faker.lorem.paragraph(),
+			contentType: 'TEXT',
+		});
+		const comment = await postService.createComment(firstUser.id, {
+			content: faker.lorem.paragraph(),
+			postId: post.id,
+		});
+		const reply = await postService.createReply(firstUser.id, {
+			content: faker.lorem.paragraph(),
+			commentId: comment.id,
+		});
+
+		await postService.likeReply(firstUser.id, reply.id);
+		await postService.likeReply(secondUser.id, reply.id);
+
+		const resultReply = (await postService.getReplies(comment.id))[0];
+
+		expect(resultReply.likes).toBe(2);
+		expect(resultReply.likedBy).toHaveLength(2);
+	});
+
+	it('Like and undo like reply', async () => {
+		const authService = app.get(AuthService);
+		const postService = app.get(PostService);
+		const firstUser = await authService.register({
+			username: faker.internet.userName(),
+			password: faker.internet.password(),
+		});
+		const post = await postService.createPost(firstUser.id, {
+			content: faker.lorem.paragraph(),
+			contentType: 'TEXT',
+		});
+		const comment = await postService.createComment(firstUser.id, {
+			content: faker.lorem.paragraph(),
+			postId: post.id,
+		});
+		const reply = await postService.createReply(firstUser.id, {
+			content: faker.lorem.paragraph(),
+			commentId: comment.id,
+		});
+
+		await postService.likeReply(firstUser.id, reply.id);
+		await postService.likeReply(firstUser.id, reply.id);
+
+		const resultReply = (await postService.getReplies(comment.id))[0];
+
+		expect(resultReply.likes).toBe(0);
+		expect(resultReply.likedBy).toHaveLength(0);
+	});
+
+	it('Find liked Replies', async () => {
+		const authService = app.get(AuthService);
+		const postService = app.get(PostService);
+		const firstUser = await authService.register({
+			username: faker.internet.userName(),
+			password: faker.internet.password(),
+		});
+		const post = await postService.createPost(firstUser.id, {
+			content: faker.lorem.paragraph(),
+			contentType: 'TEXT',
+		});
+		const comment = await postService.createComment(firstUser.id, {
+			content: faker.lorem.paragraph(),
+			postId: post.id,
+		});
+		const firstReply = await postService.createReply(firstUser.id, {
+			content: faker.lorem.paragraph(),
+			commentId: comment.id,
+		});
+		const secondReply = await postService.createReply(firstUser.id, {
+			content: faker.lorem.paragraph(),
+			commentId: comment.id,
+		});
+
+		await postService.likeReply(firstUser.id, firstReply.id);
+		await postService.likeReply(firstUser.id, secondReply.id);
+
+		const likedReplies = await postService.findLikedReplies(firstUser.id);
+
+		expect(likedReplies).toHaveLength(2);
+	});
 });

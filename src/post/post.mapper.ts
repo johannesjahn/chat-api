@@ -29,6 +29,10 @@ import { UserMapper } from '../users/user.mapper';
 		target: 'author',
 		converter: UserMapper,
 	},
+	{
+		source: 'likes',
+		target: 'likes',
+	},
 ])
 export class ReplyMapper extends Converter<Reply, ReplyResponseDTO> {}
 
@@ -59,6 +63,10 @@ export class ReplyMapper extends Converter<Reply, ReplyResponseDTO> {}
 		target: 'replies',
 		isCollection: true,
 		converter: ReplyMapper,
+	},
+	{
+		source: 'likes',
+		target: 'likes',
 	},
 ])
 export class CommentMapper extends Converter<Comment, CommentResponseDTO> {}
@@ -94,6 +102,10 @@ export class CommentMapper extends Converter<Comment, CommentResponseDTO> {}
 		target: 'comments',
 		converter: CommentMapper,
 		isCollection: true,
+	},
+	{
+		source: 'likes',
+		target: 'likes',
 	},
 ])
 export class PostMapper extends Converter<Post, PostResponseDTO> {}

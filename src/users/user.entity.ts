@@ -49,4 +49,22 @@ export class User {
 
 	@OneToMany(() => Reply, (reply) => reply.author)
 	replies: Reply[];
+
+	@ManyToMany(() => Post, (post) => post.likedBy, {
+		onDelete: 'CASCADE',
+		onUpdate: 'CASCADE',
+	})
+	likedPosts: Post[];
+
+	@ManyToMany(() => Comment, (comment) => comment.likedBy, {
+		onDelete: 'CASCADE',
+		onUpdate: 'CASCADE',
+	})
+	likedComments: Comment[];
+
+	@ManyToMany(() => Reply, (reply) => reply.likedBy, {
+		onDelete: 'CASCADE',
+		onUpdate: 'CASCADE',
+	})
+	likedReplies: Reply[];
 }

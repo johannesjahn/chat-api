@@ -28,6 +28,9 @@ export class ReplyResponseDTO {
 
 	@ApiProperty({ nullable: true, description: 'The author of a reply' })
 	author: UserResponseDTO;
+
+	@ApiProperty({ nullable: false, description: 'Number of likes' })
+	likes: number;
 }
 export class CommentResponseDTO {
 	@ApiProperty({ description: 'The unique id of a comment' })
@@ -51,6 +54,9 @@ export class CommentResponseDTO {
 		description: 'The replies of a comment',
 	})
 	replies: ReplyResponseDTO[];
+
+	@ApiProperty({ nullable: false, description: 'Number of likes' })
+	likes: number;
 }
 export class PostResponseDTO {
 	@ApiProperty({ description: 'The unique id of a post' })
@@ -81,6 +87,9 @@ export class PostResponseDTO {
 		description: 'The comments of a post',
 	})
 	comments: CommentResponseDTO[] | null;
+
+	@ApiProperty({ nullable: false, description: 'Number of likes' })
+	likes: number;
 }
 
 export class UpdatePostDTO {

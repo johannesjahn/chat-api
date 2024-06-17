@@ -8,6 +8,7 @@ import {
 	UpdatePostDTO,
 } from '../dtos/post.dto';
 import { Comment, Post, Reply } from './post.entity';
+import { User } from '../users/user.entity';
 
 @Injectable()
 export class PostService {
@@ -18,6 +19,8 @@ export class PostService {
 		private commentRepository: Repository<Comment>,
 		@InjectRepository(Reply)
 		private replyRepository: Repository<Reply>,
+		@InjectRepository(User)
+		private userRepository: Repository<User>,
 	) {}
 
 	async createPost(userId: number, post: CreatePostDTO) {
@@ -37,6 +40,7 @@ export class PostService {
 			relations: [
 				'author',
 				'comments',
+				'likedBy',
 				'comments.author',
 				'comments.replies',
 				'comments.replies.author',
@@ -90,7 +94,7 @@ export class PostService {
 		const result = await this.commentRepository.find({
 			where: { post: { id: postId } },
 			order: { createdAt: 'ASC' },
-			relations: ['author', 'replies', 'replies.author'],
+			relations: ['author', 'likedBy', 'replies', 'replies.author'],
 		});
 		return result;
 	}
@@ -141,7 +145,7 @@ export class PostService {
 		const result = await this.replyRepository.find({
 			where: { comment: { id: commentId } },
 			order: { createdAt: 'ASC' },
-			relations: ['author'],
+			relations: ['author', 'likedBy'],
 		});
 		return result;
 	}
@@ -166,5 +170,110 @@ export class PostService {
 		if (result.affected === 0)
 			throw new HttpException({ error: 'Reply not found' }, 404);
 		return { success: 'Reply deleted' };
+	}
+
+	async likePost(userId: number, postId: number) {
+		const post = await this.postRepository.findOne({
+			where: { id: postId },
+			relations: ['likedBy'],
+		});
+
+		if (post == null) {
+			throw new HttpException({ error: 'Post not found' }, 404);
+		}
+
+		const likedUser = post.likedBy.findIndex((u) => u.id == userId);
+
+		if (likedUser != -1) {
+			post.likes -= 1;
+			post.likedBy = post.likedBy.filter((u) => u.id != userId);
+		} else {
+			const user = await this.userRepository.findOne({
+				where: { id: userId },
+			});
+			post.likes += 1;
+			post.likedBy.push(user!);
+		}
+
+		await this.postRepository.save(post);
+	}
+
+	async findLikedPosts(userId: number) {
+		const result = await this.postRepository.find({
+			where: {
+				likedBy: { id: userId },
+			},
+		});
+		return result;
+	}
+
+	async likeComment(userId: number, commentId: number) {
+		const comment = await this.commentRepository.findOne({
+			where: { id: commentId },
+			relations: ['likedBy'],
+		});
+
+		if (comment == null) {
+			throw new HttpException({ error: 'Comment not found' }, 404);
+		}
+
+		const likedUser = comment.likedBy.findIndex((u) => u.id == userId);
+
+		if (likedUser != -1) {
+			comment.likes -= 1;
+			comment.likedBy = comment.likedBy.filter((u) => u.id != userId);
+		} else {
+			const user = await this.userRepository.findOne({
+				where: { id: userId },
+			});
+			comment.likes += 1;
+			comment.likedBy.push(user!);
+		}
+
+		await this.commentRepository.save(comment);
+	}
+
+	async findLikedComments(userId: number) {
+		const result = await this.commentRepository.find({
+			where: {
+				likedBy: { id: userId },
+			},
+		});
+		return result;
+	}
+
+	async likeReply(userId: number, replyId: number) {
+		const reply = await this.replyRepository.findOne({
+			where: { id: replyId },
+			relations: ['likedBy'],
+		});
+
+		if (reply == null) {
+			throw new HttpException({ error: 'Reply not found' }, 404);
+		}
+
+		const likedUser = reply.likedBy.findIndex((u) => u.id == userId);
+
+		if (likedUser != -1) {
+			reply.likes -= 1;
+			reply.likedBy = reply.likedBy.filter((u) => u.id != userId);
+		} else {
+			const user = await this.userRepository.findOne({
+				where: { id: userId },
+			});
+			reply.likes += 1;
+			reply.likedBy.push(user!);
+		}
+
+		await this.replyRepository.save(reply);
+	}
+
+	async findLikedReplies(userId: number) {
+		const result = await this.replyRepository.find({
+			where: {
+				likedBy: { id: userId },
+			},
+		});
+		return result;
 	}
 }

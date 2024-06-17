@@ -1,5 +1,12 @@
 import { AbstractEntity } from '../utils/utils.entity';
-import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
+import {
+	Column,
+	Entity,
+	ManyToMany,
+	ManyToOne,
+	OneToMany,
+	JoinTable,
+} from 'typeorm';
 import { User } from '../users/user.entity';
 import { ContentType } from 'src/chat/chat.entity';
 
@@ -19,6 +26,13 @@ export class Post extends AbstractEntity {
 
 	@Column({ default: 0 })
 	likes: number;
+
+	@ManyToMany(() => User, (user) => user.likedPosts, {
+		onDelete: 'CASCADE',
+		onUpdate: 'CASCADE',
+	})
+	@JoinTable()
+	likedBy: User[];
 }
 
 @Entity('comment')
@@ -43,6 +57,13 @@ export class Comment extends AbstractEntity {
 
 	@Column({ default: 0 })
 	likes: number;
+
+	@ManyToMany(() => User, (user) => user.likedPosts, {
+		onDelete: 'CASCADE',
+		onUpdate: 'CASCADE',
+	})
+	@JoinTable()
+	likedBy: User[];
 }
 
 @Entity('reply')
@@ -64,4 +85,11 @@ export class Reply extends AbstractEntity {
 
 	@Column({ default: 0 })
 	likes: number;
+
+	@ManyToMany(() => User, (user) => user.likedPosts, {
+		onDelete: 'CASCADE',
+		onUpdate: 'CASCADE',
+	})
+	@JoinTable()
+	likedBy: User[];
 }

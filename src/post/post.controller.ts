@@ -223,4 +223,28 @@ export class PostController {
 		const dto = mapper.convert(result);
 		return dto;
 	}
+
+	@ApiBearerAuth()
+	@UseGuards(JwtAuthGuard)
+	@Post(':postId/like')
+	async likePost(@Request() req: any, @Param('postId') postId: number) {
+		await this.postService.likePost(req.user.userId, postId);
+	}
+
+	@ApiBearerAuth()
+	@UseGuards(JwtAuthGuard)
+	@Post('/comment/:commentId/like')
+	async likeComment(
+		@Request() req: any,
+		@Param('commentId') commentId: number,
+	) {
+		await this.postService.likeComment(req.user.userId, commentId);
+	}
+
+	@ApiBearerAuth()
+	@UseGuards(JwtAuthGuard)
+	@Post('/reply/:replyId/like')
+	async likeReply(@Request() req: any, @Param('replyId') replyId: number) {
+		await this.postService.likeReply(req.user.userId, replyId);
+	}
 }
