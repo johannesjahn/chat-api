@@ -38,7 +38,7 @@ describe('AppController (e2e)', () => {
 		expect(response.statusCode).toBe(201);
 	});
 
-	it('/auth/login (POST)', async () => {
+	it('/auth/login (POST) - correct credentials', async () => {
 		await request(app.getHttpServer())
 			.post('/auth/register')
 			.send({ username: 'Nachobar', password: '12345678' });
@@ -47,5 +47,14 @@ describe('AppController (e2e)', () => {
 			.post('/auth/login')
 			.send({ username: 'Nachobar', password: '12345678' });
 		expect(response.statusCode).toBe(201);
+		expect(response.body).toHaveProperty('access_token');
+	});
+
+	it('/auth/login (POST) - wrong credentials', async () => {
+		const response = await request(app.getHttpServer())
+			.post('/auth/login')
+			.send({ username: 'Nachobar', password: '12345678' });
+
+		expect(response.statusCode).toBe(401);
 	});
 });
