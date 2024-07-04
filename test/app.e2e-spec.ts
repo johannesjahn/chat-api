@@ -6,7 +6,7 @@ import { AppModule } from './../src/app.module';
 describe('AppController (e2e)', () => {
 	let app: INestApplication;
 
-	beforeAll(async () => {
+	beforeEach(async () => {
 		const moduleFixture: TestingModule = await Test.createTestingModule({
 			imports: [AppModule],
 		}).compile();
@@ -15,7 +15,7 @@ describe('AppController (e2e)', () => {
 		await app.init();
 	});
 
-	afterAll(async () => {
+	afterEach(async () => {
 		await app.close();
 	});
 
@@ -31,10 +31,21 @@ describe('AppController (e2e)', () => {
 		return response;
 	});
 
-	it('/auth/login (POST', async () => {
-		const result = await request(app.getHttpServer())
+	it('/auth/register (POST)', async () => {
+		const response = await request(app.getHttpServer())
 			.post('/auth/register')
 			.send({ username: 'Nachobar', password: '12345678' });
-		expect(result.statusCode).toBe(201);
+		expect(response.statusCode).toBe(201);
+	});
+
+	it('/auth/login (POST)', async () => {
+		await request(app.getHttpServer())
+			.post('/auth/register')
+			.send({ username: 'Nachobar', password: '12345678' });
+
+		const response = await request(app.getHttpServer())
+			.post('/auth/login')
+			.send({ username: 'Nachobar', password: '12345678' });
+		expect(response.statusCode).toBe(201);
 	});
 });
