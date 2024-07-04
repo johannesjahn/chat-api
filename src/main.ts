@@ -14,7 +14,9 @@ async function bootstrap() {
 
 	const config = new DocumentBuilder()
 		.setTitle('Chat - API')
-		.setDescription('Chat - API Description')
+		.setDescription(
+			`The Chat API, accessible at https://chat.johannes-jahn.com, offers a platform for real-time messaging. It supports secure user authentication and is designed for easy integration into applications requiring chat functionalities.`,
+		)
 		.setVersion(process.env.npm_package_version ?? '0.0.0')
 		.addServer('https://chat.johannes-jahn.com')
 		.addBearerAuth()
