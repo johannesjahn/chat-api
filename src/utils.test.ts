@@ -1,7 +1,7 @@
 import { JwtModule } from '@nestjs/jwt';
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { DataSource } from 'typeorm';
+import { DataSource, DataSourceOptions } from 'typeorm';
 import { AppService } from './app.service';
 import { AuthService } from './auth/auth.service';
 import { Conversation, Message } from './chat/chat.entity';
@@ -15,16 +15,18 @@ import { UserAuth } from './users/userAuth.entity';
 import { UsersService } from './users/users.service';
 import { faker } from '@faker-js/faker';
 
+export const testOrmOptions: DataSourceOptions = {
+	type: 'sqlite',
+	database: ':memory:',
+	dropSchema: true,
+	entities: ['./**/*.entity.ts'],
+	synchronize: true,
+	logging: false,
+	name: 'default',
+};
+
 export const getTestDataSource = async () => {
-	const ds = await new DataSource({
-		type: 'sqlite',
-		database: ':memory:',
-		dropSchema: true,
-		entities: ['./**/*.entity.ts'],
-		synchronize: true,
-		logging: false,
-		name: 'default',
-	}).initialize();
+	const ds = await new DataSource(testOrmOptions).initialize();
 	return ds;
 };
 

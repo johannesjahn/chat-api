@@ -14,7 +14,7 @@ import {
 	ApiOperation,
 	ApiTags,
 } from '@nestjs/swagger';
-import { ConversationMapper, MessageMapper } from 'src/chat/chat.mapper';
+import { ConversationMapper, MessageMapper } from '../chat/chat.mapper';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import {
 	ConversationResponseDTO,

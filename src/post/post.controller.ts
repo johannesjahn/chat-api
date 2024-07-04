@@ -16,7 +16,7 @@ import {
 	ApiOperation,
 	ApiTags,
 } from '@nestjs/swagger';
-import { CommentMapper, PostMapper, ReplyMapper } from 'src/post/post.mapper';
+import { CommentMapper, PostMapper, ReplyMapper } from '../post/post.mapper';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import {
 	CommentResponseDTO,

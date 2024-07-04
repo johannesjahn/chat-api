@@ -12,8 +12,8 @@ import {
 	ApiOperation,
 	ApiTags,
 } from '@nestjs/swagger';
-import { ChangePasswordDTO } from 'src/dtos/changePassword.dto';
-import { UserResponseDTO } from 'src/dtos/user.dto';
+import { ChangePasswordDTO } from '../dtos/changePassword.dto';
+import { UserResponseDTO } from '../dtos/user.dto';
 import { LoginDTO, LoginResponseDTO } from '../dtos/login.dto';
 import { RegisterDTO } from '../dtos/register.dto';
 import { UserMapper } from '../users/user.mapper';

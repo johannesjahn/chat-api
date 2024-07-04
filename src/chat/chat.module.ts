@@ -4,9 +4,9 @@ import { User } from '../users/user.entity';
 import { ChatController } from './chat.controller';
 import { Conversation, Message } from './chat.entity';
 import { ChatService } from './chat.service';
-import { PostModule } from 'src/post/post.module';
+import { PostModule } from '../post/post.module';
 import { ChatGateway } from './chat.gateway';
-import { jwtModule } from 'src/auth/auth.module';
+import { jwtModule } from '../auth/auth.module';
 
 @Module({
 	imports: [

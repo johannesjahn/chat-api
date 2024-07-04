@@ -8,7 +8,7 @@ import {
 	JoinTable,
 } from 'typeorm';
 import { User } from '../users/user.entity';
-import { ContentType } from 'src/chat/chat.entity';
+import { ContentType } from '../chat/chat.entity';
 
 @Entity('post')
 export class Post extends AbstractEntity {
