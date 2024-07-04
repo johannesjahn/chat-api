@@ -26,7 +26,7 @@ jobs:
       - run: yarn install
       - run: yarn add sharp --ignore-engines
       - run: yarn test:e2e
-  test_coverage:
+  test-coverage:
     runs-on: ubuntu-latest
     needs: [test]
     steps:
@@ -51,10 +51,10 @@ jobs:
           cache: 'yarn'
       - run: yarn install
       - run: yarn lint
-  version_bump:
+  version-bump:
     if: "!startsWith(github.event.head_commit.message, '[RELEASE]') && github.ref == 'refs/heads/main'"
     runs-on: ubuntu-latest
-    needs: [lint, test]
+    needs: [lint, test, test-e2e]
     steps:
       - uses: actions/checkout@v4
         with:
@@ -71,7 +71,7 @@ jobs:
           git push --tags
   build:
     runs-on: ubuntu-latest
-    needs: [lint, test]
+    needs: [lint, test, test-e2e]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -87,10 +87,10 @@ jobs:
         with:
           name: dist
           path: dist.zip
-  build_image:
+  build-image:
     if: startsWith(github.event.head_commit.message, '[RELEASE]') && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
-    needs: [lint, test]
+    needs: [lint, test, test-e2e]
     steps:
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
@@ -110,7 +110,7 @@ jobs:
   deploy:
     if: startsWith(github.event.head_commit.message, '[RELEASE]') && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
-    needs: build_image
+    needs: build-image
     steps:
       - uses: appleboy/ssh-action@master
         with:
