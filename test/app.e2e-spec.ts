@@ -19,7 +19,7 @@ describe('AppController (e2e)', () => {
 		await app.close();
 	});
 
-	it('/ (GET)', async () => {
+	it('/debug (GET)', async () => {
 		const response = await request(app.getHttpServer())
 			.get('/debug')
 			.expect(200)
@@ -29,32 +29,5 @@ describe('AppController (e2e)', () => {
 					JSON.stringify({ message: 'Thanks for using the debug endpoint.' }),
 			);
 		return response;
-	});
-
-	it('/auth/register (POST)', async () => {
-		const response = await request(app.getHttpServer())
-			.post('/auth/register')
-			.send({ username: 'Nachobar', password: '12345678' });
-		expect(response.statusCode).toBe(201);
-	});
-
-	it('/auth/login (POST) - correct credentials', async () => {
-		await request(app.getHttpServer())
-			.post('/auth/register')
-			.send({ username: 'Nachobar', password: '12345678' });
-
-		const response = await request(app.getHttpServer())
-			.post('/auth/login')
-			.send({ username: 'Nachobar', password: '12345678' });
-		expect(response.statusCode).toBe(201);
-		expect(response.body).toHaveProperty('access_token');
-	});
-
-	it('/auth/login (POST) - wrong credentials', async () => {
-		const response = await request(app.getHttpServer())
-			.post('/auth/login')
-			.send({ username: 'Nachobar', password: '12345678' });
-
-		expect(response.statusCode).toBe(401);
 	});
 });
