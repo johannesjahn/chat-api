@@ -45,4 +45,26 @@ describe('AppController (e2e)', () => {
 
 		expect(response.statusCode).toBe(401);
 	});
+
+	it('/auth/change-password (POST) - change password', async () => {
+		await request(app.getHttpServer())
+			.post('/auth/register')
+			.send({ username: 'Nachobar', password: '12345678' });
+
+		const loginResponse = await request(app.getHttpServer())
+			.post('/auth/login')
+			.send({ username: 'Nachobar', password: '12345678' });
+
+		const changePasswordResponse = await request(app.getHttpServer())
+			.post('/auth/change-password')
+			.set('Authorization', `Bearer ${loginResponse.body.access_token}`)
+			.send({ password: '123456789', passwordConfirm: '123456789' });
+
+		const secondLoginResponse = await request(app.getHttpServer())
+			.post('/auth/login')
+			.send({ username: 'Nachobar', password: '123456789' });
+
+		expect(changePasswordResponse.statusCode).toBe(201);
+		expect(secondLoginResponse.statusCode).toBe(201);
+	});
 });
