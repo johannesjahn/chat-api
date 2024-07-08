@@ -23,7 +23,21 @@ export class PostService {
 		private userRepository: Repository<User>,
 	) {}
 
+	private checkPostContent(post: CreatePostDTO | UpdatePostDTO) {
+		// Count line breaks in the content
+		const lineBreaks = (post.content.match(/\n/g) || []).length;
+		if (lineBreaks > 3) {
+			throw new HttpException(
+				{
+					error: 'Post content cannot contain more than 3 line breaks',
+				},
+				400,
+			);
+		}
+	}
+
 	async createPost(userId: number, post: CreatePostDTO) {
+		this.checkPostContent(post);
 		const createdPost: Post = await this.postRepository.save({
 			content: post.content,
 			contentType: post.contentType,
@@ -65,6 +79,7 @@ export class PostService {
 	}
 
 	async updatePost(userId: number, postDTO: UpdatePostDTO) {
+		this.checkPostContent(postDTO);
 		const post = await this.postRepository.findOne({
 			where: { id: postDTO.id, author: { id: userId } },
 		});

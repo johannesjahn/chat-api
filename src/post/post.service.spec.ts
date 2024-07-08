@@ -889,4 +889,20 @@ describe('PostService', () => {
 
 		expect(likedReplies).toHaveLength(2);
 	});
+
+	it('Check error when trying to create a post with too many newlines', async () => {
+		const postService = app.get(PostService);
+		const authService = app.get(AuthService);
+
+		const user = await authService.register({
+			username: faker.internet.userName(),
+			password: faker.internet.password(),
+		});
+		await expect(
+			postService.createPost(user.id, {
+				content: '\n1\n2\n3\n4',
+				contentType: 'TEXT',
+			}),
+		).rejects.toThrow('Http Exception');
+	});
 });
