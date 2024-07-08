@@ -21,6 +21,17 @@
 			"cwd": "${workspaceRoot}",
 			"console": "integratedTerminal",
 			"protocol": "inspector"
+		},
+		{
+			"type": "node",
+			"name": "Debug e2e tests",
+			"request": "launch",
+			"args": ["test:e2e", "--runInBand", "--watchAll=false"],
+			"cwd": "/Users/johannesjahn/dev/chat-api",
+			"console": "integratedTerminal",
+			"internalConsoleOptions": "neverOpen",
+			"disableOptimisticBPs": true,
+			"runtimeExecutable": "yarn"
 		}
 	]
 }
