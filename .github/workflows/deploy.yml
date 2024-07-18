@@ -12,8 +12,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: 'yarn'
-      - run: yarn install
+      - run: yarn install --frozen-lockfile
       - run: yarn test
   test-e2e:
     runs-on: ubuntu-latest
@@ -22,8 +21,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: 'yarn'
-      - run: yarn install
+      - run: yarn install --frozen-lockfile
       - run: yarn add sharp --ignore-engines
       - run: yarn test:e2e
   test-coverage:
@@ -34,8 +32,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: 'yarn'
-      - run: yarn install
+      - run: yarn install --frozen-lockfile
       - run: yarn test:cov
       - uses: actions/upload-artifact@master
         with:
@@ -48,8 +45,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: 'yarn'
-      - run: yarn install
+      - run: yarn install --frozen-lockfile
       - run: yarn lint
   version-bump:
     if: "!startsWith(github.event.head_commit.message, '[RELEASE]') && github.ref == 'refs/heads/main'"
@@ -62,7 +58,6 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: 'yarn'
       - run: |
           git config --global user.name 'Johannes Jahn'
           git config --global user.email 'johannes.jahn@outlook.com'
@@ -77,8 +72,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: 'yarn'
-      - run: yarn install
+      - run: yarn
       - run: yarn build
       - uses: montudor/action-zip@v1
         with:
