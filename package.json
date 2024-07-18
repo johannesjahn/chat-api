@@ -47,10 +47,6 @@
 		"typeorm": "0.3.20",
 		"typevert": "0.9.11"
 	},
-	"overrides": {
-		"node-gyp": "10.2.0",
-		"glob": "10.4.5"
-	},
 	"devDependencies": {
 		"@faker-js/faker": "8.4.1",
 		"@nestjs/cli": "10.4.2",
