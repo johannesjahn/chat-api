@@ -4,11 +4,10 @@ FROM node:22.4.1-slim as builder
 
 WORKDIR /usr/app
 
-COPY ["./package.json", "./yarn.lock", "./"]
-RUN yarn install
-RUN yarn add sharp --ignore-engines
+COPY ["./package.json", "./package-lock.json", "./"]
+RUN npm ci
 
 COPY ["./tsconfig.json","./tsconfig.build.json", "./nest-cli.json", "./"]
 COPY ./src ./src
 
-RUN yarn build
+RUN npm run build
