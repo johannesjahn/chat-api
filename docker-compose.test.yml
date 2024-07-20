@@ -1,0 +1,6 @@
+services:
+  chat:
+    build: .
+    volumes:
+      - ./.local.env:/usr/app/.local.env
+      - ./test:/usr/app/test
