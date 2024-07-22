@@ -6,7 +6,7 @@ import { faker } from '@faker-js/faker';
 import { CreateConversationRequestDTO } from '../src/dtos/conversation.dto';
 import { ConversationResponseDTO } from '../src/dtos/chat.dto';
 
-describe('AppController (e2e)', () => {
+describe('ChatController (e2e)', () => {
 	let app: INestApplication;
 
 	beforeEach(async () => {
@@ -46,7 +46,7 @@ describe('AppController (e2e)', () => {
 		return { id, username, password, accessToken };
 	}
 
-	it('app/chat/create-conversation (POST)', async () => {
+	it('app/chat/create-conversation (single chat) (POST)', async () => {
 		const firstCredentials = await createAccount();
 		const secondCredentials = await createAccount();
 
@@ -73,7 +73,7 @@ describe('AppController (e2e)', () => {
 		expect(secondResponse.body as ConversationResponseDTO[]).toHaveLength(1);
 	});
 
-	it('app/chat/create-conversation (POST)', async () => {
+	it('app/chat/create-conversation (multi chat) (POST)', async () => {
 		const firstCredentials = await createAccount();
 		const secondCredentials = await createAccount();
 		const thirdCredentials = await createAccount();
