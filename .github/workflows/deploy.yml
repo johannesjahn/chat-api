@@ -15,6 +15,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
+          cache: 'npm'
       - run: npm ci
       - run: npm test
   test-container:
@@ -34,6 +35,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
+          cache: 'npm'
       - run: npm ci
       - run: npm run test:e2e
   test-container-e2e:
@@ -51,6 +53,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22.5.1
+          cache: 'npm'
       - run: npm ci
       - run: npm run test:cov
       - uses: actions/upload-artifact@master
@@ -64,6 +67,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22.5.1
+          cache: 'npm'
       - run: npm ci
       - run: npm run lint
   version-bump:
@@ -77,6 +81,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22.5.1
+          cache: 'npm'
       - run: |
           git config --global user.name 'Johannes Jahn'
           git config --global user.email 'johannes.jahn@outlook.com'
@@ -91,6 +96,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22.5.1
+          cache: 'npm'
       - run: npm ci
       - run: npm run build
       - uses: montudor/action-zip@v1
