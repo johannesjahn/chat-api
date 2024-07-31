@@ -1,4 +1,6 @@
 import { faker } from '@faker-js/faker';
+import { ConversationResponseDTO } from 'src/dtos/chat.dto';
+import { CreateConversationRequestDTO } from 'src/dtos/conversation.dto';
 import * as request from 'supertest';
 import { app } from './setup.e2e';
 
@@ -24,4 +26,27 @@ export async function createAccount(): Promise<{
 	const accessToken = loginResponse.body.access_token;
 
 	return { id, username, password, accessToken };
+}
+
+export async function createConversation(
+	body: CreateConversationRequestDTO,
+	accessToken: string,
+): Promise<ConversationResponseDTO> {
+	const response = await request(app.getHttpServer())
+		.post('/chat/create-conversation')
+		.set('Authorization', `Bearer ${accessToken}`)
+		.send(body);
+
+	return response.body;
+}
+
+export async function getConversations(
+	accessToken: string,
+): Promise<ConversationResponseDTO[]> {
+	const response = await request(app.getHttpServer())
+		.get('/chat/get-conversations')
+		.set('Authorization', `Bearer ${accessToken}`)
+		.send();
+
+	return response.body;
 }
