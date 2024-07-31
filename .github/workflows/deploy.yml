@@ -17,14 +17,14 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
       - run: npm ci
-      - run: npm test
+      - run: npm run test:int
   test-container:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: docker/setup-qemu-action@v3
       - uses: docker/setup-buildx-action@v3
-      - run: docker compose -f docker-compose.test.yml run chat npm test
+      - run: docker compose -f docker-compose.test.yml run chat npm run test:int
   test-e2e:
     runs-on: ubuntu-latest
     strategy:
