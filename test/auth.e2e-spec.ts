@@ -1,39 +1,27 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
-import { AppModule } from './../src/app.module';
+import { app } from './setup.e2e';
+import { faker } from '@faker-js/faker';
 
 describe('AuthController (e2e)', () => {
-	let app: INestApplication;
-
-	beforeEach(async () => {
-		const moduleFixture: TestingModule = await Test.createTestingModule({
-			imports: [AppModule],
-		}).compile();
-
-		app = moduleFixture.createNestApplication();
-		await app.init();
-	});
-
-	afterEach(async () => {
-		await app.close();
-	});
+	const username = faker.internet.userName();
+	const password = faker.internet.password();
+	const otherPassword = faker.internet.password();
 
 	it('/auth/register (POST)', async () => {
 		const response = await request(app.getHttpServer())
 			.post('/auth/register')
-			.send({ username: 'Nachobar', password: '12345678' });
+			.send({ username, password });
 		expect(response.statusCode).toBe(201);
 	});
 
 	it('/auth/login (POST) - correct credentials', async () => {
 		await request(app.getHttpServer())
 			.post('/auth/register')
-			.send({ username: 'Nachobar', password: '12345678' });
+			.send({ username, password });
 
 		const response = await request(app.getHttpServer())
 			.post('/auth/login')
-			.send({ username: 'Nachobar', password: '12345678' });
+			.send({ username, password });
 		expect(response.statusCode).toBe(201);
 		expect(response.body).toHaveProperty('access_token');
 	});
@@ -41,7 +29,7 @@ describe('AuthController (e2e)', () => {
 	it('/auth/login (POST) - wrong credentials', async () => {
 		const response = await request(app.getHttpServer())
 			.post('/auth/login')
-			.send({ username: 'Nachobar', password: '12345678' });
+			.send({ username, password });
 
 		expect(response.statusCode).toBe(401);
 	});
@@ -49,20 +37,20 @@ describe('AuthController (e2e)', () => {
 	it('/auth/change-password (POST) - change password', async () => {
 		await request(app.getHttpServer())
 			.post('/auth/register')
-			.send({ username: 'Nachobar', password: '12345678' });
+			.send({ username, password });
 
 		const loginResponse = await request(app.getHttpServer())
 			.post('/auth/login')
-			.send({ username: 'Nachobar', password: '12345678' });
+			.send({ username, password });
 
 		const changePasswordResponse = await request(app.getHttpServer())
 			.post('/auth/change-password')
 			.set('Authorization', `Bearer ${loginResponse.body.access_token}`)
-			.send({ password: '123456789', passwordConfirm: '123456789' });
+			.send({ password: otherPassword, passwordConfirm: otherPassword });
 
 		const secondLoginResponse = await request(app.getHttpServer())
 			.post('/auth/login')
-			.send({ username: 'Nachobar', password: '123456789' });
+			.send({ username, password: otherPassword });
 
 		expect(changePasswordResponse.statusCode).toBe(201);
 		expect(secondLoginResponse.statusCode).toBe(201);
