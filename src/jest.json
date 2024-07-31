@@ -1,0 +1,27 @@
+{
+	"moduleFileExtensions": ["js", "json", "ts"],
+	"rootDir": ".",
+	"testRegex": ".*\\.spec\\.ts$",
+	"transform": {
+		".+\\.(t|j)s$": "ts-jest"
+	},
+	"collectCoverageFrom": ["**/*.(t|j)s"],
+	"coverageDirectory": "../coverage",
+	"coveragePathIgnorePatterns": [
+		"<rootDir>/build/",
+		"<rootDir>/node_modules/",
+		".*\\.controller\\.ts",
+		".*\\.module\\.ts",
+		".*\\.strategy\\.ts",
+		".*\\.dto\\.ts",
+		".*\\.middleware\\.ts",
+		".*\\.guard\\.ts",
+		".*\\.gateway\\.ts",
+		"main\\.ts",
+		"utils\\.ts",
+		"constants\\.ts"
+	],
+	"testEnvironment": "node",
+	"coverageReporters": ["text", "html"],
+	"reporters": ["default", ["github-actions", { "silent": false }], "summary"]
+}
