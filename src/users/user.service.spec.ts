@@ -75,7 +75,6 @@ describe('UserService', () => {
 		const allUsers = await service.findAll();
 		const theUser = await service.findOne(allUsers[0].id);
 		expect(theUser).not.toBeNull();
-		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 		expect(theUser!.id).toBe(allUsers[0].id);
 		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 		expect(theUser!.username).toBe(allUsers[0].username);
