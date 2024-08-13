@@ -52,7 +52,12 @@ describe('AuthController (e2e)', () => {
 			.post('/auth/login')
 			.send({ username, password: otherPassword });
 
+		const thirdLoginResponse = await request(app.getHttpServer())
+			.post('/auth/login')
+			.send({ username, password });
+
 		expect(changePasswordResponse.statusCode).toBe(201);
 		expect(secondLoginResponse.statusCode).toBe(201);
+		expect(thirdLoginResponse.statusCode).toBe(401);
 	});
 });
