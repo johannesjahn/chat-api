@@ -20,7 +20,7 @@ export class User {
 	username: string;
 
 	@Column({ nullable: true })
-	avatarHash: string;
+	avatarHash?: string;
 
 	@OneToMany(() => Message, (message) => message.author)
 	messages: Message[];
