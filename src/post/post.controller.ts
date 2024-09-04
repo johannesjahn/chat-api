@@ -247,4 +247,15 @@ export class PostController {
 	async likeReply(@Request() req: any, @Param('replyId') replyId: number) {
 		await this.postService.likeReply(req.user.userId, replyId);
 	}
+
+	@ApiBearerAuth()
+	@UseGuards(JwtAuthGuard)
+	@Get('/like')
+	async getLikedPosts(@Request() req: any) {
+		const result = await this.postService.findLikedPosts(req.user.userId);
+		const mapper = new PostMapper();
+
+		const dtos = result.map((p) => mapper.convert(p));
+		return dtos;
+	}
 }
