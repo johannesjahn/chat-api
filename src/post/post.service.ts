@@ -49,21 +49,27 @@ export class PostService {
 		return createdPost;
 	}
 
-	async getPosts() {
-		const result = await this.postRepository.find({
-			relations: [
-				'author',
-				'comments',
+	async getPosts(userId?: number) {
+		let query = this.postRepository
+			.createQueryBuilder('post')
+			.leftJoinAndSelect('post.author', 'author')
+			.leftJoinAndSelect('post.comments', 'comments')
+			.leftJoinAndSelect('comments.author', 'commentAuthor')
+			.leftJoinAndSelect('comments.replies', 'replies')
+			.leftJoinAndSelect('replies.author', 'replyAuthor');
+
+		if (userId) {
+			query = query.leftJoinAndSelect(
+				'post.likedBy',
 				'likedBy',
-				'comments.author',
-				'comments.replies',
-				'comments.replies.author',
-			],
-			order: {
-				createdAt: 'DESC',
-				comments: { createdAt: 'ASC', replies: { createdAt: 'ASC' } },
-			},
-		});
+				'likedBy.id = :userId',
+				{ userId },
+			);
+		}
+
+		query = query.orderBy('post.createdAt', 'DESC');
+
+		const result = await query.getMany();
 		return result;
 	}
 

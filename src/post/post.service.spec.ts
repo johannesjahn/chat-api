@@ -579,9 +579,17 @@ describe('PostService', () => {
 		await postService.likePost(secondUser.id, post.id);
 
 		const resultPost = (await postService.getPosts())[0];
+		const resultPostFirstUser = (await postService.getPosts(firstUser.id))[0];
+		const resultPostSecondUser = (await postService.getPosts(secondUser.id))[0];
 
 		expect(resultPost.likes).toBe(1);
-		expect(resultPost.likedBy[0].id).toBe(secondUser.id);
+		expect(resultPost.likedBy).toBeUndefined();
+
+		expect(resultPostFirstUser.likes).toBe(1);
+		expect(resultPostFirstUser.likedBy).toHaveLength(0);
+
+		expect(resultPostSecondUser.likes).toBe(1);
+		expect(resultPostSecondUser.likedBy[0].id).toBe(secondUser.id);
 	});
 
 	it('Multiple likes post', async () => {
@@ -604,9 +612,15 @@ describe('PostService', () => {
 		await postService.likePost(secondUser.id, post.id);
 
 		const resultPost = (await postService.getPosts())[0];
+		const resultPostFirstUser = (await postService.getPosts(firstUser.id))[0];
+		const resultPostSecondUser = (await postService.getPosts(secondUser.id))[0];
 
 		expect(resultPost.likes).toBe(2);
-		expect(resultPost.likedBy.length).toBe(2);
+		expect(resultPost.likedBy).toBeUndefined();
+		expect(resultPostFirstUser.likes).toBe(2);
+		expect(resultPostFirstUser.likedBy).toHaveLength(1);
+		expect(resultPostSecondUser.likes).toBe(2);
+		expect(resultPostSecondUser.likedBy).toHaveLength(1);
 	});
 
 	it('Like and undo like post', async () => {
@@ -625,9 +639,12 @@ describe('PostService', () => {
 		await postService.likePost(firstUser.id, post.id);
 
 		const resultPost = (await postService.getPosts())[0];
+		const resultPostFirstUser = (await postService.getPosts(firstUser.id))[0];
 
 		expect(resultPost.likes).toBe(0);
-		expect(resultPost.likedBy.length).toBe(0);
+		expect(resultPost.likedBy).toBeUndefined();
+		expect(resultPostFirstUser.likes).toBe(0);
+		expect(resultPostFirstUser.likedBy).toHaveLength(0);
 	});
 
 	it('Find liked Posts', async () => {
@@ -681,7 +698,6 @@ describe('PostService', () => {
 		const resultComment = (await postService.getComments(post.id))[0];
 
 		expect(resultComment.likes).toBe(1);
-		expect(resultComment.likedBy[0].id).toBe(secondUser.id);
 	});
 
 	it('Multiple likes comment', async () => {
@@ -710,7 +726,6 @@ describe('PostService', () => {
 		const resultComment = (await postService.getComments(post.id))[0];
 
 		expect(resultComment.likes).toBe(2);
-		expect(resultComment.likedBy).toHaveLength(2);
 	});
 
 	it('Like and undo like comment', async () => {
@@ -735,7 +750,6 @@ describe('PostService', () => {
 		const resultComment = (await postService.getComments(post.id))[0];
 
 		expect(resultComment.likes).toBe(0);
-		expect(resultComment.likedBy.length).toBe(0);
 	});
 
 	it('Find liked Comments', async () => {
@@ -793,7 +807,6 @@ describe('PostService', () => {
 		const resultReply = (await postService.getReplies(comment.id))[0];
 
 		expect(resultReply.likes).toBe(1);
-		expect(resultReply.likedBy[0].id).toBe(firstUser.id);
 	});
 
 	it('Multiple likes Reply', async () => {
@@ -826,7 +839,6 @@ describe('PostService', () => {
 		const resultReply = (await postService.getReplies(comment.id))[0];
 
 		expect(resultReply.likes).toBe(2);
-		expect(resultReply.likedBy).toHaveLength(2);
 	});
 
 	it('Like and undo like reply', async () => {
@@ -855,7 +867,6 @@ describe('PostService', () => {
 		const resultReply = (await postService.getReplies(comment.id))[0];
 
 		expect(resultReply.likes).toBe(0);
-		expect(resultReply.likedBy).toHaveLength(0);
 	});
 
 	it('Find liked Replies', async () => {

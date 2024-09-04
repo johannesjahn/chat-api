@@ -34,6 +34,7 @@ import {
 } from '../dtos/post.dto';
 import { PostGateway } from './post.gateway';
 import { PostService } from './post.service';
+import { JwtOptionalAuthGuard } from '../auth/jwt-optional-auth.guard';
 
 @ApiTags('Post')
 @Controller('post')
@@ -58,10 +59,16 @@ export class PostController {
 	}
 
 	@Get('/')
+	@ApiBearerAuth()
 	@ApiOperation({ description: 'Get all posts' })
+	@UseGuards(JwtOptionalAuthGuard)
 	@ApiCreatedResponse({ type: PostResponseDTO, isArray: true, status: 200 })
-	async getPosts() {
-		const result = await this.postService.getPosts();
+	async getPosts(@Request() req: any) {
+		let userId: number | undefined;
+		if (req.user) {
+			userId = req.user.userId;
+		}
+		const result = await this.postService.getPosts(userId);
 		const mapper = new PostMapper();
 
 		const dtos = result.map((p) => mapper.convert(p));
@@ -249,6 +256,7 @@ export class PostController {
 	}
 
 	@ApiBearerAuth()
+	@ApiCreatedResponse({ type: PostResponseDTO, isArray: true })
 	@UseGuards(JwtAuthGuard)
 	@Get('/like')
 	async getLikedPosts(@Request() req: any) {

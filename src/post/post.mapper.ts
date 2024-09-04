@@ -6,6 +6,13 @@ import {
 import { Comment, Post, Reply } from './post.entity';
 import { Converter, Mapper } from 'typevert';
 import { UserMapper } from '../users/user.mapper';
+import { User } from 'src/users/user.entity';
+
+export class LikedByMapper extends Converter<User[], boolean> {
+	convert(source?: User[]): boolean {
+		return source ? source.length > 0 : false;
+	}
+}
 
 @Mapper({ sourceType: Reply, targetType: ReplyResponseDTO }, [
 	{
@@ -106,6 +113,16 @@ export class CommentMapper extends Converter<Comment, CommentResponseDTO> {}
 	{
 		source: 'likes',
 		target: 'likes',
+	},
+	{
+		source: 'likedBy',
+		target: 'liked',
+		converter: UserMapper,
+	},
+	{
+		source: 'likedBy',
+		target: 'liked',
+		converter: LikedByMapper,
 	},
 ])
 export class PostMapper extends Converter<Post, PostResponseDTO> {}
