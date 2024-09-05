@@ -98,7 +98,7 @@ export class PostResponseDTO {
 		nullable: true,
 		description: 'Number of comments and replies in a post',
 	})
-	numberOfComments: number | null;
+	numberOfComments: number;
 }
 
 export class UpdatePostDTO {
