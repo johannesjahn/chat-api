@@ -93,6 +93,12 @@ export class PostResponseDTO {
 
 	@ApiProperty({ nullable: false, description: 'Liked by current user' })
 	liked: boolean;
+
+	@ApiProperty({
+		nullable: true,
+		description: 'Number of comments and replies in a post',
+	})
+	numberOfComments: number | null;
 }
 
 export class UpdatePostDTO {

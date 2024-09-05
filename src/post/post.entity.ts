@@ -6,11 +6,15 @@ import {
 	ManyToOne,
 	OneToMany,
 	JoinTable,
+	AfterLoad,
+	AfterInsert,
+	AfterUpdate,
 } from 'typeorm';
 import { User } from '../users/user.entity';
 import { ContentType } from '../chat/chat.entity';
+import { Optional } from '@nestjs/common';
 
-@Entity('post')
+@Entity({ name: 'post' })
 export class Post extends AbstractEntity {
 	@Column()
 	content: string;
@@ -33,6 +37,20 @@ export class Post extends AbstractEntity {
 	})
 	@JoinTable()
 	likedBy: User[];
+
+	@Optional()
+	numberOfComments?: number;
+
+	@AfterLoad()
+	@AfterInsert()
+	@AfterUpdate()
+	generateNumberOfComments(): void {
+		this.numberOfComments = this.comments
+			? this.comments
+					.map((c) => (c.replies ? c.replies.length : 0))
+					.reduce((pre, current) => pre + current + 1, 0)
+			: 0;
+	}
 }
 
 @Entity('comment')

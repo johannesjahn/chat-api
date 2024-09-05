@@ -916,4 +916,59 @@ describe('PostService', () => {
 			}),
 		).rejects.toThrow('Http Exception');
 	});
+
+	it('Create post, comment, and count comments.', async () => {
+		const authService = app.get(AuthService);
+		const ownUser = await authService.register({
+			username: faker.internet.userName(),
+			password: faker.internet.password(),
+		});
+		const postService = app.get(PostService);
+
+		const postContent = faker.lorem.paragraph();
+		const post = await postService.createPost(ownUser.id, {
+			content: postContent,
+			contentType: 'TEXT',
+		});
+
+		const commentContent = faker.lorem.paragraph();
+		await postService.createComment(ownUser.id, {
+			postId: post.id,
+			content: commentContent,
+		});
+
+		const posts = await postService.getPosts();
+
+		expect(posts[0].numberOfComments).toBe(1);
+	});
+
+	it('Create post, comment, reply, and count comments.', async () => {
+		const authService = app.get(AuthService);
+		const ownUser = await authService.register({
+			username: faker.internet.userName(),
+			password: faker.internet.password(),
+		});
+		const postService = app.get(PostService);
+
+		const postContent = faker.lorem.paragraph();
+		const post = await postService.createPost(ownUser.id, {
+			content: postContent,
+			contentType: 'TEXT',
+		});
+
+		const commentContent = faker.lorem.paragraph();
+		const comment = await postService.createComment(ownUser.id, {
+			postId: post.id,
+			content: commentContent,
+		});
+		const replyContent = faker.lorem.paragraph();
+		await postService.createReply(ownUser.id, {
+			commentId: comment.id,
+			content: replyContent,
+		});
+
+		const posts = await postService.getPosts();
+
+		expect(posts[0].numberOfComments).toBe(2);
+	});
 });

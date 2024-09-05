@@ -14,6 +14,16 @@ export class LikedByMapper extends Converter<User[], boolean> {
 	}
 }
 
+export class NumberOfCommentsMapper extends Converter<
+	number | undefined,
+	number | null
+> {
+	convert(source: number | undefined): number | null {
+		if (source) return source;
+		return null;
+	}
+}
+
 @Mapper({ sourceType: Reply, targetType: ReplyResponseDTO }, [
 	{
 		source: 'id',
@@ -123,6 +133,10 @@ export class CommentMapper extends Converter<Comment, CommentResponseDTO> {}
 		source: 'likedBy',
 		target: 'liked',
 		converter: LikedByMapper,
+	},
+	{
+		source: 'numberOfComments',
+		target: 'numberOfComments',
 	},
 ])
 export class PostMapper extends Converter<Post, PostResponseDTO> {}

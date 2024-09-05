@@ -89,6 +89,7 @@ export class PostService {
 		const post = await this.postRepository.findOne({
 			where: { id: postDTO.id, author: { id: userId } },
 		});
+		delete post?.numberOfComments;
 
 		if (!post) throw new HttpException({ error: 'Post not found' }, 404);
 		post.content = postDTO.content;

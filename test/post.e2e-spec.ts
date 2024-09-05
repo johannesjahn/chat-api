@@ -17,9 +17,11 @@ describe('PostController (e2e)', () => {
 		expect(result).toHaveLength(1);
 		expect(result[0].likes).toBe(1);
 		expect(result[0].liked).toBe(true);
+		expect(result[0].numberOfComments).toBe(0);
 
 		expect(anonymousResult).toHaveLength(1);
 		expect(anonymousResult[0].likes).toBe(1);
 		expect(anonymousResult[0].liked).toBe(false);
+		expect(anonymousResult[0].numberOfComments).toBe(0);
 	});
 });
