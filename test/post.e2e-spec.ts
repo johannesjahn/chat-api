@@ -14,6 +14,8 @@ describe('PostController (e2e)', () => {
 		const result = await getPosts(firstCredentials.accessToken);
 		const anonymousResult = await getPosts();
 
+		expect(post.id).toBe(1);
+
 		expect(result).toHaveLength(1);
 		expect(result[0].likes).toBe(1);
 		expect(result[0].liked).toBe(true);
