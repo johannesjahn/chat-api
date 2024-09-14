@@ -5,13 +5,19 @@ updates:
     versioning-strategy: increase
     schedule:
       interval: 'daily'
+    assignees:
+      - johannesjahn
   - package-ecosystem: 'docker' # See documentation for possible values
     versioning-strategy: 'increase'
     directory: '/' # Location of package manifests
     schedule:
       interval: 'daily'
+    assignees:
+      - johannesjahn
   - package-ecosystem: 'github-actions'
     directory: '/'
     versioning-strategy: 'increase'
     schedule:
       interval: 'daily'
+    assignees:
+      - johannesjahn
