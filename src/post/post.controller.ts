@@ -232,6 +232,7 @@ export class PostController {
 	}
 
 	@ApiBearerAuth()
+	@ApiOperation({ description: 'Like or dislike a post' })
 	@UseGuards(JwtAuthGuard)
 	@Post(':postId/like')
 	async likePost(@Request() req: any, @Param('postId') postId: number) {
@@ -240,6 +241,7 @@ export class PostController {
 
 	@ApiBearerAuth()
 	@UseGuards(JwtAuthGuard)
+	@ApiOperation({ description: 'Like or dislike a comment' })
 	@Post('/comment/:commentId/like')
 	async likeComment(
 		@Request() req: any,
@@ -249,6 +251,7 @@ export class PostController {
 	}
 
 	@ApiBearerAuth()
+	@ApiOperation({ description: 'Like or dislike a reply' })
 	@UseGuards(JwtAuthGuard)
 	@Post('/reply/:replyId/like')
 	async likeReply(@Request() req: any, @Param('replyId') replyId: number) {
@@ -256,6 +259,7 @@ export class PostController {
 	}
 
 	@ApiBearerAuth()
+	@ApiOperation({ description: 'Get posts liked by the authenticated user' })
 	@ApiCreatedResponse({ type: PostResponseDTO, isArray: true })
 	@UseGuards(JwtAuthGuard)
 	@Get('/like')
