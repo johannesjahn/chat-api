@@ -58,6 +58,23 @@ export class PostController {
 		return dto;
 	}
 
+	@Get('/single/:postId')
+	@ApiBearerAuth()
+	@ApiOperation({ description: 'Get a post by id' })
+	@UseGuards(JwtOptionalAuthGuard)
+	@ApiCreatedResponse({ type: PostResponseDTO })
+	async getPost(@Request() req: any, @Param('postId') postId: number) {
+		let userId: number | undefined;
+		if (req.user) {
+			userId = req.user.userId;
+		}
+		const result = await this.postService.getPost(postId, userId);
+		const mapper = new PostMapper();
+
+		const dto = mapper.convert(result);
+		return dto;
+	}
+
 	@Get('/')
 	@ApiBearerAuth()
 	@ApiOperation({ description: 'Get all posts' })

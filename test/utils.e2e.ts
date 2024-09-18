@@ -75,6 +75,18 @@ export async function getPosts(
 	return response.body;
 }
 
+export async function getPost(
+	accessToken: string,
+	postId: number,
+): Promise<PostResponseDTO> {
+	const response = await request(app.getHttpServer())
+		.get(`/post/single/${postId}`)
+		.set('Authorization', `Bearer ${accessToken}`)
+		.send();
+
+	return response.body;
+}
+
 export async function likePost(accessToken: string, postId: number) {
 	const response = await request(app.getHttpServer())
 		.post(`/post/${postId}/like`)

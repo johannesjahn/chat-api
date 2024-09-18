@@ -49,6 +49,30 @@ export class PostService {
 		return createdPost;
 	}
 
+	async getPost(postId: number, userId?: number) {
+		let query = this.postRepository
+			.createQueryBuilder('post')
+			.leftJoinAndSelect('post.author', 'author')
+			.leftJoinAndSelect('post.comments', 'comments')
+			.leftJoinAndSelect('comments.author', 'commentAuthor')
+			.leftJoinAndSelect('comments.replies', 'replies')
+			.leftJoinAndSelect('replies.author', 'replyAuthor')
+			.where('post.id = :postId', { postId });
+
+		if (userId) {
+			query = query.leftJoinAndSelect(
+				'post.likedBy',
+				'likedBy',
+				'likedBy.id = :userId',
+				{ userId },
+			);
+		}
+
+		const result = await query.getOne();
+		if (!result) throw new HttpException({ error: 'Post not found' }, 404);
+		return result;
+	}
+
 	async getPosts(userId?: number) {
 		let query = this.postRepository
 			.createQueryBuilder('post')
