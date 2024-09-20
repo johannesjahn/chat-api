@@ -582,8 +582,12 @@ describe('PostService', () => {
 		const resultPostFirstUser = (await postService.getPosts(firstUser.id))[0];
 		const resultPostSecondUser = (await postService.getPosts(secondUser.id))[0];
 
+		const singlePostResponse = await postService.getPost(post.id);
+
 		expect(resultPost.likes).toBe(1);
 		expect(resultPost.likedBy).toBeUndefined();
+
+		expect(singlePostResponse.likes).toBe(1);
 
 		expect(resultPostFirstUser.likes).toBe(1);
 		expect(resultPostFirstUser.likedBy).toHaveLength(0);
