@@ -14,6 +14,7 @@ import { User } from './users/user.entity';
 import { UserAuth } from './users/userAuth.entity';
 import { UsersService } from './users/users.service';
 import { faker } from '@faker-js/faker';
+import { ConfigModule } from '@nestjs/config';
 
 export const testOrmOptions: DataSourceOptions = {
 	type: 'sqlite',
@@ -47,7 +48,12 @@ export const getTestModule = async (dataSource: DataSource) => {
 	});
 
 	return await Test.createTestingModule({
-		imports: [testModule],
+		imports: [
+			testModule,
+			ConfigModule.forRoot({
+				envFilePath: `${process.env.ENV_PATH ?? '.env'}`,
+			}),
+		],
 		providers: [
 			{
 				provide: getRepositoryToken(User),

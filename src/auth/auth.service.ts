@@ -1,13 +1,13 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
-import { hash, verify } from 'argon2';
 import { RegisterDTO } from '../dtos/register.dto';
 import { User } from '../users/user.entity';
 import { UserAuth } from '../users/userAuth.entity';
 import { UsersService } from '../users/users.service';
 import { Repository } from 'typeorm';
 import { hashConstants } from './constants';
+import { createHmac } from 'node:crypto';
 
 @Injectable()
 export class AuthService {
@@ -25,7 +25,10 @@ export class AuthService {
 			where: { username: username },
 			relations: ['userAuth'],
 		});
-		if (user && user.userAuth && (await verify(user.userAuth.password, pass))) {
+		const hash = createHmac('sha256', hashConstants.salt())
+			.update(pass)
+			.digest('hex');
+		if (user && user.userAuth && user.userAuth.password === hash) {
 			return user;
 		}
 		return null;
@@ -47,12 +50,16 @@ export class AuthService {
 		if (!user.userAuth) {
 			throw new HttpException({ error: 'Error updating password' }, 500);
 		}
-		if (await verify(user.userAuth.password, password)) {
+		const hash = createHmac('sha256', hashConstants.salt())
+			.update(password)
+			.digest('hex');
+		if (user.userAuth.password == hash) {
 			throw new HttpException({ error: "Password can't be the same" }, 400);
 		}
-		user.userAuth.password = await hash(password, {
-			timeCost: hashConstants.saltRounds,
-		});
+
+		user.userAuth.password = createHmac('sha256', hashConstants.salt())
+			.update(password)
+			.digest('hex');
 		await this.userAuthRepository.save(user.userAuth);
 		delete user.userAuth;
 		return user;
@@ -61,9 +68,10 @@ export class AuthService {
 	async register(registerDTO: RegisterDTO) {
 		const user = await this.usersService.findUser(registerDTO.username);
 		if (user) throw new HttpException({ error: 'User already exists' }, 400);
-		const pw = await hash(registerDTO.password, {
-			timeCost: hashConstants.saltRounds,
-		});
+
+		const pw = createHmac('sha256', hashConstants.salt())
+			.update(registerDTO.password)
+			.digest('hex');
 		const auth = new UserAuth();
 		auth.password = pw;
 		const userAuthSaved = await this.userAuthRepository.save(auth);
