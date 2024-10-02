@@ -51,7 +51,7 @@ export const getTestModule = async (dataSource: DataSource) => {
 		imports: [
 			testModule,
 			ConfigModule.forRoot({
-				envFilePath: `${process.env.ENV_PATH ?? '.env'}`,
+				envFilePath: '.local.env',
 			}),
 		],
 		providers: [

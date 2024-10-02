@@ -7,5 +7,3 @@ export const hashConstants = {
 	saltRounds: 10,
 	salt: () => process.env.SALT!,
 };
-
-export const tester = 'aaaaaa';
