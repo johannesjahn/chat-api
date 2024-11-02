@@ -72,7 +72,6 @@ export class ChatController {
 	@ApiCreatedResponse({
 		type: ConversationResponseDTO,
 		description: 'Fetches the messages for a given conversation.',
-		status: 200,
 	})
 	@ApiOperation({ description: 'Get messages for a conversation' })
 	@Post('/get-messages')
@@ -167,7 +166,6 @@ export class ChatController {
 		type: NumberOfUnreadMessagesResponseDTO,
 		description:
 			'Gets the number of unread messages for the authenticated user',
-		status: 200,
 	})
 	@Get('/get-number-of-unread-messages')
 	async getNumberOfUnreadMessages(@Request() req: any) {
@@ -186,7 +184,6 @@ export class ChatController {
 	@ApiCreatedResponse({
 		type: HasUnreadMessagesResponseDTO,
 		description: 'Checks whether the authenticated user has unread messages',
-		status: 200,
 	})
 	@Get('/has-unread-messages')
 	async hasUnreadMessages(@Request() req: any) {
