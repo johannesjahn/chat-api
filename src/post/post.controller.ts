@@ -79,7 +79,10 @@ export class PostController {
 	@ApiBearerAuth()
 	@ApiOperation({ description: 'Get all posts' })
 	@UseGuards(JwtOptionalAuthGuard)
-	@ApiCreatedResponse({ type: PostResponseDTO, isArray: true, status: 200 })
+	@ApiCreatedResponse({
+		type: PostResponseDTO,
+		isArray: true,
+	})
 	async getPosts(@Request() req: any) {
 		let userId: number | undefined;
 		if (req.user) {
