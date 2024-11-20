@@ -52,7 +52,7 @@
 		"@eslint/eslintrc": "3.2.0",
 		"@eslint/js": "9.15.0",
 		"@faker-js/faker": "9.2.0",
-		"@nestjs/cli": "10.4.7",
+		"@nestjs/cli": "10.4.8",
 		"@nestjs/schematics": "10.2.3",
 		"@nestjs/testing": "10.4.8",
 		"@types/express": "5.0.0",
