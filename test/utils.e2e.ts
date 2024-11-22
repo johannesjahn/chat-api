@@ -11,7 +11,7 @@ export async function createAccount(): Promise<{
 	accessToken: string;
 	id: number;
 }> {
-	const username = faker.internet.userName();
+	const username = faker.internet.username();
 	const password = faker.internet.password();
 
 	const registerResponse = await request(app.getHttpServer())

@@ -42,7 +42,7 @@ describe('UserService', () => {
 	it('Check find users', async () => {
 		const authService = app.get(AuthService);
 		const ownUser = await authService.register({
-			username: faker.internet.userName(),
+			username: faker.internet.username(),
 			password: faker.internet.password(),
 		});
 		const usersWithSelf = await service.findAll();
@@ -52,7 +52,7 @@ describe('UserService', () => {
 	it('Check find users without self', async () => {
 		const authService = app.get(AuthService);
 		const ownUser = await authService.register({
-			username: faker.internet.userName(),
+			username: faker.internet.username(),
 			password: faker.internet.password(),
 		});
 

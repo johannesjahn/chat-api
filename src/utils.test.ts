@@ -95,8 +95,8 @@ export const getTestModule = async (dataSource: DataSource) => {
 	}).compile();
 };
 
-export const firstUsername = faker.internet.userName({ firstName: 'Nachobar' });
-export const secondUsername = faker.internet.userName({
+export const firstUsername = faker.internet.username({ firstName: 'Nachobar' });
+export const secondUsername = faker.internet.username({
 	firstName: 'Nachobar2',
 });
 

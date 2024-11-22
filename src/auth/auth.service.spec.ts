@@ -36,7 +36,7 @@ describe('AuthService', () => {
 	it('Test login', async () => {
 		const authService = app.get(AuthService);
 
-		const username = faker.internet.userName();
+		const username = faker.internet.username();
 		const password = faker.internet.password();
 
 		await authService.register({
@@ -59,7 +59,7 @@ describe('AuthService', () => {
 	it('Check Login', async () => {
 		const authService = app.get(AuthService);
 
-		const username = faker.internet.userName();
+		const username = faker.internet.username();
 		const password = faker.internet.password();
 
 		await authService.register({
@@ -74,7 +74,7 @@ describe('AuthService', () => {
 	it('Check Login with invalid credentials', async () => {
 		const authService = app.get(AuthService);
 
-		const username = faker.internet.userName();
+		const username = faker.internet.username();
 		const password = faker.internet.password();
 
 		await authService.register({
@@ -89,7 +89,7 @@ describe('AuthService', () => {
 	it('Check password change', async () => {
 		const authService = app.get(AuthService);
 
-		const username = faker.internet.userName();
+		const username = faker.internet.username();
 		const password = faker.internet.password();
 		const newPassword = faker.internet.password();
 
@@ -114,7 +114,7 @@ describe('AuthService', () => {
 	it('Set password to the same value', async () => {
 		const authService = app.get(AuthService);
 
-		const username = faker.internet.userName();
+		const username = faker.internet.username();
 		const password = faker.internet.password();
 
 		await authService.register({

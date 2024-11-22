@@ -38,15 +38,15 @@ describe('ChatService Test', () => {
 	it('Create a Chat', async () => {
 		const authService = app.get(AuthService);
 		const firstUser = await authService.register({
-			username: faker.internet.userName(),
+			username: faker.internet.username(),
 			password: faker.internet.password(),
 		});
 		const secondUser = await authService.register({
-			username: faker.internet.userName(),
+			username: faker.internet.username(),
 			password: faker.internet.password(),
 		});
 		const thirdUser = await authService.register({
-			username: faker.internet.userName(),
+			username: faker.internet.username(),
 			password: faker.internet.password(),
 		});
 
@@ -71,7 +71,7 @@ describe('ChatService Test', () => {
 	it('Create a chat with own user', async () => {
 		const authService = app.get(AuthService);
 		const firstUser = await authService.register({
-			username: faker.internet.userName(),
+			username: faker.internet.username(),
 			password: faker.internet.password(),
 		});
 		const chatService = app.get(ChatService);
@@ -85,7 +85,7 @@ describe('ChatService Test', () => {
 	it('Create a chat with empty participant list', async () => {
 		const authService = app.get(AuthService);
 		const firstUser = await authService.register({
-			username: faker.internet.userName(),
+			username: faker.internet.username(),
 			password: faker.internet.password(),
 		});
 		const chatService = app.get(ChatService);
@@ -99,11 +99,11 @@ describe('ChatService Test', () => {
 	it('Write a message', async () => {
 		const authService = app.get(AuthService);
 		const firstUser = await authService.register({
-			username: faker.internet.userName(),
+			username: faker.internet.username(),
 			password: faker.internet.password(),
 		});
 		const secondUser = await authService.register({
-			username: faker.internet.userName(),
+			username: faker.internet.username(),
 			password: faker.internet.password(),
 		});
 
@@ -148,16 +148,16 @@ describe('ChatService Test', () => {
 	it('Write a message in a wrong conversation', async () => {
 		const authService = app.get(AuthService);
 		const firstUser = await authService.register({
-			username: faker.internet.userName(),
+			username: faker.internet.username(),
 			password: faker.internet.password(),
 		});
 		const secondUser = await authService.register({
-			username: faker.internet.userName(),
+			username: faker.internet.username(),
 			password: faker.internet.password(),
 		});
 
 		const thirdUser = await authService.register({
-			username: faker.internet.userName(),
+			username: faker.internet.username(),
 			password: faker.internet.password(),
 		});
 
@@ -182,11 +182,11 @@ describe('ChatService Test', () => {
 	it('Check if last message updates correctly', async () => {
 		const authService = app.get(AuthService);
 		const firstUser = await authService.register({
-			username: faker.internet.userName(),
+			username: faker.internet.username(),
 			password: faker.internet.password(),
 		});
 		const secondUser = await authService.register({
-			username: faker.internet.userName(),
+			username: faker.internet.username(),
 			password: faker.internet.password(),
 		});
 
@@ -237,7 +237,7 @@ describe('ChatService Test', () => {
 	it('Get not found (404) if conversation not exists', async () => {
 		const authService = app.get(AuthService);
 		const firstUser = await authService.register({
-			username: faker.internet.userName(),
+			username: faker.internet.username(),
 			password: faker.internet.password(),
 		});
 		const chatService = app.get(ChatService);
@@ -253,11 +253,11 @@ describe('ChatService Test', () => {
 	it('Check message converter', async () => {
 		const authService = app.get(AuthService);
 		const firstUser = await authService.register({
-			username: faker.internet.userName(),
+			username: faker.internet.username(),
 			password: faker.internet.password(),
 		});
 		const secondUser = await authService.register({
-			username: faker.internet.userName(),
+			username: faker.internet.username(),
 			password: faker.internet.password(),
 		});
 
@@ -291,11 +291,11 @@ describe('ChatService Test', () => {
 	it('Check last message in a conversation', async () => {
 		const authService = app.get(AuthService);
 		const firstUser = await authService.register({
-			username: faker.internet.userName(),
+			username: faker.internet.username(),
 			password: faker.internet.password(),
 		});
 		const secondUser = await authService.register({
-			username: faker.internet.userName(),
+			username: faker.internet.username(),
 			password: faker.internet.password(),
 		});
 
@@ -334,11 +334,11 @@ describe('ChatService Test', () => {
 	it('Check last message of conversation list for user', async () => {
 		const authService = app.get(AuthService);
 		const firstUser = await authService.register({
-			username: faker.internet.userName(),
+			username: faker.internet.username(),
 			password: faker.internet.password(),
 		});
 		const secondUser = await authService.register({
-			username: faker.internet.userName(),
+			username: faker.internet.username(),
 			password: faker.internet.password(),
 		});
 
@@ -360,11 +360,11 @@ describe('ChatService Test', () => {
 	it('Mark message as read', async () => {
 		const authService = app.get(AuthService);
 		const firstUser = await authService.register({
-			username: faker.internet.userName(),
+			username: faker.internet.username(),
 			password: faker.internet.password(),
 		});
 		const secondUser = await authService.register({
-			username: faker.internet.userName(),
+			username: faker.internet.username(),
 			password: faker.internet.password(),
 		});
 
@@ -397,11 +397,11 @@ describe('ChatService Test', () => {
 	it('Mark all messages as read', async () => {
 		const authService = app.get(AuthService);
 		const firstUser = await authService.register({
-			username: faker.internet.userName(),
+			username: faker.internet.username(),
 			password: faker.internet.password(),
 		});
 		const secondUser = await authService.register({
-			username: faker.internet.userName(),
+			username: faker.internet.username(),
 			password: faker.internet.password(),
 		});
 
@@ -449,11 +449,11 @@ describe('ChatService Test', () => {
 	it('Check last message read status of conversation list for user', async () => {
 		const authService = app.get(AuthService);
 		const firstUser = await authService.register({
-			username: faker.internet.userName(),
+			username: faker.internet.username(),
 			password: faker.internet.password(),
 		});
 		const secondUser = await authService.register({
-			username: faker.internet.userName(),
+			username: faker.internet.username(),
 			password: faker.internet.password(),
 		});
 
@@ -483,11 +483,11 @@ describe('ChatService Test', () => {
 	it('Get unread messages count', async () => {
 		const authService = app.get(AuthService);
 		const firstUser = await authService.register({
-			username: faker.internet.userName(),
+			username: faker.internet.username(),
 			password: faker.internet.password(),
 		});
 		const secondUser = await authService.register({
-			username: faker.internet.userName(),
+			username: faker.internet.username(),
 			password: faker.internet.password(),
 		});
 
@@ -520,11 +520,11 @@ describe('ChatService Test', () => {
 	it('Has unread messages', async () => {
 		const authService = app.get(AuthService);
 		const firstUser = await authService.register({
-			username: faker.internet.userName(),
+			username: faker.internet.username(),
 			password: faker.internet.password(),
 		});
 		const secondUser = await authService.register({
-			username: faker.internet.userName(),
+			username: faker.internet.username(),
 			password: faker.internet.password(),
 		});
 
@@ -564,7 +564,7 @@ describe('ChatService Test', () => {
 	it('Create conversation with invalid user', async () => {
 		const authService = app.get(AuthService);
 		const theUser = await authService.register({
-			username: faker.internet.userName(),
+			username: faker.internet.username(),
 			password: faker.internet.password(),
 		});
 
@@ -579,7 +579,7 @@ describe('ChatService Test', () => {
 	it('Try sending non url image', async () => {
 		const authService = app.get(AuthService);
 		const theUser = await authService.register({
-			username: faker.internet.userName(),
+			username: faker.internet.username(),
 			password: faker.internet.password(),
 		});
 
@@ -605,15 +605,15 @@ describe('ChatService Test', () => {
 	it('Mark a conversation as read with user not in the conversation', async () => {
 		const authService = app.get(AuthService);
 		const firstUser = await authService.register({
-			username: faker.internet.userName(),
+			username: faker.internet.username(),
 			password: faker.internet.password(),
 		});
 		const secondUser = await authService.register({
-			username: faker.internet.userName(),
+			username: faker.internet.username(),
 			password: faker.internet.password(),
 		});
 		const invalidUser = await authService.register({
-			username: faker.internet.userName(),
+			username: faker.internet.username(),
 			password: faker.internet.password(),
 		});
 
@@ -631,15 +631,15 @@ describe('ChatService Test', () => {
 	it('Mark a message as read with user not in the conversation', async () => {
 		const authService = app.get(AuthService);
 		const firstUser = await authService.register({
-			username: faker.internet.userName(),
+			username: faker.internet.username(),
 			password: faker.internet.password(),
 		});
 		const secondUser = await authService.register({
-			username: faker.internet.userName(),
+			username: faker.internet.username(),
 			password: faker.internet.password(),
 		});
 		const invalidUser = await authService.register({
-			username: faker.internet.userName(),
+			username: faker.internet.username(),
 			password: faker.internet.password(),
 		});
 

@@ -38,7 +38,7 @@ describe('PostService', () => {
 	it('Create a post', async () => {
 		const authService = app.get(AuthService);
 		const ownUser = await authService.register({
-			username: faker.internet.userName(),
+			username: faker.internet.username(),
 			password: faker.internet.password(),
 		});
 		const postService = app.get(PostService);
@@ -54,7 +54,7 @@ describe('PostService', () => {
 	it('Create and delete a post.', async () => {
 		const authService = app.get(AuthService);
 		const ownUser = await authService.register({
-			username: faker.internet.userName(),
+			username: faker.internet.username(),
 			password: faker.internet.password(),
 		});
 		const postService = app.get(PostService);
@@ -75,7 +75,7 @@ describe('PostService', () => {
 	it('Create and update a post', async () => {
 		const authService = app.get(AuthService);
 		const ownUser = await authService.register({
-			username: faker.internet.userName(),
+			username: faker.internet.username(),
 			password: faker.internet.password(),
 		});
 		const postService = app.get(PostService);
@@ -103,7 +103,7 @@ describe('PostService', () => {
 	it('Create post, comment, and update comment.', async () => {
 		const authService = app.get(AuthService);
 		const ownUser = await authService.register({
-			username: faker.internet.userName(),
+			username: faker.internet.username(),
 			password: faker.internet.password(),
 		});
 		const postService = app.get(PostService);
@@ -136,7 +136,7 @@ describe('PostService', () => {
 	it('Create post, comment, and delete comment', async () => {
 		const authService = app.get(AuthService);
 		const ownUser = await authService.register({
-			username: faker.internet.userName(),
+			username: faker.internet.username(),
 			password: faker.internet.password(),
 		});
 		const postService = app.get(PostService);
@@ -175,7 +175,7 @@ describe('PostService', () => {
 	it('Create post, comment, and get post id for comment', async () => {
 		const authService = app.get(AuthService);
 		const ownUser = await authService.register({
-			username: faker.internet.userName(),
+			username: faker.internet.username(),
 			password: faker.internet.password(),
 		});
 		const postService = app.get(PostService);
@@ -205,7 +205,7 @@ describe('PostService', () => {
 	it('Create post, comment, reply, and update reply', async () => {
 		const authService = app.get(AuthService);
 		const ownUser = await authService.register({
-			username: faker.internet.userName(),
+			username: faker.internet.username(),
 			password: faker.internet.password(),
 		});
 		const postService = app.get(PostService);
@@ -247,7 +247,7 @@ describe('PostService', () => {
 	it('Create post, comment, reply, and delete reply', async () => {
 		const authService = app.get(AuthService);
 		const ownUser = await authService.register({
-			username: faker.internet.userName(),
+			username: faker.internet.username(),
 			password: faker.internet.password(),
 		});
 		const postService = app.get(PostService);
@@ -296,7 +296,7 @@ describe('PostService', () => {
 	it('Check if can create post, comment, and reply to the comment', async () => {
 		const authService = app.get(AuthService);
 		const ownUser = await authService.register({
-			username: faker.internet.userName(),
+			username: faker.internet.username(),
 			password: faker.internet.password(),
 		});
 		const postService = app.get(PostService);
@@ -410,7 +410,7 @@ describe('PostService', () => {
 	it('Check order on posts', async () => {
 		const authService = app.get(AuthService);
 		const ownUser = await authService.register({
-			username: faker.internet.userName(),
+			username: faker.internet.username(),
 			password: faker.internet.password(),
 		});
 		const postService = app.get(PostService);
@@ -439,7 +439,7 @@ describe('PostService', () => {
 	it('Check order on comments', async () => {
 		const authService = app.get(AuthService);
 		const ownUser = await authService.register({
-			username: faker.internet.userName(),
+			username: faker.internet.username(),
 			password: faker.internet.password(),
 		});
 		const postService = app.get(PostService);
@@ -474,7 +474,7 @@ describe('PostService', () => {
 	it('Check order on replies', async () => {
 		const authService = app.get(AuthService);
 		const ownUser = await authService.register({
-			username: faker.internet.userName(),
+			username: faker.internet.username(),
 			password: faker.internet.password(),
 		});
 		const postService = app.get(PostService);
@@ -517,15 +517,15 @@ describe('PostService', () => {
 	it('Check three posters order', async () => {
 		const authService = app.get(AuthService);
 		const firstUser = await authService.register({
-			username: faker.internet.userName(),
+			username: faker.internet.username(),
 			password: faker.internet.password(),
 		});
 		const secondUser = await authService.register({
-			username: faker.internet.userName(),
+			username: faker.internet.username(),
 			password: faker.internet.password(),
 		});
 		const thirdUser = await authService.register({
-			username: faker.internet.userName(),
+			username: faker.internet.username(),
 			password: faker.internet.password(),
 		});
 		const postService = app.get(PostService);
@@ -564,11 +564,11 @@ describe('PostService', () => {
 		const authService = app.get(AuthService);
 		const postService = app.get(PostService);
 		const firstUser = await authService.register({
-			username: faker.internet.userName(),
+			username: faker.internet.username(),
 			password: faker.internet.password(),
 		});
 		const secondUser = await authService.register({
-			username: faker.internet.userName(),
+			username: faker.internet.username(),
 			password: faker.internet.password(),
 		});
 		const post = await postService.createPost(firstUser.id, {
@@ -600,11 +600,11 @@ describe('PostService', () => {
 		const authService = app.get(AuthService);
 		const postService = app.get(PostService);
 		const firstUser = await authService.register({
-			username: faker.internet.userName(),
+			username: faker.internet.username(),
 			password: faker.internet.password(),
 		});
 		const secondUser = await authService.register({
-			username: faker.internet.userName(),
+			username: faker.internet.username(),
 			password: faker.internet.password(),
 		});
 		const post = await postService.createPost(firstUser.id, {
@@ -631,7 +631,7 @@ describe('PostService', () => {
 		const authService = app.get(AuthService);
 		const postService = app.get(PostService);
 		const firstUser = await authService.register({
-			username: faker.internet.userName(),
+			username: faker.internet.username(),
 			password: faker.internet.password(),
 		});
 		const post = await postService.createPost(firstUser.id, {
@@ -655,7 +655,7 @@ describe('PostService', () => {
 		const authService = app.get(AuthService);
 		const postService = app.get(PostService);
 		const firstUser = await authService.register({
-			username: faker.internet.userName(),
+			username: faker.internet.username(),
 			password: faker.internet.password(),
 		});
 		const firstPost = await postService.createPost(firstUser.id, {
@@ -681,11 +681,11 @@ describe('PostService', () => {
 		const authService = app.get(AuthService);
 		const postService = app.get(PostService);
 		const firstUser = await authService.register({
-			username: faker.internet.userName(),
+			username: faker.internet.username(),
 			password: faker.internet.password(),
 		});
 		const secondUser = await authService.register({
-			username: faker.internet.userName(),
+			username: faker.internet.username(),
 			password: faker.internet.password(),
 		});
 		const post = await postService.createPost(firstUser.id, {
@@ -708,11 +708,11 @@ describe('PostService', () => {
 		const authService = app.get(AuthService);
 		const postService = app.get(PostService);
 		const firstUser = await authService.register({
-			username: faker.internet.userName(),
+			username: faker.internet.username(),
 			password: faker.internet.password(),
 		});
 		const secondUser = await authService.register({
-			username: faker.internet.userName(),
+			username: faker.internet.username(),
 			password: faker.internet.password(),
 		});
 		const post = await postService.createPost(firstUser.id, {
@@ -736,7 +736,7 @@ describe('PostService', () => {
 		const authService = app.get(AuthService);
 		const postService = app.get(PostService);
 		const firstUser = await authService.register({
-			username: faker.internet.userName(),
+			username: faker.internet.username(),
 			password: faker.internet.password(),
 		});
 		const post = await postService.createPost(firstUser.id, {
@@ -760,7 +760,7 @@ describe('PostService', () => {
 		const authService = app.get(AuthService);
 		const postService = app.get(PostService);
 		const firstUser = await authService.register({
-			username: faker.internet.userName(),
+			username: faker.internet.username(),
 			password: faker.internet.password(),
 		});
 		const post = await postService.createPost(firstUser.id, {
@@ -790,7 +790,7 @@ describe('PostService', () => {
 		const authService = app.get(AuthService);
 		const postService = app.get(PostService);
 		const firstUser = await authService.register({
-			username: faker.internet.userName(),
+			username: faker.internet.username(),
 			password: faker.internet.password(),
 		});
 		const post = await postService.createPost(firstUser.id, {
@@ -817,11 +817,11 @@ describe('PostService', () => {
 		const authService = app.get(AuthService);
 		const postService = app.get(PostService);
 		const firstUser = await authService.register({
-			username: faker.internet.userName(),
+			username: faker.internet.username(),
 			password: faker.internet.password(),
 		});
 		const secondUser = await authService.register({
-			username: faker.internet.userName(),
+			username: faker.internet.username(),
 			password: faker.internet.password(),
 		});
 		const post = await postService.createPost(firstUser.id, {
@@ -849,7 +849,7 @@ describe('PostService', () => {
 		const authService = app.get(AuthService);
 		const postService = app.get(PostService);
 		const firstUser = await authService.register({
-			username: faker.internet.userName(),
+			username: faker.internet.username(),
 			password: faker.internet.password(),
 		});
 		const post = await postService.createPost(firstUser.id, {
@@ -877,7 +877,7 @@ describe('PostService', () => {
 		const authService = app.get(AuthService);
 		const postService = app.get(PostService);
 		const firstUser = await authService.register({
-			username: faker.internet.userName(),
+			username: faker.internet.username(),
 			password: faker.internet.password(),
 		});
 		const post = await postService.createPost(firstUser.id, {
@@ -910,7 +910,7 @@ describe('PostService', () => {
 		const authService = app.get(AuthService);
 
 		const user = await authService.register({
-			username: faker.internet.userName(),
+			username: faker.internet.username(),
 			password: faker.internet.password(),
 		});
 		await expect(
@@ -924,7 +924,7 @@ describe('PostService', () => {
 	it('Create post, comment, and count comments.', async () => {
 		const authService = app.get(AuthService);
 		const ownUser = await authService.register({
-			username: faker.internet.userName(),
+			username: faker.internet.username(),
 			password: faker.internet.password(),
 		});
 		const postService = app.get(PostService);
@@ -949,7 +949,7 @@ describe('PostService', () => {
 	it('Create post, comment, reply, and count comments.', async () => {
 		const authService = app.get(AuthService);
 		const ownUser = await authService.register({
-			username: faker.internet.userName(),
+			username: faker.internet.username(),
 			password: faker.internet.password(),
 		});
 		const postService = app.get(PostService);

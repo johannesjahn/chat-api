@@ -3,7 +3,7 @@ import { app } from './setup.e2e';
 import { faker } from '@faker-js/faker';
 
 describe('AuthController (e2e)', () => {
-	const username = faker.internet.userName();
+	const username = faker.internet.username();
 	const password = faker.internet.password();
 	const otherPassword = faker.internet.password();
 
