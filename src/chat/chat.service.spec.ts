@@ -576,6 +576,13 @@ describe('ChatService Test', () => {
 		).rejects.toThrow('Http Exception');
 	});
 
+	it('Get messages for invalid user', async () => {
+		const chatService = app.get(ChatService);
+		expect(chatService.getMessages(1337, 1337)).rejects.toThrow(
+			'Http Exception',
+		);
+	});
+
 	it('Try sending non url image', async () => {
 		const authService = app.get(AuthService);
 		const theUser = await authService.register({
