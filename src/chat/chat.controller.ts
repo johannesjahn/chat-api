@@ -190,4 +190,28 @@ export class ChatController {
 		const result = await this.chatService.hasUnreadMessages(req.user.userId);
 		return { hasUnreadMessages: result };
 	}
+
+	@ApiBearerAuth()
+	@UseGuards(JwtAuthGuard)
+	@ApiOperation({
+		description: 'Endpoint to set the title of a conversation',
+	})
+	@Put('/set-conversation-title')
+	async setConversationTitle(
+		@Request() req: any,
+		@Body() body: { conversationId: number; title: string },
+	) {
+		await this.chatService.setConversationTitle(
+			req.user.userId,
+			body.conversationId,
+			body.title,
+		);
+
+		const result = await this.chatService.getMessages(
+			req.user.userId,
+			body.conversationId,
+		);
+		const response = new ConversationMapper().convert(result);
+		return response;
+	}
 }
