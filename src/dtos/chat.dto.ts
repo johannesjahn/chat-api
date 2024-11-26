@@ -115,3 +115,11 @@ export class HasUnreadMessagesResponseDTO {
 	})
 	hasUnreadMessages: boolean;
 }
+
+export class SetConversationTitleRequestDTO {
+	@ApiProperty({ description: 'The id of the conversation' })
+	conversationId: number;
+
+	@ApiProperty({ description: 'The title to set for the conversation' })
+	title: string;
+}

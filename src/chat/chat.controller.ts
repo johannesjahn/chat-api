@@ -24,6 +24,7 @@ import {
 	MarkMessageAsReadDTO,
 	MessageResponseDTO,
 	NumberOfUnreadMessagesResponseDTO,
+	SetConversationTitleRequestDTO,
 } from '../dtos/chat.dto';
 import {
 	CreateConversationRequestDTO,
@@ -193,13 +194,14 @@ export class ChatController {
 
 	@ApiBearerAuth()
 	@UseGuards(JwtAuthGuard)
+	@ApiCreatedResponse({ type: ConversationResponseDTO })
 	@ApiOperation({
 		description: 'Endpoint to set the title of a conversation',
 	})
 	@Put('/set-conversation-title')
 	async setConversationTitle(
 		@Request() req: any,
-		@Body() body: { conversationId: number; title: string },
+		@Body() body: SetConversationTitleRequestDTO,
 	) {
 		await this.chatService.setConversationTitle(
 			req.user.userId,
