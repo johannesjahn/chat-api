@@ -669,4 +669,52 @@ describe('ChatService Test', () => {
 			chatService.markMessageAsRead(invalidUser.id, messages.messages[0].id),
 		).rejects.toThrow('Http Exception');
 	});
+
+	it('Can not create a two user conversation twice', async () => {
+		const authService = app.get(AuthService);
+		const ownUser = await authService.register({
+			username: faker.internet.username(),
+			password: faker.internet.password(),
+		});
+		const partnerUser = await authService.register({
+			username: faker.internet.username(),
+			password: faker.internet.password(),
+		});
+
+		const chatService = app.get(ChatService);
+
+		await chatService.createConversation(ownUser.id, {
+			partnerIds: [partnerUser.id],
+		});
+
+		await expect(
+			chatService.createConversation(ownUser.id, {
+				partnerIds: [partnerUser.id],
+			}),
+		).rejects.toThrow('Http Exception');
+	});
+
+	it('Can not create a two user conversation twice (other permutation)', async () => {
+		const authService = app.get(AuthService);
+		const ownUser = await authService.register({
+			username: faker.internet.username(),
+			password: faker.internet.password(),
+		});
+		const partnerUser = await authService.register({
+			username: faker.internet.username(),
+			password: faker.internet.password(),
+		});
+
+		const chatService = app.get(ChatService);
+
+		await chatService.createConversation(ownUser.id, {
+			partnerIds: [partnerUser.id],
+		});
+
+		await expect(
+			chatService.createConversation(partnerUser.id, {
+				partnerIds: [ownUser.id],
+			}),
+		).rejects.toThrow('Http Exception');
+	});
 });

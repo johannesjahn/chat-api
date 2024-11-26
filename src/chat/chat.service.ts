@@ -39,6 +39,29 @@ export class ChatService {
 		if (!creator) {
 			throw new HttpException({ error: 'Could not find creator by ID' }, 404);
 		}
+		if (partnerUsers.length === 1) {
+			const existingConversations = await this.conversationRepository
+				.createQueryBuilder('conversation')
+				.leftJoinAndSelect('conversation.participants', 'user')
+				.where(
+					'conversation.id in (SELECT "conversationId" FROM conversation_participants_user WHERE "userId" = :id)',
+					{ id: creatorId },
+				)
+				.getMany();
+
+			existingConversations.forEach((value) => {
+				if (
+					value.participants.length === 2 &&
+					(value.participants[1].id === partnerUsers[0].id ||
+						value.participants[0].id === partnerUsers[0].id)
+				) {
+					throw new HttpException(
+						{ error: 'Single conversation with that user already exists' },
+						400,
+					);
+				}
+			});
+		}
 
 		const conversation = new Conversation();
 		conversation.participants = [creator, ...partnerUsers];
