@@ -14,6 +14,9 @@ import { User } from '../users/user.entity';
 
 @Entity()
 export class Conversation extends AbstractEntity {
+	@Column({ nullable: true })
+	title?: string;
+
 	@ManyToMany(() => User, (user) => user.conversations, {
 		onDelete: 'CASCADE',
 		onUpdate: 'CASCADE',

@@ -44,6 +44,10 @@ export class MessageMapper extends Converter<Message, MessageResponseDTO> {}
 		target: 'id',
 	},
 	{
+		source: 'title',
+		target: 'title',
+	},
+	{
 		source: 'createdAt',
 		target: 'createdAt',
 	},

@@ -717,4 +717,68 @@ describe('ChatService Test', () => {
 			}),
 		).rejects.toThrow('Http Exception');
 	});
+
+	it('Change title in conversation', async () => {
+		const authService = app.get(AuthService);
+		const firstUser = await authService.register({
+			username: faker.internet.username(),
+			password: faker.internet.password(),
+		});
+		const secondUser = await authService.register({
+			username: faker.internet.username(),
+			password: faker.internet.password(),
+		});
+		const thirdUser = await authService.register({
+			username: faker.internet.username(),
+			password: faker.internet.password(),
+		});
+
+		const chatService = app.get(ChatService);
+		const createdConversation = await chatService.createConversation(
+			firstUser.id,
+			{
+				partnerIds: [secondUser.id, thirdUser.id],
+			},
+		);
+		const firstTitle = faker.lorem.words(3);
+		await chatService.setConversationTitle(
+			firstUser.id,
+			createdConversation.id,
+			firstTitle,
+		);
+		const updatedConversation = await chatService.getConversationListForUser(
+			firstUser.id,
+		);
+
+		expect(updatedConversation[0].title).toBe(firstTitle);
+	});
+
+	it('Change title in a one on one conversation', async () => {
+		const authService = app.get(AuthService);
+		const firstUser = await authService.register({
+			username: faker.internet.username(),
+			password: faker.internet.password(),
+		});
+		const secondUser = await authService.register({
+			username: faker.internet.username(),
+			password: faker.internet.password(),
+		});
+
+		const chatService = app.get(ChatService);
+		const createdConversation = await chatService.createConversation(
+			firstUser.id,
+			{
+				partnerIds: [secondUser.id],
+			},
+		);
+		const firstTitle = faker.lorem.words(3);
+
+		await expect(
+			chatService.setConversationTitle(
+				firstUser.id,
+				createdConversation.id,
+				firstTitle,
+			),
+		).rejects.toThrow('Http Exception');
+	});
 });

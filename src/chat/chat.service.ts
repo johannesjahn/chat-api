@@ -275,4 +275,30 @@ export class ChatService {
 
 		return result;
 	}
+
+	async setConversationTitle(
+		userId: number,
+		conversationId: number,
+		title: string,
+	) {
+		const conversation = await this.conversationRepository.findOne({
+			where: { id: conversationId },
+			relations: ['participants'],
+		});
+		if (!conversation) {
+			throw new HttpException({ error: 'No conversation found' }, 404);
+		}
+		if (conversation.participants.length < 3) {
+			throw new HttpException(
+				{ error: 'Cannot set title for non group conversations' },
+				400,
+			);
+		}
+		if (!conversation.participants.some((usr) => usr.id == userId))
+			throw new HttpException({ error: 'No access' }, 403);
+
+		conversation.title = title;
+		await this.conversationRepository.save(conversation);
+		return conversation;
+	}
 }

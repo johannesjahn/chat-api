@@ -75,6 +75,12 @@ export class ConversationResponseDTO {
 	updatedAt: Date;
 
 	@ApiProperty({
+		required: false,
+		description: 'The title of the conversation',
+	})
+	title?: string;
+
+	@ApiProperty({
 		type: UserResponseDTO,
 		isArray: true,
 		description: 'The participants of the conversation',
