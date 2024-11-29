@@ -25,9 +25,7 @@ export class AuthService {
 			where: { username: username },
 			relations: ['userAuth'],
 		});
-		const hash = createHmac('sha256', hashConstants.salt())
-			.update(pass)
-			.digest('hex');
+		const hash = createHmac('sha256', hashConstants.salt()).update(pass).digest('hex');
 		if (user && user.userAuth && user.userAuth.password === hash) {
 			return user;
 		}
@@ -50,16 +48,12 @@ export class AuthService {
 		if (!user.userAuth) {
 			throw new HttpException({ error: 'Error updating password' }, 500);
 		}
-		const hash = createHmac('sha256', hashConstants.salt())
-			.update(password)
-			.digest('hex');
+		const hash = createHmac('sha256', hashConstants.salt()).update(password).digest('hex');
 		if (user.userAuth.password == hash) {
 			throw new HttpException({ error: "Password can't be the same" }, 400);
 		}
 
-		user.userAuth.password = createHmac('sha256', hashConstants.salt())
-			.update(password)
-			.digest('hex');
+		user.userAuth.password = createHmac('sha256', hashConstants.salt()).update(password).digest('hex');
 		await this.userAuthRepository.save(user.userAuth);
 		delete user.userAuth;
 		return user;
@@ -69,9 +63,7 @@ export class AuthService {
 		const user = await this.usersService.findUser(registerDTO.username);
 		if (user) throw new HttpException({ error: 'User already exists' }, 400);
 
-		const pw = createHmac('sha256', hashConstants.salt())
-			.update(registerDTO.password)
-			.digest('hex');
+		const pw = createHmac('sha256', hashConstants.salt()).update(registerDTO.password).digest('hex');
 		const auth = new UserAuth();
 		auth.password = pw;
 		const userAuthSaved = await this.userAuthRepository.save(auth);

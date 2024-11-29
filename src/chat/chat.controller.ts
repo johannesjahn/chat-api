@@ -1,19 +1,5 @@
-import {
-	Body,
-	Controller,
-	Get,
-	HttpException,
-	Post,
-	Put,
-	Request,
-	UseGuards,
-} from '@nestjs/common';
-import {
-	ApiBearerAuth,
-	ApiCreatedResponse,
-	ApiOperation,
-	ApiTags,
-} from '@nestjs/swagger';
+import { Body, Controller, Get, HttpException, Post, Put, Request, UseGuards } from '@nestjs/common';
+import { ApiBearerAuth, ApiCreatedResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { ConversationMapper, MessageMapper } from '../chat/chat.mapper';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import {
@@ -26,10 +12,7 @@ import {
 	NumberOfUnreadMessagesResponseDTO,
 	SetConversationTitleRequestDTO,
 } from '../dtos/chat.dto';
-import {
-	CreateConversationRequestDTO,
-	MarkConversationAsReadDTO,
-} from '../dtos/conversation.dto';
+import { CreateConversationRequestDTO, MarkConversationAsReadDTO } from '../dtos/conversation.dto';
 import { ChatService } from './chat.service';
 
 @ApiTags('Chat')
@@ -77,11 +60,7 @@ export class ChatController {
 	@ApiOperation({ description: 'Get messages for a conversation' })
 	@Post('/get-messages')
 	async getMessages(@Request() req: any, @Body() body: GetMessagesDTO) {
-		const result = await this.chatService.getMessages(
-			req.user.userId,
-			body.conversationId,
-			body.lastMessage,
-		);
+		const result = await this.chatService.getMessages(req.user.userId, body.conversationId, body.lastMessage);
 		const mapper = new ConversationMapper();
 		const dto = mapper.convert(result);
 		return dto;
@@ -95,14 +74,8 @@ export class ChatController {
 			'Endpoint to create a new conversation with two or more participants (authenticated user is automatically added to the conversation)',
 	})
 	@ApiCreatedResponse({ type: ConversationResponseDTO })
-	async createConversation(
-		@Request() req: any,
-		@Body() body: CreateConversationRequestDTO,
-	) {
-		const result = await this.chatService.createConversation(
-			req.user.userId,
-			body,
-		);
+	async createConversation(@Request() req: any, @Body() body: CreateConversationRequestDTO) {
+		const result = await this.chatService.createConversation(req.user.userId, body);
 
 		const mapper = new ConversationMapper();
 		const dto = mapper.convert(result);
@@ -117,9 +90,7 @@ export class ChatController {
 	})
 	@Get('/get-conversations')
 	async getConversations(@Request() req: any) {
-		const result = await this.chatService.getConversationListForUser(
-			req.user.userId,
-		);
+		const result = await this.chatService.getConversationListForUser(req.user.userId);
 		const mapper = new ConversationMapper();
 		const dtos = result.map((v) => mapper.convert(v));
 
@@ -129,58 +100,42 @@ export class ChatController {
 	@ApiBearerAuth()
 	@UseGuards(JwtAuthGuard)
 	@ApiOperation({
-		description:
-			'Endpoint to mark a message as read for the authenticated user',
+		description: 'Endpoint to mark a message as read for the authenticated user',
 	})
 	@Put('/mark-message-as-read')
-	async markMessageAsRead(
-		@Request() req: any,
-		@Body() body: MarkMessageAsReadDTO,
-	) {
+	async markMessageAsRead(@Request() req: any, @Body() body: MarkMessageAsReadDTO) {
 		await this.chatService.markMessageAsRead(req.user.userId, body.messageId);
 	}
 
 	@ApiBearerAuth()
 	@UseGuards(JwtAuthGuard)
 	@ApiOperation({
-		description:
-			'Endpoint to mark a conversation as read for the authenticated user',
+		description: 'Endpoint to mark a conversation as read for the authenticated user',
 	})
 	@Put('/mark-conversation-as-read')
-	async markConversationAsRead(
-		@Request() req: any,
-		@Body() body: MarkConversationAsReadDTO,
-	) {
-		await this.chatService.markConversationAsRead(
-			req.user.userId,
-			body.conversationId,
-		);
+	async markConversationAsRead(@Request() req: any, @Body() body: MarkConversationAsReadDTO) {
+		await this.chatService.markConversationAsRead(req.user.userId, body.conversationId);
 	}
 
 	@ApiBearerAuth()
 	@UseGuards(JwtAuthGuard)
 	@ApiOperation({
-		description:
-			'Endpoint to get the number of unread messages for the authenticated user',
+		description: 'Endpoint to get the number of unread messages for the authenticated user',
 	})
 	@ApiCreatedResponse({
 		type: NumberOfUnreadMessagesResponseDTO,
-		description:
-			'Gets the number of unread messages for the authenticated user',
+		description: 'Gets the number of unread messages for the authenticated user',
 	})
 	@Get('/get-number-of-unread-messages')
 	async getNumberOfUnreadMessages(@Request() req: any) {
-		const result = await this.chatService.getUnreadMessagesCount(
-			req.user.userId,
-		);
+		const result = await this.chatService.getUnreadMessagesCount(req.user.userId);
 		return { count: result };
 	}
 
 	@ApiBearerAuth()
 	@UseGuards(JwtAuthGuard)
 	@ApiOperation({
-		description:
-			'Endpoint to get the number of unread messages for the authenticated user',
+		description: 'Endpoint to get the number of unread messages for the authenticated user',
 	})
 	@ApiCreatedResponse({
 		type: HasUnreadMessagesResponseDTO,
@@ -199,20 +154,10 @@ export class ChatController {
 		description: 'Endpoint to set the title of a conversation',
 	})
 	@Put('/set-conversation-title')
-	async setConversationTitle(
-		@Request() req: any,
-		@Body() body: SetConversationTitleRequestDTO,
-	) {
-		await this.chatService.setConversationTitle(
-			req.user.userId,
-			body.conversationId,
-			body.title,
-		);
+	async setConversationTitle(@Request() req: any, @Body() body: SetConversationTitleRequestDTO) {
+		await this.chatService.setConversationTitle(req.user.userId, body.conversationId, body.title);
 
-		const result = await this.chatService.getMessages(
-			req.user.userId,
-			body.conversationId,
-		);
+		const result = await this.chatService.getMessages(req.user.userId, body.conversationId);
 		const response = new ConversationMapper().convert(result);
 		return response;
 	}

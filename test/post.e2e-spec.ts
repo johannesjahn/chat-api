@@ -1,11 +1,5 @@
 import { faker } from '@faker-js/faker';
-import {
-	createAccount,
-	createPost,
-	getPost,
-	getPosts,
-	likePost,
-} from './utils.e2e';
+import { createAccount, createPost, getPost, getPosts, likePost } from './utils.e2e';
 
 describe('PostController (e2e)', () => {
 	it('app/post/', async () => {

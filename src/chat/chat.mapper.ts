@@ -73,7 +73,4 @@ export class MessageMapper extends Converter<Message, MessageResponseDTO> {}
 		converter: MessageMapper,
 	},
 ])
-export class ConversationMapper extends Converter<
-	Conversation,
-	ConversationResponseDTO
-> {}
+export class ConversationMapper extends Converter<Conversation, ConversationResponseDTO> {}

@@ -46,9 +46,7 @@ export class Post extends AbstractEntity {
 	@AfterUpdate()
 	generateNumberOfComments(): void {
 		this.numberOfComments = this.comments
-			? this.comments
-					.map((c) => (c.replies ? c.replies.length : 0))
-					.reduce((pre, current) => pre + current + 1, 0)
+			? this.comments.map((c) => (c.replies ? c.replies.length : 0)).reduce((pre, current) => pre + current + 1, 0)
 			: 0;
 	}
 }

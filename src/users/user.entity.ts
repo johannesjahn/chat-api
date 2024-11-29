@@ -1,14 +1,6 @@
 import { Conversation, Message } from '../chat/chat.entity';
 import { Post, Comment, Reply } from '../post/post.entity';
-import {
-	Column,
-	Entity,
-	JoinColumn,
-	ManyToMany,
-	OneToMany,
-	OneToOne,
-	PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToMany, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { UserAuth } from './userAuth.entity';
 
 @Entity()

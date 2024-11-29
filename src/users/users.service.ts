@@ -24,10 +24,7 @@ export class UsersService {
 	 * @returns All users except the user with the given id
 	 */
 	async findAllWithoutSelf(userId: number): Promise<User[]> {
-		return this.usersRepository
-			.createQueryBuilder()
-			.where('id != :id', { id: userId })
-			.getMany();
+		return this.usersRepository.createQueryBuilder().where('id != :id', { id: userId }).getMany();
 	}
 
 	/**

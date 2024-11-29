@@ -1,12 +1,7 @@
 import { TestingModule } from '@nestjs/testing';
 import { DataSource } from 'typeorm';
 import { UserAuth } from './users/userAuth.entity';
-import {
-	cleanupDB,
-	getTestDataSource,
-	getTestModule,
-	populateDB,
-} from './utils.test';
+import { cleanupDB, getTestDataSource, getTestModule, populateDB } from './utils.test';
 import { AppService } from './app.service';
 
 describe('AppService', () => {

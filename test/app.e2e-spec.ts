@@ -6,11 +6,7 @@ describe('AppController (e2e)', () => {
 		const response = await request(app.getHttpServer())
 			.get('/debug')
 			.expect(200)
-			.expect(
-				(res) =>
-					res.body ===
-					JSON.stringify({ message: 'Thanks for using the debug endpoint.' }),
-			);
+			.expect((res) => res.body === JSON.stringify({ message: 'Thanks for using the debug endpoint.' }));
 		return response;
 	});
 });

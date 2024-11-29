@@ -2,12 +2,7 @@
 import { TestingModule } from '@nestjs/testing';
 import { AuthService } from '../auth/auth.service';
 import { DataSource } from 'typeorm';
-import {
-	cleanupDB,
-	getTestDataSource,
-	getTestModule,
-	populateDB,
-} from '../utils.test';
+import { cleanupDB, getTestDataSource, getTestModule, populateDB } from '../utils.test';
 import { PostService } from './post.service';
 import { CommentMapper, ReplyMapper } from './post.mapper';
 import { faker } from '@faker-js/faker';
@@ -167,9 +162,7 @@ describe('PostService', () => {
 
 	it('Try to delete a non existing comment', async () => {
 		const postService = app.get(PostService);
-		await expect(postService.deleteComment(1338, 1337)).rejects.toThrow(
-			'Http Exception',
-		);
+		await expect(postService.deleteComment(1338, 1337)).rejects.toThrow('Http Exception');
 	});
 
 	it('Create post, comment, and get post id for comment', async () => {
@@ -239,9 +232,7 @@ describe('PostService', () => {
 
 		const postsAfterUpdate = await postService.getPosts();
 		expect(postsAfterUpdate.length).toBe(1);
-		expect(postsAfterUpdate[0].comments[0].replies[0].content).toBe(
-			updatedReply,
-		);
+		expect(postsAfterUpdate[0].comments[0].replies[0].content).toBe(updatedReply);
 	});
 
 	it('Create post, comment, reply, and delete reply', async () => {
@@ -288,9 +279,7 @@ describe('PostService', () => {
 
 	it('Check error when trying to delete a non existing reply', async () => {
 		const postService = app.get(PostService);
-		await expect(postService.deleteReply(1338, 1337)).rejects.toThrow(
-			'Http Exception',
-		);
+		await expect(postService.deleteReply(1338, 1337)).rejects.toThrow('Http Exception');
 	});
 
 	it('Check if can create post, comment, and reply to the comment', async () => {
@@ -555,9 +544,7 @@ describe('PostService', () => {
 
 	it('Check error when deleting a post that does not exist', async () => {
 		const postService = app.get(PostService);
-		await expect(postService.deletePost(1, 1)).rejects.toThrow(
-			new HttpException({ error: 'Post not found' }, 404),
-		);
+		await expect(postService.deletePost(1, 1)).rejects.toThrow(new HttpException({ error: 'Post not found' }, 404));
 	});
 
 	it('Like post', async () => {

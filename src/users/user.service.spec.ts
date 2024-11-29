@@ -1,12 +1,7 @@
 import { TestingModule } from '@nestjs/testing';
 import { AuthService } from '../auth/auth.service';
 import { DataSource } from 'typeorm';
-import {
-	cleanupDB,
-	getTestDataSource,
-	getTestModule,
-	populateDB,
-} from '../utils.test';
+import { cleanupDB, getTestDataSource, getTestModule, populateDB } from '../utils.test';
 import { UsersService } from './users.service';
 import { UserMapper } from './user.mapper';
 import { faker } from '@faker-js/faker';

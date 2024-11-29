@@ -1,8 +1,4 @@
-import {
-	createAccount,
-	createConversation,
-	getConversations,
-} from './utils.e2e';
+import { createAccount, createConversation, getConversations } from './utils.e2e';
 
 describe('ChatController (e2e)', () => {
 	it('app/chat/create-conversation (single chat) (POST)', async () => {
@@ -16,12 +12,8 @@ describe('ChatController (e2e)', () => {
 			firstCredentials.accessToken,
 		);
 
-		const firstConversations = await getConversations(
-			firstCredentials.accessToken,
-		);
-		const secondConversations = await getConversations(
-			secondCredentials.accessToken,
-		);
+		const firstConversations = await getConversations(firstCredentials.accessToken);
+		const secondConversations = await getConversations(secondCredentials.accessToken);
 
 		expect(firstConversations).toHaveLength(1);
 		expect(secondConversations).toHaveLength(1);
@@ -39,15 +31,9 @@ describe('ChatController (e2e)', () => {
 			firstCredentials.accessToken,
 		);
 
-		const firstConversations = await getConversations(
-			firstCredentials.accessToken,
-		);
-		const secondConversations = await getConversations(
-			secondCredentials.accessToken,
-		);
-		const thirdConversations = await getConversations(
-			thirdCredentials.accessToken,
-		);
+		const firstConversations = await getConversations(firstCredentials.accessToken);
+		const secondConversations = await getConversations(secondCredentials.accessToken);
+		const thirdConversations = await getConversations(thirdCredentials.accessToken);
 
 		expect(firstConversations).toHaveLength(1);
 		expect(secondConversations).toHaveLength(1);

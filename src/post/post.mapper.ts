@@ -1,8 +1,4 @@
-import {
-	CommentResponseDTO,
-	PostResponseDTO,
-	ReplyResponseDTO,
-} from '../dtos/post.dto';
+import { CommentResponseDTO, PostResponseDTO, ReplyResponseDTO } from '../dtos/post.dto';
 import { Comment, Post, Reply } from './post.entity';
 import { Converter, Mapper } from 'typevert';
 import { UserMapper } from '../users/user.mapper';
@@ -14,10 +10,7 @@ export class LikedByMapper extends Converter<User[], boolean> {
 	}
 }
 
-export class NumberOfCommentsMapper extends Converter<
-	number | undefined,
-	number | null
-> {
+export class NumberOfCommentsMapper extends Converter<number | undefined, number | null> {
 	convert(source: number | undefined): number | null {
 		if (source) return source;
 		return null;

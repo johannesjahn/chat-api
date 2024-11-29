@@ -18,19 +18,14 @@ export class ChatService {
 		private readonly chatGateway: ChatGateway,
 	) {}
 
-	async createConversation(
-		creatorId: number,
-		request: CreateConversationRequestDTO,
-	): Promise<Conversation> {
-		if (request.partnerIds.length === 0)
-			throw new HttpException({ error: "Can't create chat with self" }, 400);
+	async createConversation(creatorId: number, request: CreateConversationRequestDTO): Promise<Conversation> {
+		if (request.partnerIds.length === 0) throw new HttpException({ error: "Can't create chat with self" }, 400);
 
 		const partnerUsers = await this.userRepository.find({
 			where: request.partnerIds.map((id) => ({ id })),
 		});
 
-		if (partnerUsers.length !== request.partnerIds.length)
-			throw new HttpException({ error: 'User not found' }, 404);
+		if (partnerUsers.length !== request.partnerIds.length) throw new HttpException({ error: 'User not found' }, 404);
 		if (request.partnerIds.findIndex((v) => v === creatorId) !== -1)
 			throw new HttpException({ error: "Can't create chat with self" }, 400);
 		const creator = await this.userRepository.findOne({
@@ -52,13 +47,9 @@ export class ChatService {
 			existingConversations.forEach((value) => {
 				if (
 					value.participants.length === 2 &&
-					(value.participants[1].id === partnerUsers[0].id ||
-						value.participants[0].id === partnerUsers[0].id)
+					(value.participants[1].id === partnerUsers[0].id || value.participants[0].id === partnerUsers[0].id)
 				) {
-					throw new HttpException(
-						{ error: 'Single conversation with that user already exists' },
-						400,
-					);
+					throw new HttpException({ error: 'Single conversation with that user already exists' }, 400);
 				}
 			});
 		}
@@ -77,20 +68,14 @@ export class ChatService {
 			.leftJoinAndSelect('conversation.lastMessage', 'message')
 			.leftJoinAndSelect('message.author', 'author')
 			.leftJoinAndSelect('message.readBy', 'readBy')
-			.where(
-				'conversation.id in (SELECT "conversationId" FROM conversation_participants_user WHERE "userId" = :id)',
-				{ id: userId },
-			)
+			.where('conversation.id in (SELECT "conversationId" FROM conversation_participants_user WHERE "userId" = :id)', {
+				id: userId,
+			})
 			.orderBy({ 'conversation.updatedAt': 'DESC' })
 			.getMany();
 	}
 
-	async sendMessage(
-		userId: number,
-		conversationId: number,
-		content: string,
-		contentType: ContentType,
-	) {
+	async sendMessage(userId: number, conversationId: number, content: string, contentType: ContentType) {
 		if (contentType == 'IMAGE_URL' && !content.startsWith('http')) {
 			throw new HttpException({ error: 'Invalid image url' }, 400);
 		}
@@ -127,19 +112,10 @@ export class ChatService {
 		return result;
 	}
 
-	async getMessages(
-		userId: number,
-		conversationId: number,
-		lastMessage?: number,
-	) {
+	async getMessages(userId: number, conversationId: number, lastMessage?: number) {
 		const conversation = await this.conversationRepository.findOne({
 			where: { id: conversationId },
-			relations: [
-				'participants',
-				'lastMessage',
-				'lastMessage.author',
-				'lastMessage.readBy',
-			],
+			relations: ['participants', 'lastMessage', 'lastMessage.author', 'lastMessage.readBy'],
 		});
 		if (!conversation) {
 			throw new HttpException({ error: 'No conversation found' }, 404);
@@ -170,12 +146,7 @@ export class ChatService {
 	async markMessageAsRead(userId: number, messageId: number) {
 		const message = await this.messageRepository.findOne({
 			where: { id: messageId },
-			relations: [
-				'author',
-				'readBy',
-				'conversation',
-				'conversation.participants',
-			],
+			relations: ['author', 'readBy', 'conversation', 'conversation.participants'],
 		});
 		if (!message) {
 			throw new HttpException({ error: 'No message found' }, 404);
@@ -185,9 +156,7 @@ export class ChatService {
 
 		if (message.author.id == userId) return;
 
-		const user = message.conversation.participants.find(
-			(usr) => usr.id == userId,
-		)!;
+		const user = message.conversation.participants.find((usr) => usr.id == userId)!;
 
 		if (!message.readBy.some((usr) => usr.id == userId)) {
 			message.readBy.push(user);
@@ -195,9 +164,7 @@ export class ChatService {
 		}
 
 		this.chatGateway.updateConversationsForUsers(
-			message.conversation.participants
-				.map((p) => p.id)
-				.filter((id) => id != userId),
+			message.conversation.participants.map((p) => p.id).filter((id) => id != userId),
 			message.conversation.id,
 		);
 	}
@@ -205,12 +172,7 @@ export class ChatService {
 	async markConversationAsRead(userId: number, conversationId: number) {
 		const conversation = await this.conversationRepository.findOne({
 			where: { id: conversationId },
-			relations: [
-				'participants',
-				'messages',
-				'messages.author',
-				'messages.readBy',
-			],
+			relations: ['participants', 'messages', 'messages.author', 'messages.readBy'],
 		});
 		if (!conversation) {
 			throw new HttpException({ error: 'No conversation found' }, 404);
@@ -223,10 +185,7 @@ export class ChatService {
 		let changed = false;
 
 		conversation.messages.forEach((message) => {
-			if (
-				!message.readBy.some((usr) => usr.id == userId) &&
-				message.author.id != userId
-			) {
+			if (!message.readBy.some((usr) => usr.id == userId) && message.author.id != userId) {
 				message.readBy.push(user);
 				changed = true;
 			}
@@ -249,17 +208,14 @@ export class ChatService {
 			.leftJoinAndSelect('conversation.messages', 'message')
 			.leftJoinAndSelect('message.author', 'author')
 			.leftJoinAndSelect('message.readBy', 'readBy')
-			.where(
-				'conversation.id in (SELECT "conversationId" FROM conversation_participants_user WHERE "userId" = :id)',
-				{ id: userId },
-			)
+			.where('conversation.id in (SELECT "conversationId" FROM conversation_participants_user WHERE "userId" = :id)', {
+				id: userId,
+			})
 			.orderBy({ 'conversation.updatedAt': 'DESC' })
 			.getMany();
 
 		return conversations.reduce((prev, curr) => {
-			const unread = curr.messages.filter(
-				(m) => m.author.id != userId && !m.readBy.some((u) => u.id == userId),
-			);
+			const unread = curr.messages.filter((m) => m.author.id != userId && !m.readBy.some((u) => u.id == userId));
 			return prev + unread.length;
 		}, 0);
 	}
@@ -267,20 +223,14 @@ export class ChatService {
 	async hasUnreadMessages(userId: number) {
 		const conversations = await this.getConversationListForUser(userId);
 		const result = conversations.some((c) => {
-			const unread =
-				c.lastMessage?.author.id != userId &&
-				!c.lastMessage?.readBy.some((u) => u.id == userId);
+			const unread = c.lastMessage?.author.id != userId && !c.lastMessage?.readBy.some((u) => u.id == userId);
 			return unread;
 		});
 
 		return result;
 	}
 
-	async setConversationTitle(
-		userId: number,
-		conversationId: number,
-		title: string,
-	) {
+	async setConversationTitle(userId: number, conversationId: number, title: string) {
 		const conversation = await this.conversationRepository.findOne({
 			where: { id: conversationId },
 			relations: ['participants'],
@@ -289,10 +239,7 @@ export class ChatService {
 			throw new HttpException({ error: 'No conversation found' }, 404);
 		}
 		if (conversation.participants.length < 3) {
-			throw new HttpException(
-				{ error: 'Cannot set title for non group conversations' },
-				400,
-			);
+			throw new HttpException({ error: 'Cannot set title for non group conversations' }, 400);
 		}
 		if (!conversation.participants.some((usr) => usr.id == userId))
 			throw new HttpException({ error: 'No access' }, 403);

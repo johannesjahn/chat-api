@@ -1,15 +1,5 @@
 import { AbstractEntity } from '../utils/utils.entity';
-import {
-	Column,
-	Entity,
-	JoinColumn,
-	JoinTable,
-	ManyToMany,
-	ManyToOne,
-	OneToMany,
-	OneToOne,
-	Relation,
-} from 'typeorm';
+import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, OneToOne, Relation } from 'typeorm';
 import { User } from '../users/user.entity';
 
 @Entity()

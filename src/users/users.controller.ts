@@ -14,14 +14,7 @@ import {
 	UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import {
-	ApiBearerAuth,
-	ApiBody,
-	ApiConsumes,
-	ApiCreatedResponse,
-	ApiOperation,
-	ApiTags,
-} from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiConsumes, ApiCreatedResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as sharp from 'sharp';
@@ -88,9 +81,7 @@ export class UsersController {
 	async uploadAvatar(
 		@UploadedFile(
 			new ParseFilePipe({
-				validators: [
-					new FileTypeValidator({ fileType: 'application/octet-stream' }),
-				],
+				validators: [new FileTypeValidator({ fileType: 'application/octet-stream' })],
 			}),
 		)
 		file: Express.Multer.File,
@@ -129,10 +120,7 @@ export class UsersController {
 
 	@Get('avatar/:userId')
 	@ApiOperation({ description: 'Get avatar for a specific user' })
-	async getAvatar(
-		@Param('userId') userId: number,
-		@Query('size') size = '200',
-	) {
+	async getAvatar(@Param('userId') userId: number, @Query('size') size = '200') {
 		if (!this.validSizes.includes(size)) {
 			throw new HttpException({ error: 'invalid size' }, 400);
 		}

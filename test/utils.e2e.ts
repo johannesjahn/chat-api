@@ -14,15 +14,11 @@ export async function createAccount(): Promise<{
 	const username = faker.internet.username();
 	const password = faker.internet.password();
 
-	const registerResponse = await request(app.getHttpServer())
-		.post('/auth/register')
-		.send({ username, password });
+	const registerResponse = await request(app.getHttpServer()).post('/auth/register').send({ username, password });
 
 	const id = registerResponse.body.id;
 
-	const loginResponse = await request(app.getHttpServer())
-		.post('/auth/login')
-		.send({ username, password });
+	const loginResponse = await request(app.getHttpServer()).post('/auth/login').send({ username, password });
 
 	const accessToken = loginResponse.body.access_token;
 
@@ -41,9 +37,7 @@ export async function createConversation(
 	return response.body;
 }
 
-export async function getConversations(
-	accessToken: string,
-): Promise<ConversationResponseDTO[]> {
+export async function getConversations(accessToken: string): Promise<ConversationResponseDTO[]> {
 	const response = await request(app.getHttpServer())
 		.get('/chat/get-conversations')
 		.set('Authorization', `Bearer ${accessToken}`)
@@ -52,10 +46,7 @@ export async function getConversations(
 	return response.body;
 }
 
-export async function createPost(
-	accessToken: string,
-	body: CreatePostDTO,
-): Promise<PostResponseDTO> {
+export async function createPost(accessToken: string, body: CreatePostDTO): Promise<PostResponseDTO> {
 	const response = await request(app.getHttpServer())
 		.post('/post')
 		.set('Authorization', `Bearer ${accessToken}`)
@@ -64,21 +55,13 @@ export async function createPost(
 	return response.body;
 }
 
-export async function getPosts(
-	accessToken?: string,
-): Promise<PostResponseDTO[]> {
-	const response = await request(app.getHttpServer())
-		.get('/post')
-		.set('Authorization', `Bearer ${accessToken}`)
-		.send();
+export async function getPosts(accessToken?: string): Promise<PostResponseDTO[]> {
+	const response = await request(app.getHttpServer()).get('/post').set('Authorization', `Bearer ${accessToken}`).send();
 
 	return response.body;
 }
 
-export async function getPost(
-	accessToken: string,
-	postId: number,
-): Promise<PostResponseDTO> {
+export async function getPost(accessToken: string, postId: number): Promise<PostResponseDTO> {
 	const response = await request(app.getHttpServer())
 		.get(`/post/single/${postId}`)
 		.set('Authorization', `Bearer ${accessToken}`)

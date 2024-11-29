@@ -1,21 +1,5 @@
-import {
-	Body,
-	Controller,
-	Delete,
-	Get,
-	HttpException,
-	Param,
-	Post,
-	Put,
-	Request,
-	UseGuards,
-} from '@nestjs/common';
-import {
-	ApiBearerAuth,
-	ApiCreatedResponse,
-	ApiOperation,
-	ApiTags,
-} from '@nestjs/swagger';
+import { Body, Controller, Delete, Get, HttpException, Param, Post, Put, Request, UseGuards } from '@nestjs/common';
+import { ApiBearerAuth, ApiCreatedResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { CommentMapper, PostMapper, ReplyMapper } from '../post/post.mapper';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import {
@@ -98,8 +82,7 @@ export class PostController {
 	@ApiBearerAuth()
 	@UseGuards(JwtAuthGuard)
 	@ApiOperation({
-		description:
-			'Delete a post that belongs to the currently authenticated user',
+		description: 'Delete a post that belongs to the currently authenticated user',
 	})
 	@Delete('/')
 	async deletePost(@Request() req: any, @Body() body: DeletePostDTO) {
@@ -112,8 +95,7 @@ export class PostController {
 	@ApiBearerAuth()
 	@ApiCreatedResponse({ type: PostResponseDTO })
 	@ApiOperation({
-		description:
-			'Update a post that belongs to the currently authenticated user',
+		description: 'Update a post that belongs to the currently authenticated user',
 	})
 	@UseGuards(JwtAuthGuard)
 	@Put('/')
@@ -161,8 +143,7 @@ export class PostController {
 	@ApiBearerAuth()
 	@UseGuards(JwtAuthGuard)
 	@ApiOperation({
-		description:
-			'Delete a comment that belongs to the currently authenticated user',
+		description: 'Delete a comment that belongs to the currently authenticated user',
 	})
 	@Delete('/comment')
 	async deleteComment(@Request() req: any, @Body() body: DeleteCommentDTO) {
@@ -172,8 +153,7 @@ export class PostController {
 	@ApiBearerAuth()
 	@ApiCreatedResponse({ type: CommentResponseDTO })
 	@ApiOperation({
-		description:
-			'Update a comment that belongs to the currently authenticated user',
+		description: 'Update a comment that belongs to the currently authenticated user',
 	})
 	@UseGuards(JwtAuthGuard)
 	@Put('/comment')
@@ -182,11 +162,7 @@ export class PostController {
 			throw new HttpException({ error: 'Content is required' }, 400);
 		}
 
-		const result = await this.postService.updateComment(
-			req.user.userId,
-			body.commentId,
-			body.content,
-		);
+		const result = await this.postService.updateComment(req.user.userId, body.commentId, body.content);
 		const mapper = new CommentMapper();
 
 		const dto = mapper.convert(result);
@@ -240,11 +216,7 @@ export class PostController {
 			throw new HttpException({ error: 'Content is required' }, 400);
 		}
 
-		const result = await this.postService.updateReply(
-			req.user.userId,
-			body.replyId,
-			body.content,
-		);
+		const result = await this.postService.updateReply(req.user.userId, body.replyId, body.content);
 		const mapper = new ReplyMapper();
 
 		const dto = mapper.convert(result);
@@ -263,10 +235,7 @@ export class PostController {
 	@UseGuards(JwtAuthGuard)
 	@ApiOperation({ description: 'Like or dislike a comment' })
 	@Post('/comment/:commentId/like')
-	async likeComment(
-		@Request() req: any,
-		@Param('commentId') commentId: number,
-	) {
+	async likeComment(@Request() req: any, @Param('commentId') commentId: number) {
 		await this.postService.likeComment(req.user.userId, commentId);
 	}
 

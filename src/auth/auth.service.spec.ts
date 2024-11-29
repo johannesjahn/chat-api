@@ -3,12 +3,7 @@ import { TestingModule } from '@nestjs/testing';
 import { DataSource } from 'typeorm';
 import { AuthService } from '../auth/auth.service';
 import { UsersService } from '../users/users.service';
-import {
-	cleanupDB,
-	getTestDataSource,
-	getTestModule,
-	populateDB,
-} from '../utils.test';
+import { cleanupDB, getTestDataSource, getTestModule, populateDB } from '../utils.test';
 
 describe('AuthService', () => {
 	let app: TestingModule;
@@ -106,9 +101,7 @@ describe('AuthService', () => {
 		const result = await authService.validateUser(username, newPassword);
 		expect(result).not.toBeNull();
 
-		await expect(
-			authService.validateUser(username, password),
-		).resolves.toBeNull();
+		await expect(authService.validateUser(username, password)).resolves.toBeNull();
 	});
 
 	it('Set password to the same value', async () => {
@@ -124,8 +117,6 @@ describe('AuthService', () => {
 
 		const user = (await authService.validateUser(username, password))!;
 
-		await expect(authService.changePassword(user.id, password)).rejects.toThrow(
-			'Http Exception',
-		);
+		await expect(authService.changePassword(user.id, password)).rejects.toThrow('Http Exception');
 	});
 });

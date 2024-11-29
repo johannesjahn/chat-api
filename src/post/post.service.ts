@@ -1,12 +1,7 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import {
-	CreateCommentDTO,
-	CreatePostDTO,
-	CreateReplyDTO,
-	UpdatePostDTO,
-} from '../dtos/post.dto';
+import { CreateCommentDTO, CreatePostDTO, CreateReplyDTO, UpdatePostDTO } from '../dtos/post.dto';
 import { Comment, Post, Reply } from './post.entity';
 import { User } from '../users/user.entity';
 
@@ -60,12 +55,7 @@ export class PostService {
 			.where('post.id = :postId', { postId });
 
 		if (userId) {
-			query = query.leftJoinAndSelect(
-				'post.likedBy',
-				'likedBy',
-				'likedBy.id = :userId',
-				{ userId },
-			);
+			query = query.leftJoinAndSelect('post.likedBy', 'likedBy', 'likedBy.id = :userId', { userId });
 		}
 
 		const result = await query.getOne();
@@ -83,12 +73,7 @@ export class PostService {
 			.leftJoinAndSelect('replies.author', 'replyAuthor');
 
 		if (userId) {
-			query = query.leftJoinAndSelect(
-				'post.likedBy',
-				'likedBy',
-				'likedBy.id = :userId',
-				{ userId },
-			);
+			query = query.leftJoinAndSelect('post.likedBy', 'likedBy', 'likedBy.id = :userId', { userId });
 		}
 
 		query = query.orderBy('post.createdAt', 'DESC');
@@ -103,8 +88,7 @@ export class PostService {
 			author: { id: userId },
 		});
 
-		if (result.affected === 0)
-			throw new HttpException({ error: 'Post not found' }, 404);
+		if (result.affected === 0) throw new HttpException({ error: 'Post not found' }, 404);
 		return { success: 'Post deleted' };
 	}
 
@@ -162,8 +146,7 @@ export class PostService {
 			id: commentId,
 			author: { id: userId },
 		});
-		if (result.affected === 0)
-			throw new HttpException({ error: 'Comment not found' }, 404);
+		if (result.affected === 0) throw new HttpException({ error: 'Comment not found' }, 404);
 		return { success: 'Comment deleted' };
 	}
 
@@ -213,8 +196,7 @@ export class PostService {
 			id: replyId,
 			author: { id: userId },
 		});
-		if (result.affected === 0)
-			throw new HttpException({ error: 'Reply not found' }, 404);
+		if (result.affected === 0) throw new HttpException({ error: 'Reply not found' }, 404);
 		return { success: 'Reply deleted' };
 	}
 

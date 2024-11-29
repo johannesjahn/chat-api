@@ -1,12 +1,7 @@
 import { TestingModule } from '@nestjs/testing';
 import { AuthService } from '../auth/auth.service';
 import { DataSource, Repository } from 'typeorm';
-import {
-	cleanupDB,
-	getTestDataSource,
-	getTestModule,
-	populateDB,
-} from '../utils.test';
+import { cleanupDB, getTestDataSource, getTestModule, populateDB } from '../utils.test';
 import { faker } from '@faker-js/faker';
 import { ChatService } from './chat.service';
 import { HttpException } from '@nestjs/common';
@@ -115,11 +110,7 @@ describe('ChatService Test', () => {
 		const text = faker.lorem.words(100);
 		await chatService.sendMessage(firstUser.id, conversation.id, text, 'TEXT');
 
-		const messages = await chatService.getMessages(
-			secondUser.id,
-			conversation.id,
-			undefined,
-		);
+		const messages = await chatService.getMessages(secondUser.id, conversation.id, undefined);
 
 		expect(messages.messages.length).toBe(1);
 		expect(messages.messages[0].author.id).toBe(firstUser.id);
@@ -127,18 +118,9 @@ describe('ChatService Test', () => {
 
 		const text2 = faker.lorem.paragraph(100);
 
-		await chatService.sendMessage(
-			secondUser.id,
-			conversation.id,
-			text2,
-			'TEXT',
-		);
+		await chatService.sendMessage(secondUser.id, conversation.id, text2, 'TEXT');
 
-		const messages2 = await chatService.getMessages(
-			secondUser.id,
-			conversation.id,
-			undefined,
-		);
+		const messages2 = await chatService.getMessages(secondUser.id, conversation.id, undefined);
 
 		expect(messages2.messages.length).toBe(2);
 		expect(messages2.messages[1].author.id).toBe(secondUser.id);
@@ -168,12 +150,7 @@ describe('ChatService Test', () => {
 
 		const text = faker.lorem.words(100);
 		try {
-			await chatService.sendMessage(
-				thirdUser.id,
-				conversation.id,
-				text,
-				'TEXT',
-			);
+			await chatService.sendMessage(thirdUser.id, conversation.id, text, 'TEXT');
 		} catch (e) {
 			expect(e).toBeInstanceOf(HttpException);
 		}
@@ -198,14 +175,9 @@ describe('ChatService Test', () => {
 		const text = faker.lorem.words(100);
 		await chatService.sendMessage(firstUser.id, conversation.id, text, 'TEXT');
 
-		const messages = await chatService.getMessages(
-			secondUser.id,
-			conversation.id,
-		);
+		const messages = await chatService.getMessages(secondUser.id, conversation.id);
 
-		const conversationRepo: Repository<Conversation> = app.get(
-			getRepositoryToken(Conversation),
-		);
+		const conversationRepo: Repository<Conversation> = app.get(getRepositoryToken(Conversation));
 		const firstMessageSent = await conversationRepo.find({
 			where: { id: conversation.id },
 			relations: ['lastMessage'],
@@ -228,10 +200,7 @@ describe('ChatService Test', () => {
 			// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 			secondMessageSent[0].lastMessage!.id,
 		);
-		expect(
-			firstMessageSent[0].updatedAt.getTime() -
-				secondMessageSent[0].updatedAt.getTime(),
-		).toBeLessThan(0);
+		expect(firstMessageSent[0].updatedAt.getTime() - secondMessageSent[0].updatedAt.getTime()).toBeLessThan(0);
 	});
 
 	it('Get not found (404) if conversation not exists', async () => {
@@ -269,18 +238,9 @@ describe('ChatService Test', () => {
 		const text = faker.lorem.paragraph(100);
 		await chatService.sendMessage(firstUser.id, conversation.id, text, 'TEXT');
 
-		await chatService.sendMessage(
-			secondUser.id,
-			conversation.id,
-			faker.lorem.paragraph(100),
-			'TEXT',
-		);
+		await chatService.sendMessage(secondUser.id, conversation.id, faker.lorem.paragraph(100), 'TEXT');
 
-		const messages = await chatService.getMessages(
-			secondUser.id,
-			conversation.id,
-			undefined,
-		);
+		const messages = await chatService.getMessages(secondUser.id, conversation.id, undefined);
 
 		const mapper = new MessageMapper();
 		const dtos = messages.messages.map((v) => mapper.convert(v));
@@ -307,26 +267,13 @@ describe('ChatService Test', () => {
 		const text = faker.lorem.words(100);
 		await chatService.sendMessage(firstUser.id, conversation.id, text, 'TEXT');
 
-		const messages = await chatService.getMessages(
-			secondUser.id,
-			conversation.id,
-			undefined,
-		);
+		const messages = await chatService.getMessages(secondUser.id, conversation.id, undefined);
 
 		expect(messages.lastMessage?.author.id).toBe(firstUser.id);
 
-		await chatService.sendMessage(
-			secondUser.id,
-			conversation.id,
-			faker.lorem.paragraph(100),
-			'TEXT',
-		);
+		await chatService.sendMessage(secondUser.id, conversation.id, faker.lorem.paragraph(100), 'TEXT');
 
-		const messages2 = await chatService.getMessages(
-			secondUser.id,
-			conversation.id,
-			undefined,
-		);
+		const messages2 = await chatService.getMessages(secondUser.id, conversation.id, undefined);
 
 		expect(messages2.lastMessage?.author.id).toBe(secondUser.id);
 	});
@@ -350,9 +297,7 @@ describe('ChatService Test', () => {
 		const text = faker.lorem.words(100);
 		await chatService.sendMessage(firstUser.id, conversation.id, text, 'TEXT');
 
-		const conversations = await chatService.getConversationListForUser(
-			firstUser.id,
-		);
+		const conversations = await chatService.getConversationListForUser(firstUser.id);
 
 		expect(conversations[0].lastMessage?.author.id).toBe(firstUser.id);
 	});
@@ -376,19 +321,11 @@ describe('ChatService Test', () => {
 		const text = faker.lorem.words(100);
 		await chatService.sendMessage(firstUser.id, conversation.id, text, 'TEXT');
 
-		const messages = await chatService.getMessages(
-			secondUser.id,
-			conversation.id,
-			undefined,
-		);
+		const messages = await chatService.getMessages(secondUser.id, conversation.id, undefined);
 
 		await chatService.markMessageAsRead(secondUser.id, messages.messages[0].id);
 
-		const messages2 = await chatService.getMessages(
-			secondUser.id,
-			conversation.id,
-			undefined,
-		);
+		const messages2 = await chatService.getMessages(secondUser.id, conversation.id, undefined);
 
 		expect(messages2.messages[0].readBy.length).toBe(1);
 		expect(messages2.messages[0].readBy[0].id).toBe(secondUser.id);
@@ -410,32 +347,13 @@ describe('ChatService Test', () => {
 			partnerIds: [secondUser.id],
 		});
 
-		await chatService.sendMessage(
-			firstUser.id,
-			conversation.id,
-			faker.lorem.words(100),
-			'TEXT',
-		);
-		await chatService.sendMessage(
-			secondUser.id,
-			conversation.id,
-			faker.lorem.words(100),
-			'TEXT',
-		);
-		await chatService.sendMessage(
-			firstUser.id,
-			conversation.id,
-			faker.lorem.words(100),
-			'TEXT',
-		);
+		await chatService.sendMessage(firstUser.id, conversation.id, faker.lorem.words(100), 'TEXT');
+		await chatService.sendMessage(secondUser.id, conversation.id, faker.lorem.words(100), 'TEXT');
+		await chatService.sendMessage(firstUser.id, conversation.id, faker.lorem.words(100), 'TEXT');
 
 		await chatService.markConversationAsRead(secondUser.id, conversation.id);
 
-		const messages = await chatService.getMessages(
-			secondUser.id,
-			conversation.id,
-			undefined,
-		);
+		const messages = await chatService.getMessages(secondUser.id, conversation.id, undefined);
 
 		expect(messages.messages[0].readBy.length).toBe(1);
 		expect(messages.messages[0].readBy[0].id).toBe(secondUser.id);
@@ -465,15 +383,11 @@ describe('ChatService Test', () => {
 		const text = faker.lorem.words(100);
 		await chatService.sendMessage(firstUser.id, conversation.id, text, 'TEXT');
 
-		const conversations = await chatService.getConversationListForUser(
-			secondUser.id,
-		);
+		const conversations = await chatService.getConversationListForUser(secondUser.id);
 
 		await chatService.markConversationAsRead(secondUser.id, conversation.id);
 
-		const conversations2 = await chatService.getConversationListForUser(
-			secondUser.id,
-		);
+		const conversations2 = await chatService.getConversationListForUser(secondUser.id);
 
 		expect(conversations[0].lastMessage?.readBy).toHaveLength(0);
 		expect(conversations2[0].lastMessage?.readBy).toHaveLength(1);
@@ -499,19 +413,13 @@ describe('ChatService Test', () => {
 		const text = faker.lorem.words(100);
 		await chatService.sendMessage(firstUser.id, conversation.id, text, 'TEXT');
 
-		const messages = await chatService.getMessages(
-			secondUser.id,
-			conversation.id,
-			undefined,
-		);
+		const messages = await chatService.getMessages(secondUser.id, conversation.id, undefined);
 
 		const unreadCount = await chatService.getUnreadMessagesCount(secondUser.id);
 
 		await chatService.markMessageAsRead(secondUser.id, messages.messages[0].id);
 
-		const unreadCount2 = await chatService.getUnreadMessagesCount(
-			secondUser.id,
-		);
+		const unreadCount2 = await chatService.getUnreadMessagesCount(secondUser.id);
 
 		expect(unreadCount).toBe(1);
 		expect(unreadCount2).toBe(0);
@@ -536,11 +444,7 @@ describe('ChatService Test', () => {
 		const text = faker.lorem.words(100);
 		await chatService.sendMessage(firstUser.id, conversation.id, text, 'TEXT');
 
-		const messages = await chatService.getMessages(
-			secondUser.id,
-			conversation.id,
-			undefined,
-		);
+		const messages = await chatService.getMessages(secondUser.id, conversation.id, undefined);
 
 		const unreadCount = await chatService.hasUnreadMessages(secondUser.id);
 
@@ -578,9 +482,7 @@ describe('ChatService Test', () => {
 
 	it('Get messages for invalid user', async () => {
 		const chatService = app.get(ChatService);
-		expect(chatService.getMessages(1337, 1337)).rejects.toThrow(
-			'Http Exception',
-		);
+		expect(chatService.getMessages(1337, 1337)).rejects.toThrow('Http Exception');
 	});
 
 	it('Try sending non url image', async () => {
@@ -592,21 +494,16 @@ describe('ChatService Test', () => {
 
 		const chatService = app.get(ChatService);
 
-		expect(
-			chatService.sendMessage(
-				theUser.id,
-				1337,
-				'ftp://exampley.com',
-				'IMAGE_URL',
-			),
-		).rejects.toThrow('Http Exception');
+		expect(chatService.sendMessage(theUser.id, 1337, 'ftp://exampley.com', 'IMAGE_URL')).rejects.toThrow(
+			'Http Exception',
+		);
 	});
 
 	it('Try sending a message with an invalid user', async () => {
 		const chatService = app.get(ChatService);
-		await expect(
-			chatService.sendMessage(1338, 1337, 'ftp://example.com', 'IMAGE_URL'),
-		).rejects.toThrow('Http Exception');
+		await expect(chatService.sendMessage(1338, 1337, 'ftp://example.com', 'IMAGE_URL')).rejects.toThrow(
+			'Http Exception',
+		);
 	});
 
 	it('Mark a conversation as read with user not in the conversation', async () => {
@@ -630,9 +527,7 @@ describe('ChatService Test', () => {
 			partnerIds: [secondUser.id],
 		});
 
-		await expect(
-			chatService.markConversationAsRead(invalidUser.id, conversation.id),
-		).rejects.toThrow('Http Exception');
+		await expect(chatService.markConversationAsRead(invalidUser.id, conversation.id)).rejects.toThrow('Http Exception');
 	});
 
 	it('Mark a message as read with user not in the conversation', async () => {
@@ -659,15 +554,11 @@ describe('ChatService Test', () => {
 		const text = faker.lorem.words(100);
 		await chatService.sendMessage(firstUser.id, conversation.id, text, 'TEXT');
 
-		const messages = await chatService.getMessages(
-			secondUser.id,
-			conversation.id,
-			undefined,
-		);
+		const messages = await chatService.getMessages(secondUser.id, conversation.id, undefined);
 
-		await expect(
-			chatService.markMessageAsRead(invalidUser.id, messages.messages[0].id),
-		).rejects.toThrow('Http Exception');
+		await expect(chatService.markMessageAsRead(invalidUser.id, messages.messages[0].id)).rejects.toThrow(
+			'Http Exception',
+		);
 	});
 
 	it('Can not create a two user conversation twice', async () => {
@@ -734,21 +625,12 @@ describe('ChatService Test', () => {
 		});
 
 		const chatService = app.get(ChatService);
-		const createdConversation = await chatService.createConversation(
-			firstUser.id,
-			{
-				partnerIds: [secondUser.id, thirdUser.id],
-			},
-		);
+		const createdConversation = await chatService.createConversation(firstUser.id, {
+			partnerIds: [secondUser.id, thirdUser.id],
+		});
 		const firstTitle = faker.lorem.words(3);
-		await chatService.setConversationTitle(
-			firstUser.id,
-			createdConversation.id,
-			firstTitle,
-		);
-		const updatedConversation = await chatService.getConversationListForUser(
-			firstUser.id,
-		);
+		await chatService.setConversationTitle(firstUser.id, createdConversation.id, firstTitle);
+		const updatedConversation = await chatService.getConversationListForUser(firstUser.id);
 
 		expect(updatedConversation[0].title).toBe(firstTitle);
 	});
@@ -765,20 +647,13 @@ describe('ChatService Test', () => {
 		});
 
 		const chatService = app.get(ChatService);
-		const createdConversation = await chatService.createConversation(
-			firstUser.id,
-			{
-				partnerIds: [secondUser.id],
-			},
-		);
+		const createdConversation = await chatService.createConversation(firstUser.id, {
+			partnerIds: [secondUser.id],
+		});
 		const firstTitle = faker.lorem.words(3);
 
-		await expect(
-			chatService.setConversationTitle(
-				firstUser.id,
-				createdConversation.id,
-				firstTitle,
-			),
-		).rejects.toThrow('Http Exception');
+		await expect(chatService.setConversationTitle(firstUser.id, createdConversation.id, firstTitle)).rejects.toThrow(
+			'Http Exception',
+		);
 	});
 });

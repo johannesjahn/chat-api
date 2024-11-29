@@ -1,17 +1,5 @@
-import {
-	Body,
-	Controller,
-	HttpException,
-	Post,
-	Request,
-	UseGuards,
-} from '@nestjs/common';
-import {
-	ApiBearerAuth,
-	ApiCreatedResponse,
-	ApiOperation,
-	ApiTags,
-} from '@nestjs/swagger';
+import { Body, Controller, HttpException, Post, Request, UseGuards } from '@nestjs/common';
+import { ApiBearerAuth, ApiCreatedResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { ChangePasswordDTO } from '../dtos/changePassword.dto';
 import { UserResponseDTO } from '../dtos/user.dto';
 import { LoginDTO, LoginResponseDTO } from '../dtos/login.dto';
@@ -56,13 +44,9 @@ export class AuthController {
 	@ApiOperation({ description: 'Change password' })
 	@Post('change-password')
 	async changePassword(@Request() req: any, @Body() body: ChangePasswordDTO) {
-		if (body.password !== body.passwordConfirm)
-			throw new HttpException('passwords do not match', 400);
+		if (body.password !== body.passwordConfirm) throw new HttpException('passwords do not match', 400);
 
-		const result = await this.authService.changePassword(
-			req.user.userId,
-			body.password,
-		);
+		const result = await this.authService.changePassword(req.user.userId, body.password);
 		const mapper = new UserMapper();
 
 		const dto = mapper.convert(result);
