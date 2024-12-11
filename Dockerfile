@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-FROM node:23.3.0-slim
+FROM node:23.4.0-slim
 
 WORKDIR /usr/app
 
