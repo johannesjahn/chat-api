@@ -2,6 +2,7 @@ import { Controller, Get } from '@nestjs/common';
 import { AppService } from './app.service';
 import { ApiCreatedResponse, ApiOperation } from '@nestjs/swagger';
 import { VersionDTO } from './dtos/version.dto';
+import { DebugResponseDTO } from './dtos/debug.dto';
 
 @Controller()
 export class AppController {
@@ -10,6 +11,10 @@ export class AppController {
 	@Get('/debug')
 	@ApiOperation({
 		description: 'This is the debug endpoint. It just returns text.',
+	})
+	@ApiCreatedResponse({
+		type: DebugResponseDTO,
+		description: 'Debug response',
 	})
 	async getDebug() {
 		const result = await this.appService.debug();
