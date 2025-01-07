@@ -1,6 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
+import { Request, Response, NextFunction } from 'express';
 
 async function bootstrap() {
 	console.log(`Starting Chat API v${process.env.npm_package_version}`);
@@ -11,6 +12,11 @@ async function bootstrap() {
 	});
 
 	app.setGlobalPrefix('/app');
+
+	app.use((req: Request, res: Response, next: NextFunction) => {
+		res.removeHeader('X-Powered-By');
+		next();
+	});
 
 	const config = new DocumentBuilder()
 		.setTitle('Chat - API')
