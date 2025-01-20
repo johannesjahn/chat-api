@@ -6,7 +6,7 @@ on:
       - '**'
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     strategy:
       matrix:
         node-version: [18, 20, 23.6.0]
@@ -19,14 +19,14 @@ jobs:
       - run: npm ci
       - run: npm run test:int
   test-container:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
       - uses: docker/setup-qemu-action@v3
       - uses: docker/setup-buildx-action@v3
       - run: docker compose -f docker-compose.test.yml run chat npm run test:int
   test-e2e:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     strategy:
       matrix:
         node-version: [18, 20, 23.6.0]
@@ -39,14 +39,14 @@ jobs:
       - run: npm ci
       - run: npm run test:e2e
   test-container-e2e:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
       - uses: docker/setup-qemu-action@v3
       - uses: docker/setup-buildx-action@v3
       - run: docker compose -f docker-compose.test.yml run chat npm run test:e2e
   test-coverage:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: [test]
     steps:
       - uses: actions/checkout@v4
@@ -61,7 +61,7 @@ jobs:
           name: coverage
           path: coverage
   lint:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -71,7 +71,7 @@ jobs:
       - run: npm ci
       - run: npm run lint
   tsc:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     strategy:
       matrix:
         node-version: [18, 20, 23.6.0]
@@ -85,7 +85,7 @@ jobs:
       - run: npm run tsc
   version-bump:
     if: "!startsWith(github.event.head_commit.message, '[RELEASE]') && github.ref == 'refs/heads/main'"
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: [tsc, lint, test, test-e2e, test-container, test-container-e2e]
     steps:
       - uses: actions/checkout@v4
@@ -102,7 +102,7 @@ jobs:
           git push
           git push --tags
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: [tsc, lint, test, test-e2e]
     steps:
       - uses: actions/checkout@v4
@@ -121,7 +121,7 @@ jobs:
           path: dist.zip
   build-image:
     if: startsWith(github.event.head_commit.message, '[RELEASE]') && github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: [tsc, lint, test, test-e2e, test-container, test-container-e2e]
     steps:
       - name: Set up QEMU
@@ -141,7 +141,7 @@ jobs:
           tags: johannesjahn/chat-api:latest
   deploy:
     if: startsWith(github.event.head_commit.message, '[RELEASE]') && github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: build-image
     steps:
       - uses: appleboy/ssh-action@master
