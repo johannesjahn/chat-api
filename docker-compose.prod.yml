@@ -21,7 +21,7 @@ services:
 
   chat:
     image: johannesjahn/chat-api:latest
-    command: bash -c "node dist/main.js"
+    command: bash -c "bun dist/main.js"
     volumes:
       - ./.env:/usr/app/.env
       - ./avatars/:/usr/app/avatars/
