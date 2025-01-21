@@ -23,7 +23,7 @@ services:
 
   chat:
     build: .
-    command: bash -c "node dist/main.js"
+    command: bash -c "bun dist/main.js"
     depends_on:
       - db
     ports:

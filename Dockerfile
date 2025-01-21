@@ -1,15 +1,13 @@
 # syntax=docker/dockerfile:1
 
-FROM node:24.3.0
-
-RUN apt update && apt upgrade -y
+FROM oven/bun:1.2.17
 
 WORKDIR /usr/app
 
-COPY ["./package.json", "./package-lock.json", "./"]
-RUN npm ci
+COPY ["./package.json", "./bun.lockb", "./"]
+RUN bun install 
 
 COPY ["./tsconfig.json","./tsconfig.build.json", "./nest-cli.json", "./"]
 COPY ./src ./src
 
-RUN npm run build
+RUN bun run build
