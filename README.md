@@ -2,7 +2,7 @@
 
 Chat API made with Nest.js
 
-Use `npm ci` to install the dependencies and `npm run start:dev` to start the project locally.
+Use `bun install` to install the dependencies and `npm run start:dev` to start the project locally.
 For it to work locally you will need a postgres database running on localhost:5432. You can either provide one yourself or start one with docker.
 A sample is already configured in the [docker-compose.yml](./docker-compose.yml)
 

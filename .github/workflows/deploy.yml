@@ -16,7 +16,8 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
-      - run: npm ci
+      - uses: oven-sh/setup-bun@v2
+      - run: bun install
       - run: npm run test:int
   test-container:
     runs-on: ubuntu-24.04
@@ -36,7 +37,8 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
-      - run: npm ci
+      - uses: oven-sh/setup-bun@v2
+      - run: bun install
       - run: npm run test:e2e
   test-container-e2e:
     runs-on: ubuntu-24.04
@@ -54,7 +56,8 @@ jobs:
         with:
           node-version: 23.8.0
           cache: 'npm'
-      - run: npm ci
+      - uses: oven-sh/setup-bun@v2
+      - run: bun install
       - run: npm run test:cov
       - uses: actions/upload-artifact@master
         with:
@@ -64,12 +67,9 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 23.8.0
-          cache: 'npm'
-      - run: npm ci
-      - run: npm run lint
+      - uses: oven-sh/setup-bun@v2
+      - run: bun install
+      - run: bun run lint
   tsc:
     runs-on: ubuntu-24.04
     strategy:
@@ -77,12 +77,9 @@ jobs:
         node-version: [18, 20, 23.8.0]
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache: 'npm'
-      - run: npm ci
-      - run: npm run tsc
+      - uses: oven-sh/setup-bun@v2
+      - run: bun install
+      - run: bun run tsc
   version-bump:
     if: "!startsWith(github.event.head_commit.message, '[RELEASE]') && github.ref == 'refs/heads/main'"
     runs-on: ubuntu-24.04
@@ -106,12 +103,9 @@ jobs:
     needs: [tsc, lint, test, test-e2e]
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 23.8.0
-          cache: 'npm'
-      - run: npm ci
-      - run: npm run build
+      - uses: oven-sh/setup-bun@v2
+      - run: bun install
+      - run: bun run build
       - uses: montudor/action-zip@v1
         with:
           args: zip -qq -r dist.zip dist
