@@ -2,22 +2,25 @@ version: 2
 updates:
   - package-ecosystem: 'npm' # See documentation for possible values
     directory: '/' # Location of package manifests
-    versioning-strategy: increase
     schedule:
       interval: 'daily'
+    groups:
+      patch:
+        patterns:
+          - "*"
+        update-types:
+          - patch
     assignees:
-      - johannesjahn
+      - "johannesjahn"
   - package-ecosystem: 'docker' # See documentation for possible values
-    versioning-strategy: 'increase'
     directory: '/' # Location of package manifests
     schedule:
       interval: 'daily'
     assignees:
-      - johannesjahn
+      - "johannesjahn"
   - package-ecosystem: 'github-actions'
     directory: '/'
-    versioning-strategy: 'increase'
     schedule:
       interval: 'daily'
     assignees:
-      - johannesjahn
+      - "johannesjahn"
