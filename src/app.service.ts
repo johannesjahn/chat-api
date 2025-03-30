@@ -6,7 +6,7 @@ export class AppService {
 
 	async debug(): Promise<string> {
 		this.logger.log('Debug in AppService called.');
-		return 'Thanks for using the debug endpoint.';
+		return 'Thanks for using the debug endpoint!';
 	}
 
 	getVersion(): string {
