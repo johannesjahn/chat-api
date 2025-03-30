@@ -41,6 +41,6 @@ describe('AppService', () => {
 	it('test Debug', async () => {
 		const appService = app.get(AppService);
 		const result = await appService.debug();
-		expect(result).toBe('Thanks for using the debug endpoint.');
+		expect(result).toBe('Thanks for using the debug endpoint!');
 	});
 });
