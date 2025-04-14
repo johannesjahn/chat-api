@@ -1,10 +1,8 @@
 import {
 	Controller,
-	FileTypeValidator,
 	Get,
 	HttpException,
 	Param,
-	ParseFilePipe,
 	Post,
 	Query,
 	Request,
@@ -79,11 +77,7 @@ export class UsersController {
 	@UseGuards(JwtAuthGuard)
 	@UseInterceptors(FileInterceptor('file'))
 	async uploadAvatar(
-		@UploadedFile(
-			new ParseFilePipe({
-				validators: [new FileTypeValidator({ fileType: 'application/octet-stream' })],
-			}),
-		)
+		@UploadedFile()
 		file: Express.Multer.File,
 		@Request() req: any,
 	) {
