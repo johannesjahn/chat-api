@@ -45,7 +45,7 @@
 		"rxjs": "7.8.2",
 		"sharp": "0.34.1",
 		"swagger-ui-express": "5.0.1",
-		"typeorm": "0.3.23",
+		"typeorm": "0.3.24",
 		"typevert": "0.9.11"
 	},
 	"devDependencies": {
