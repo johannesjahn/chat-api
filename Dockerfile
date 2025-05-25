@@ -2,6 +2,8 @@
 
 FROM node:24.0.2
 
+RUN apt update && apt upgrade -y
+
 WORKDIR /usr/app
 
 COPY ["./package.json", "./package-lock.json", "./"]
