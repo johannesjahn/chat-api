@@ -96,6 +96,7 @@ jobs:
           node-version: 24.2.0
           cache: 'npm'
       - run: |
+          mkdir ~/.ssh 
           echo "${{ secrets.SIGN_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           git config --global commit.gpgsign true
