@@ -96,6 +96,11 @@ jobs:
           node-version: 24.2.0
           cache: 'npm'
       - run: |
+          echo ${{ secrets.SIGN_KEY }} > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          git config --global commit.gpgsign true
+          git config --global gpg.format ssh
+          git config --global user.signingkey ~/.ssh/id_rsa
           git config --global user.name 'Johannes Jahn'
           git config --global user.email 'johannes.jahn@outlook.com'
           npm version patch -m "[RELEASE] %s"
