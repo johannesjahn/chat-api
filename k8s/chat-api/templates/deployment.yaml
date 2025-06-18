@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: 'chat-api'
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: chat-api
+  template:
+    metadata:
+      labels:
+        app: chat-api
+    spec:
+      volumes:
+        - name: secret-volume
+          secret:
+            secretName: database-url-secret
+      containers:
+        - name: chat-api
+          image: johannesjahn/chat-api
+          command:
+            - bash
+            - -c
+            - 'node dist/main.js'
+          ports:
+            - containerPort: 3000
+          envFrom:
+            - secretRef:
+                name: database-url-secret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: chat-api
+spec:
+  type: NodePort
+  selector:
+    app: chat-api
+  ports:
+    - protocol: TCP
+      port: 3000
+      targetPort: 3000

@@ -1,0 +1,6 @@
+secrets:
+  DB_USER: 'chat'
+  DB_PASS: 'chat2'
+  DB: 'chat'
+  JWT_SECRET: 'JWT_SECRET'
+  SALT: '123456789ABCDEFG'
