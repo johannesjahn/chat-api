@@ -1,3 +1,29 @@
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: avatars-pv
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: /home/nachobar/avatars
+    type: DirectoryOrCreate
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: avatars-pvc
+spec:
+  storageClassName: ''
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -16,6 +42,9 @@ spec:
         - name: secret-volume
           secret:
             secretName: database-url-secret
+        - name: avatars-volume
+          persistentVolumeClaim:
+            claimName: avatars-pvc
       containers:
         - name: chat-api
           image: johannesjahn/chat-api
@@ -23,6 +52,9 @@ spec:
             - bash
             - -c
             - 'node dist/main.js'
+          volumeMounts:
+            - name: avatars-volume
+              mountPath: /usr/app/avatars
           ports:
             - containerPort: 3000
           envFrom:

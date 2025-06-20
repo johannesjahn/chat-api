@@ -25,6 +25,7 @@ async function bootstrap() {
 		)
 		.setVersion(process.env.npm_package_version ?? '0.0.0')
 		.addServer('https://chat.johannes-jahn.com')
+		.addServer('https://nacho.johannes-jahn.com')
 		.addBearerAuth()
 		.build();
 	const document = SwaggerModule.createDocument(app, config);
