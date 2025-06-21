@@ -32,6 +32,13 @@ spec:
                 name: chat-api
                 port:
                   number: 3000
+          - path: /socket.io
+            pathType: Prefix
+            backend:
+              service:
+                name: chat-api
+                port:
+                  number: 3000
           - path: /
             pathType: Prefix
             backend:
