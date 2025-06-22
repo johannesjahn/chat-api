@@ -135,7 +135,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Extract version
         id: meta
-        run: echo "version=$(jq -r .version package.json)" >> $GITHUB_ENV
+        run: echo "version=$(jq -r .version ./package.json)" >> $GITHUB_ENV
       - name: test echo
         run: echo "version is  ${{ env.version }}"
       - name: Build and push
