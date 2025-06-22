@@ -135,11 +135,9 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Extract version
         id: meta
-        run: echo "version=$(jq -r .version package.json)" >> $GITHUB_OUTPUT
+        run: echo "version=$(jq -r .version package.json)" >> $GITHUB_ENV
       - name: test echo
-        run: echo "version is $VERSION"
-        env:
-          VERSION: ${{ steps.meta.outputs.version }}
+        run: echo "version is  ${{ env.version }}"
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
