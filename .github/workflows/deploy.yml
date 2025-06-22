@@ -136,6 +136,8 @@ jobs:
       - name: Extract version
         id: meta
         run: echo "version=$(jq -r .version package.json)" >> $GITHUB_OUTPUT
+      - name: test echo
+        run: echo "version is ${{ steps.meta.outputs.version }}"
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
