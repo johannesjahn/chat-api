@@ -138,14 +138,14 @@ jobs:
       - name: Extract version
         id: meta
         run: echo "version=$(jq -r .version ./package.json)" >> $GITHUB_ENV
-      - name: test echo
-        run: echo "version is  ${{ env.version }}"
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: johannesjahn/chat-api:latest
+          tags: |
+            johannesjahn/chat-api:latest
+            johannesjahn/chat-api:${{ env.version }}
   deploy:
     if: startsWith(github.event.head_commit.message, '[RELEASE]') && github.ref == 'refs/heads/main'
     runs-on: ubuntu-24.04
