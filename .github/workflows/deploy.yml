@@ -124,6 +124,8 @@ jobs:
     runs-on: ubuntu-24.04
     needs: [tsc, lint, test, test-e2e, test-container, test-container-e2e]
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
       - name: Set up Docker Buildx
