@@ -52,7 +52,7 @@ spec:
             claimName: avatars-pvc
       containers:
         - name: chat-api
-          image: johannesjahn/chat-api
+          image: '{{ .Values.images.backend }}'
           command:
             - bash
             - -c

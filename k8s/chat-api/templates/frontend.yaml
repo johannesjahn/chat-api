@@ -49,12 +49,9 @@ spec:
             claimName: frontend-pvc
       containers:
         - name: frontend
-          image: caddy
+          image: '{{ .Values.images.frontend }}'
           ports:
             - containerPort: 80
-          volumeMounts:
-            - name: frontend-volume
-              mountPath: /usr/share/caddy
 ---
 apiVersion: v1
 kind: Service
