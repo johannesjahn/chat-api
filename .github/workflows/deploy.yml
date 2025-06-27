@@ -162,6 +162,11 @@ jobs:
     runs-on: ubuntu-24.04
     needs: build-image
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Extract version
+        id: meta
+        run: echo "version=$(jq -r .version ./package.json)" >> $GITHUB_ENV
       - uses: appleboy/ssh-action@master
         with:
           host: cluster.johannes-jahn.com
