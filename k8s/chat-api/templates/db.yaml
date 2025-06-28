@@ -60,7 +60,7 @@ spec:
             claimName: db-pvc
       containers:
         - name: database
-          image: postgres:latest
+          image: postgres:17.5
           volumeMounts:
             - name: db-volume
               mountPath: /var/lib/postgresql/data

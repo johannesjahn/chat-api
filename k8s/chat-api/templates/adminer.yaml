@@ -27,6 +27,6 @@ spec:
     spec:
       containers:
         - name: adminer
-          image: adminer:latest
+          image: adminer:5.3.0
           ports:
             - containerPort: 8080
