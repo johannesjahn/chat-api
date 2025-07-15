@@ -3,6 +3,8 @@
 /node_modules
 /linux
 
+/tmp
+
 # Logs
 logs
 *.log
