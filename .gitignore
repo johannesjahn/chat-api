@@ -4,6 +4,8 @@
 /linux
 /tmp
 
+/tmp
+
 # Logs
 logs
 *.log
