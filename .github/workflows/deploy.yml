@@ -157,19 +157,3 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           script: cd chat-api && docker compose pull && docker compose up -d chat && yes | docker image prune -a
-  deploy-cluster:
-    if: startsWith(github.event.head_commit.message, '[RELEASE]') && github.ref == 'refs/heads/main'
-    runs-on: ubuntu-24.04
-    needs: build-image
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v5
-      - name: Extract version
-        id: meta
-        run: echo "version=$(jq -r .version ./package.json)" >> $GITHUB_ENV
-      - uses: appleboy/ssh-action@master
-        with:
-          host: cluster.johannes-jahn.com
-          username: ${{ secrets.CLUSTER_USER }}
-          key: ${{ secrets.CLUSTER_KEY }}
-          script: helm upgrade chat chat-api/ --set images.backend=johannesjahn/chat-api:${{ env.version }} --reuse-values --install
