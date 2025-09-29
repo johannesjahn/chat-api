@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-FROM node:24.8.0
+FROM node:24.9.0
 
 RUN apt update && apt upgrade -y
 
