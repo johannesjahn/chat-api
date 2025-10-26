@@ -7,7 +7,7 @@ metadata:
     nginx.ingress.kubernetes.io/backend-protocol: 'HTTPS'
 spec:
   rules:
-    - host: { { .Values.host } }
+    - host: {{ .Values.host }}
       http:
         paths:
           - path: /api
@@ -48,4 +48,4 @@ spec:
   tls:
     - secretName: chat-tls
       hosts:
-        - { { .Values.host } }
+        - {{ .Values.host }}
