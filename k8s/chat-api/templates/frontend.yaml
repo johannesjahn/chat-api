@@ -1,34 +1,4 @@
 ---
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: frontend-pv
-  labels:
-    type: frontend
-spec:
-  capacity:
-    storage: 1Gi
-  accessModes:
-    - ReadWriteOnce
-  hostPath:
-    path: /home/nachobar/frontend
-    type: DirectoryOrCreate
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: frontend-pvc
-spec:
-  storageClassName: ''
-  selector:
-    matchLabels:
-      type: frontend
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 1Gi
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -43,10 +13,6 @@ spec:
       labels:
         app: frontend
     spec:
-      volumes:
-        - name: frontend-volume
-          persistentVolumeClaim:
-            claimName: frontend-pvc
       containers:
         - name: frontend
           image: '{{ .Values.images.frontend }}'

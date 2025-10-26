@@ -1,4 +1,4 @@
-name: Test, Build, Deploy
+name: Test, Build
 
 on:
   push:
@@ -146,14 +146,3 @@ jobs:
           tags: |
             johannesjahn/chat-api:latest
             johannesjahn/chat-api:${{ env.version }}
-  deploy:
-    if: startsWith(github.event.head_commit.message, '[RELEASE]') && github.ref == 'refs/heads/main'
-    runs-on: ubuntu-24.04
-    needs: build-image
-    steps:
-      - uses: appleboy/ssh-action@master
-        with:
-          host: chat.johannes-jahn.com
-          username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_KEY }}
-          script: cd chat-api && docker compose pull && docker compose up -d chat && yes | docker image prune -a

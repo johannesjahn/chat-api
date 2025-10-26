@@ -11,7 +11,7 @@ spec:
   accessModes:
     - ReadWriteOnce
   hostPath:
-    path: /home/nachobar/avatars
+    path: "{{ .Values.volumeBasePath }}/avatars"
     type: DirectoryOrCreate
 ---
 apiVersion: v1
