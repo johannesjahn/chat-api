@@ -3,12 +3,11 @@ kind: Ingress
 metadata:
   name: chat
   annotations:
-    spec.ingressClassName: traefik
-    cert-manager.io/cluster-issuer: letsencrypt-prod
-    traefik.ingress.kubernetes.io/router.middlewares: default-redirect-https@kubernetescrd
+    cert-manager.io/cluster-issuer: letsencrypt
+    nginx.ingress.kubernetes.io/backend-protocol: 'HTTPS'
 spec:
   rules:
-    - host: nacho.johannes-jahn.com
+    - host: { { .Values.host } }
       http:
         paths:
           - path: /api
@@ -47,6 +46,6 @@ spec:
                 port:
                   number: 80
   tls:
-    - secretName: nacho.letsencrypt
+    - secretName: chat-tls
       hosts:
-        - nacho.johannes-jahn.com
+        - { { .Values.host } }

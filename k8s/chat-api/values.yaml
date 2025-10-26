@@ -1,3 +1,4 @@
+host: nacho.johannes-jahn.com
 images:
   backend: johannesjahn/chat-api:2.0.254
   frontend: johannesjahn/nacho-chat:1.5.114
