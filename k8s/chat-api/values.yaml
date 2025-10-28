@@ -1,8 +1,12 @@
 host: chat.johannes-jahn.com
 volumeBasePath: /home/nacho/chat-api
 images:
-  backend: johannesjahn/chat-api:2.1.76
-  frontend: johannesjahn/nacho-chat:1.6.44
+  backend:
+    name: johannesjahn/chat-api
+    version: 2.1.76
+  frontend:
+    name: johannesjahn/nacho-chat
+    version: 1.6.44
 secrets:
   DB_USER: 'chat'
   DB_PASS: 'chat2'

@@ -11,7 +11,7 @@ spec:
   accessModes:
     - ReadWriteOnce
   hostPath:
-    path: "{{ .Values.volumeBasePath }}/avatars"
+    path: '{{ .Values.volumeBasePath }}/avatars'
     type: DirectoryOrCreate
 ---
 apiVersion: v1
@@ -52,7 +52,7 @@ spec:
             claimName: avatars-pvc
       containers:
         - name: chat-api
-          image: '{{ .Values.images.backend }}'
+          image: '{{ .Values.images.backend.name }}:{{ .Values.images.backend.version }}'
           command:
             - bash
             - -c

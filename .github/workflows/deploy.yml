@@ -96,9 +96,14 @@ jobs:
           node-version: 25.0.0
           cache: 'npm'
       - run: |
+          sudo snap install yq
           git config --global user.name 'Johannes Jahn'
           git config --global user.email 'johannes.jahn@outlook.com'
-          npm version patch -m "[RELEASE] %s"
+          NEW_VERSION=$(npm version patch --no-git-tag-version)  
+          yq eval ".images.backend.version = \"${NEW_VERSION:1}\"" -i k8s/chat-api/values.yaml
+          git add .
+          git commit -m "[RELEASE] $NEW_VERSION"
+          git tag -a "$NEW_VERSION" -m "[RELEASE] ${NEW_VERSION:1}"
           git push
           git push --tags
   build:
