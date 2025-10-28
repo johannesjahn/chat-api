@@ -102,7 +102,7 @@ jobs:
           NEW_VERSION=$(npm version patch --no-git-tag-version)  
           yq eval ".images.backend.version = \"${NEW_VERSION:1}\"" -i k8s/chat-api/values.yaml
           git add .
-          git commit -m "[RELEASE] $NEW_VERSION"
+          git commit -m "[RELEASE] ${NEW_VERSION:1}"
           git tag -a "$NEW_VERSION" -m "[RELEASE] ${NEW_VERSION:1}"
           git push
           git push --tags
