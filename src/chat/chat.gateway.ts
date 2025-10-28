@@ -20,14 +20,24 @@ export class ChatGateway implements OnGatewayConnection<Socket>, OnGatewayDiscon
 	private logger = new Logger('Chat Gateway');
 
 	async handleConnection(client: Socket<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, any>) {
-		const token = await this.jwtService.verifyAsync(client.handshake.auth.token);
-		this.clientMap.set(token.sub, client);
-		this.logger.log('connected ws');
+		try {
+			const token = await this.jwtService.verifyAsync(client.handshake.auth.token);
+			this.clientMap.set(token.sub, client);
+			this.logger.log('connected ws');
+		} catch (e) {
+			// TODO periodically clean up invalid connections
+			this.logger.log('ws connection failed: ' + e);
+			client.disconnect();
+		}
 	}
 	async handleDisconnect(client: Socket<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, any>) {
-		const token = await this.jwtService.verifyAsync(client.handshake.auth.token);
-		this.clientMap.delete(token.sub);
-		this.logger.log('disconnected ws');
+		try {
+			const token = await this.jwtService.verifyAsync(client.handshake.auth.token);
+			this.clientMap.delete(token.sub);
+			this.logger.log('disconnected ws');
+		} catch (e) {
+			this.logger.log('ws disconnection failed: ' + e);
+		}
 	}
 
 	updateMessagesForUsers(userIds: number[], conversationId: number) {
