@@ -4,7 +4,14 @@
 	"testEnvironment": "node",
 	"testRegex": ".e2e-spec.ts$",
 	"transform": {
-		"^.+\\.(t|j)s$": "ts-jest"
+		"^.+\\.(t|j)s$": ["ts-jest", {
+			"tsconfig": {
+				"module": "commonjs",
+				"moduleResolution": "node",
+				"resolveJsonModule": true,
+				"target": "es2017"
+			}
+		}]
 	},
 	"setupFilesAfterEnv": ["./setup.e2e.ts"],
 	"reporters": ["default", ["github-actions", { "silent": false }], "summary"]
