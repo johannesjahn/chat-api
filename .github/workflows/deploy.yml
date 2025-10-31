@@ -100,7 +100,6 @@ jobs:
           git config --global user.name 'Johannes Jahn'
           git config --global user.email 'johannes.jahn@outlook.com'
           NEW_VERSION=$(npm version patch --no-git-tag-version)  
-          yq eval ".images.backend.version = \"${NEW_VERSION:1}\"" -i k8s/chat-api/values.yaml
           git add .
           git commit -m "[RELEASE] ${NEW_VERSION:1}"
           git tag -a "$NEW_VERSION" -m "[RELEASE] ${NEW_VERSION:1}"
