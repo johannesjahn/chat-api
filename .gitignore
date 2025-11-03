@@ -47,4 +47,3 @@ deploy.sh
 *.env
 
 backup.sh
-*.tsbuildinfo

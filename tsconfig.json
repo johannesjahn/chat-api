@@ -1,7 +1,6 @@
 {
 	"compilerOptions": {
-		"module": "ES2022",
-		"moduleResolution": "node",
+		"module": "commonjs",
 		"declaration": true,
 		"removeComments": true,
 		"emitDecoratorMetadata": true,
@@ -10,14 +9,12 @@
 		"target": "es2017",
 		"sourceMap": true,
 		"outDir": "./dist",
-		"rootDir": "./src",
 		"baseUrl": "./",
 		"incremental": true,
 		"skipLibCheck": true,
 		"allowJs": true,
 		"strict": true,
-		"strictPropertyInitialization": false,
-		"resolveJsonModule": true
+		"strictPropertyInitialization": false
 	},
 	"exclude": ["node_modules", "test", "dist", "eslint.config.mjs"]
 }

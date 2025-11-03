@@ -1,5 +1,4 @@
 import { Injectable, Logger } from '@nestjs/common';
-import * as pjson from '../package.json';
 
 @Injectable()
 export class AppService {
@@ -11,6 +10,10 @@ export class AppService {
 	}
 
 	getVersion(): string {
+		// eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/no-var-requires
+		const pjson = require('../package.json');
+
+		this.logger.log('Getting version ' + pjson.version);
 		return pjson.version;
 	}
 }

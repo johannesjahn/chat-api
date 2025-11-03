@@ -3,14 +3,7 @@
 	"rootDir": ".",
 	"testRegex": ".*\\.spec\\.ts$",
 	"transform": {
-		".+\\.(t|j)s$": ["ts-jest", {
-			"tsconfig": {
-				"module": "commonjs",
-				"moduleResolution": "node",
-				"resolveJsonModule": true,
-				"target": "es2017"
-			}
-		}]
+		".+\\.(t|j)s$": "ts-jest"
 	},
 	"collectCoverageFrom": ["**/*.(t|j)s"],
 	"coverageDirectory": "../coverage",
@@ -30,8 +23,5 @@
 	],
 	"testEnvironment": "node",
 	"coverageReporters": ["text", "html"],
-	"reporters": ["default", ["github-actions", { "silent": false }], "summary"],
-	"moduleNameMapper": {
-		"^(\\.{1,2}/.*)\\.js$": "$1"
-	}
+	"reporters": ["default", ["github-actions", { "silent": false }], "summary"]
 }
