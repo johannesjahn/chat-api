@@ -15,7 +15,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiBearerAuth, ApiBody, ApiConsumes, ApiCreatedResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import * as fs from 'fs';
 import * as path from 'path';
-import * as sharp from 'sharp';
+import sharp from 'sharp';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { UserResponseDTO } from '../dtos/user.dto';
 import { UserMapper } from './user.mapper';
