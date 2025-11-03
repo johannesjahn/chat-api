@@ -6,14 +6,14 @@ export class AppService {
 
 	async debug(): Promise<string> {
 		this.logger.log('Debug in AppService called.');
-		return 'Thanks for using the debug endpoint!';
+		return 'Thanks for using the debug endpoint!!';
 	}
 
 	getVersion(): string {
 		// eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/no-var-requires
 		const pjson = require('../package.json');
 
-        this.logger.log('Getting version ' + pjson.version)
+		this.logger.log('Getting version ' + pjson.version);
 		return pjson.version;
 	}
 }
