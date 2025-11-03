@@ -11,7 +11,6 @@ export class AppService {
 	}
 
 	getVersion(): string {
-        this.logger.log('Getting version ' + pjson.version)
 		return pjson.version;
 	}
 }
