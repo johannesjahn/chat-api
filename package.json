@@ -15,13 +15,13 @@
 		"start:prod": "nest start",
 		"tsc": "tsc",
 		"lint": "eslint",
-		"test": "NODE_OPTIONS='--localstorage-file=./jest-storage' jest",
-		"test:int": "NODE_OPTIONS='--localstorage-file=./jest-storage' jest --config ./src/jest.json",
-		"test:watch": "NODE_OPTIONS='--localstorage-file=./jest-storage' jest --watch --config ./src/jest.json",
-		"test:cov": "NODE_OPTIONS='--localstorage-file=./jest-storage' jest --coverage --config ./src/jest.json",
+		"test": "jest",
+		"test:int": "jest --config ./src/jest.json",
+		"test:watch": "jest --watch --config ./src/jest.json",
+		"test:cov": "jest --coverage --config ./src/jest.json",
 		"test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-		"test:e2e": "NODE_OPTIONS='--localstorage-file=./jest-storage' ENV_PATH=.local.env NODE_ENV=test jest --config ./test/jest-e2e.json",
-		"test:all": "NODE_OPTIONS='--localstorage-file=./jest-storage' jest"
+		"test:e2e": "ENV_PATH=.local.env NODE_ENV=test jest --config ./test/jest-e2e.json",
+		"test:all": "jest"
 	},
 	"dependencies": {
 		"@nestjs/common": "11.1.8",
