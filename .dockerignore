@@ -5,3 +5,4 @@ nginx/
 data/
 build/
 dist/
+jest-storage*
