@@ -7,21 +7,18 @@ updates:
     groups:
       minorpatch:
         patterns:
-          - "*"
+          - '*'
         update-types:
           - patch
           - minor
-    reviewers:
-      - "johannesjahn"
   - package-ecosystem: 'docker' # See documentation for possible values
     directory: '/' # Location of package manifests
     schedule:
       interval: 'daily'
-    reviewers:
-      - "johannesjahn"
+    ignore:
+      - dependency-name: 'node'
+        update-types: ['version-update:semver-major']
   - package-ecosystem: 'github-actions'
     directory: '/'
     schedule:
       interval: 'daily'
-    reviewers:
-      - "johannesjahn"
