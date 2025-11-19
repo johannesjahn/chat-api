@@ -248,4 +248,12 @@ export class ChatService {
 		await this.conversationRepository.save(conversation);
 		return conversation;
 	}
+
+	async getMessagesCount(userId: number): Promise<number> {
+		return await this.messageRepository.count({
+			where: {
+				author: { id: userId },
+			},
+		});
+	}
 }

@@ -9,6 +9,7 @@ import {
 	HasUnreadMessagesResponseDTO,
 	MarkMessageAsReadDTO,
 	MessageResponseDTO,
+	MessagesCountResponseDTO,
 	NumberOfUnreadMessagesResponseDTO,
 	SetConversationTitleRequestDTO,
 } from '../dtos/chat.dto';
@@ -18,7 +19,7 @@ import { ChatService } from './chat.service';
 @ApiTags('Chat')
 @Controller('chat')
 export class ChatController {
-	constructor(private chatService: ChatService) {}
+	constructor(private chatService: ChatService) { }
 
 	@ApiBearerAuth()
 	@UseGuards(JwtAuthGuard)
@@ -129,6 +130,21 @@ export class ChatController {
 	@Get('/get-number-of-unread-messages')
 	async getNumberOfUnreadMessages(@Request() req: any) {
 		const result = await this.chatService.getUnreadMessagesCount(req.user.userId);
+		return { count: result };
+	}
+
+	@ApiBearerAuth()
+	@UseGuards(JwtAuthGuard)
+	@ApiOperation({
+		description: 'Endpoint to get the number of messages sent by the authenticated user',
+	})
+	@ApiCreatedResponse({
+		type: MessagesCountResponseDTO,
+		description: 'Gets the number of messages sent by the authenticated user',
+	})
+	@Get('/get-messages-count')
+	async getMessagesCount(@Request() req: any) {
+		const result = await this.chatService.getMessagesCount(req.user.userId);
 		return { count: result };
 	}
 

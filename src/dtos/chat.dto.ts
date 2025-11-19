@@ -109,6 +109,13 @@ export class NumberOfUnreadMessagesResponseDTO {
 	count: number;
 }
 
+export class MessagesCountResponseDTO {
+	@ApiProperty({
+		description: 'The total number of messages sent by the authenticated user',
+	})
+	count: number;
+}
+
 export class HasUnreadMessagesResponseDTO {
 	@ApiProperty({
 		description: 'Whether the authenticated user has unread messages',
