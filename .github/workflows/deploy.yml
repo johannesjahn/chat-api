@@ -11,7 +11,7 @@ jobs:
       matrix:
         node-version: [20, 22, 24.11.1]
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
         with:
           node-version: ${{ matrix.node-version }}
@@ -21,7 +21,7 @@ jobs:
   test-container:
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - uses: docker/setup-qemu-action@v3
       - uses: docker/setup-buildx-action@v3
       - run: docker compose -f docker-compose.test.yml run chat npm run test:int
@@ -31,7 +31,7 @@ jobs:
       matrix:
         node-version: [20, 22, 24.11.1]
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
         with:
           node-version: ${{ matrix.node-version }}
@@ -41,7 +41,7 @@ jobs:
   test-container-e2e:
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - uses: docker/setup-qemu-action@v3
       - uses: docker/setup-buildx-action@v3
       - run: docker compose -f docker-compose.test.yml run chat npm run test:e2e
@@ -49,7 +49,7 @@ jobs:
     runs-on: ubuntu-24.04
     needs: [test]
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
         with:
           node-version: 24.11.1
@@ -63,7 +63,7 @@ jobs:
   lint:
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
         with:
           node-version: 24.11.1
@@ -76,7 +76,7 @@ jobs:
       matrix:
         node-version: [20, 22, 24.11.1]
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
         with:
           node-version: ${{ matrix.node-version }}
@@ -88,7 +88,7 @@ jobs:
     runs-on: ubuntu-24.04
     needs: [tsc, lint, test, test-e2e, test-container, test-container-e2e]
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           token: ${{secrets.PAT}}
       - uses: actions/setup-node@v6
@@ -108,7 +108,7 @@ jobs:
     runs-on: ubuntu-24.04
     needs: [tsc, lint, test, test-e2e]
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
         with:
           node-version: 24.11.1
@@ -128,7 +128,7 @@ jobs:
     needs: [tsc, lint, test, test-e2e, test-container, test-container-e2e]
     steps:
       - name: Checkout code
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
       - name: Set up Docker Buildx
@@ -155,7 +155,7 @@ jobs:
     needs: [build-image]
     steps:
       - name: Checkout Source
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
       - name: Configure Git
         run: |
           git config --global user.email "johannes.jahn@outlook.com"
