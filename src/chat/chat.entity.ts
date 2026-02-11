@@ -22,7 +22,7 @@ export class Conversation extends AbstractEntity {
 	lastMessage: Relation<Message> | null;
 }
 
-export const ContentTypeValues = ['TEXT', 'IMAGE_URL'] as const;
+export const ContentTypeValues = ['TEXT', 'IMAGE_URL', 'AUDIO_URL'] as const;
 export type ContentType = (typeof ContentTypeValues)[number];
 
 @Entity()

@@ -77,8 +77,8 @@ export class ChatService {
 	}
 
 	async sendMessage(userId: number, conversationId: number, content: string, contentType: ContentType) {
-		if (contentType == 'IMAGE_URL' && !content.startsWith('http')) {
-			throw new HttpException({ error: 'Invalid image url' }, 400);
+		if ((contentType == 'IMAGE_URL' || contentType == 'AUDIO_URL') && !content.startsWith('http')) {
+			throw new HttpException({ error: 'Invalid url' }, 400);
 		}
 
 		const user = await this.userRepository.findOne({ where: { id: userId } });
