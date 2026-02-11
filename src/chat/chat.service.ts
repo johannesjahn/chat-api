@@ -19,6 +19,7 @@ export class ChatService {
 	) {}
 
 	async createConversation(creatorId: number, request: CreateConversationRequestDTO): Promise<Conversation> {
+		if (!request.partnerIds) throw new HttpException({ error: 'Invalid request' }, 400);
 		if (request.partnerIds.length === 0) throw new HttpException({ error: "Can't create chat with self" }, 400);
 
 		const partnerUsers = await this.userRepository.find({
