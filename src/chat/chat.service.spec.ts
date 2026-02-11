@@ -6,7 +6,7 @@ import { faker } from '@faker-js/faker';
 import { ChatService } from './chat.service';
 import { HttpException } from '@nestjs/common';
 import { MessageMapper } from './chat.mapper';
-import { Conversation } from './chat.entity';
+import { Conversation, Message } from './chat.entity';
 import { getRepositoryToken } from '@nestjs/typeorm';
 
 describe('ChatService Test', () => {
@@ -656,4 +656,196 @@ describe('ChatService Test', () => {
 			'Http Exception',
 		);
 	});
+
+	it('Get total messages count for user', async () => {
+		const authService = app.get(AuthService);
+		const firstUser = await authService.register({
+			username: faker.internet.username(),
+			password: faker.internet.password(),
+		});
+		const secondUser = await authService.register({
+			username: faker.internet.username(),
+			password: faker.internet.password(),
+		});
+
+		const chatService = app.get(ChatService);
+		const conversation = await chatService.createConversation(firstUser.id, {
+			partnerIds: [secondUser.id],
+		});
+
+		await chatService.sendMessage(firstUser.id, conversation.id, 'Message 1', 'TEXT');
+		await chatService.sendMessage(firstUser.id, conversation.id, 'Message 2', 'TEXT');
+		await chatService.sendMessage(secondUser.id, conversation.id, 'Message 3', 'TEXT');
+
+		const count1 = await chatService.getMessagesCount(firstUser.id);
+		const count2 = await chatService.getMessagesCount(secondUser.id);
+
+		expect(count1).toBe(2);
+		expect(count2).toBe(1);
+	});
+
+	it('Create conversation with invalid request (missing partnerIds)', async () => {
+		const authService = app.get(AuthService);
+		const firstUser = await authService.register({
+			username: faker.internet.username(),
+			password: faker.internet.password(),
+		});
+
+		const chatService = app.get(ChatService);
+		try {
+			// @ts-ignore
+			await chatService.createConversation(firstUser.id, {});
+			throw new Error('Should have thrown an HttpException');
+		} catch (e: any) {
+			expect(e).toBeInstanceOf(HttpException);
+			expect(e.getStatus()).toBe(400);
+			expect(e.getResponse()).toEqual({ error: 'Invalid request' });
+		}
+	});
+
+	it('SendMessage with invalid user', async () => {
+		const chatService = app.get(ChatService);
+		const conversation = await conversationWithTwoUsers(chatService, app);
+		await expect(chatService.sendMessage(1337, conversation.id, 'text', 'TEXT')).rejects.toThrow(
+			new HttpException({ error: 'Could not find user' }, 404),
+		);
+	});
+
+	it('SendMessage with invalid conversation', async () => {
+		const authService = app.get(AuthService);
+		const user = await authService.register({
+			username: faker.internet.username(),
+			password: faker.internet.password(),
+		});
+		const chatService = app.get(ChatService);
+		await expect(chatService.sendMessage(user.id, 1337, 'text', 'TEXT')).rejects.toThrow(
+			new HttpException({ error: 'Could not find conversation' }, 404),
+		);
+	});
+
+	it('GetMessages with no access', async () => {
+		const chatService = app.get(ChatService);
+		const conversation = await conversationWithTwoUsers(chatService, app);
+		const authService = app.get(AuthService);
+		const user = await authService.register({
+			username: faker.internet.username(),
+			password: faker.internet.password(),
+		});
+
+		await expect(chatService.getMessages(user.id, conversation.id)).rejects.toThrow(
+			new HttpException({ error: 'No access' }, 403),
+		);
+	});
+
+	it('GetMessages with lastMessage filter', async () => {
+		const chatService = app.get(ChatService);
+		const conversation = await conversationWithTwoUsers(chatService, app);
+		const user1 = conversation.participants[0];
+
+		await chatService.sendMessage(user1.id, conversation.id, 'msg1', 'TEXT');
+		const msg1 = (await chatService.getMessages(user1.id, conversation.id)).lastMessage;
+		await chatService.sendMessage(user1.id, conversation.id, 'msg2', 'TEXT');
+
+		const messages = await chatService.getMessages(user1.id, conversation.id, msg1?.id);
+		expect(messages.messages).toHaveLength(1);
+		expect(messages.messages[0].content).toBe('msg2');
+	});
+
+	it('MarkMessageAsRead with invalid message', async () => {
+		const chatService = app.get(ChatService);
+		const conversation = await conversationWithTwoUsers(chatService, app); // just to get a user
+		const user = conversation.participants[0];
+		await expect(chatService.markMessageAsRead(user.id, 1337)).rejects.toThrow(
+			new HttpException({ error: 'No message found' }, 404),
+		);
+	});
+
+	it('MarkConversationAsRead with invalid conversation', async () => {
+		const chatService = app.get(ChatService);
+		const conversation = await conversationWithTwoUsers(chatService, app); // just to get a user
+		const user = conversation.participants[0];
+		await expect(chatService.markConversationAsRead(user.id, 1337)).rejects.toThrow(
+			new HttpException({ error: 'No conversation found' }, 404),
+		);
+	});
+
+	it('MarkConversationAsRead with no change', async () => {
+		const chatService = app.get(ChatService);
+		const conversation = await conversationWithTwoUsers(chatService, app);
+		const user1 = conversation.participants[0];
+		const user2 = conversation.participants[1];
+
+		// User 1 sends message
+		await chatService.sendMessage(user1.id, conversation.id, 'msg1', 'TEXT');
+
+		// User 2 reads it (first time - change)
+		await chatService.markConversationAsRead(user2.id, conversation.id);
+
+		// Spy on save to ensure it's not called
+		const messageRepo = app.get(getRepositoryToken(Message));
+		const saveSpy = jest.spyOn(messageRepo, 'save');
+
+		// User 2 reads it again (no change)
+		await chatService.markConversationAsRead(user2.id, conversation.id);
+
+		expect(saveSpy).not.toHaveBeenCalled();
+	});
+
+	it('SetConversationTitle with invalid conversation', async () => {
+		const chatService = app.get(ChatService);
+		const conversation = await conversationWithTwoUsers(chatService, app); // just to get a user
+		const user = conversation.participants[0];
+
+		await expect(chatService.setConversationTitle(user.id, 1337, 'New Title')).rejects.toThrow(
+			new HttpException({ error: 'No conversation found' }, 404),
+		);
+	});
+
+	it('SetConversationTitle with no access', async () => {
+		const chatService = app.get(ChatService);
+		const authService = app.get(AuthService);
+		const user1 = await authService.register({
+			username: faker.internet.username(),
+			password: faker.internet.password(),
+		});
+		const user2 = await authService.register({
+			username: faker.internet.username(),
+			password: faker.internet.password(),
+		});
+		const user3 = await authService.register({
+			username: faker.internet.username(),
+			password: faker.internet.password(),
+		});
+		const userNoAccess = await authService.register({
+			username: faker.internet.username(),
+			password: faker.internet.password(),
+		});
+
+		// Create group chat (needs 3 participants for title setting to be valid logically before access check, 
+        // though access check might come first or second depending on implementation. 
+        // Looking at code: 404 check -> length < 3 check -> access check.
+        // So I need a valid group chat first.)
+		const conversation = await chatService.createConversation(user1.id, {
+			partnerIds: [user2.id, user3.id],
+		});
+
+		await expect(chatService.setConversationTitle(userNoAccess.id, conversation.id, 'New Title')).rejects.toThrow(
+			new HttpException({ error: 'No access' }, 403),
+		);
+	});
 });
+
+async function conversationWithTwoUsers(chatService: ChatService, app: TestingModule) {
+	const authService = app.get(AuthService);
+	const firstUser = await authService.register({
+		username: faker.internet.username(),
+		password: faker.internet.password(),
+	});
+	const secondUser = await authService.register({
+		username: faker.internet.username(),
+		password: faker.internet.password(),
+	});
+	return await chatService.createConversation(firstUser.id, {
+		partnerIds: [secondUser.id],
+	});
+}
