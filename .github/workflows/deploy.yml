@@ -169,9 +169,9 @@ jobs:
           PREVIOUS_TAG=$(git describe --tags --abbrev=0 ${LATEST_TAG}^ 2>/dev/null || true)
 
           if [ -z "$PREVIOUS_TAG" ]; then
-            CHANGELOG=$(git log --pretty=format:"- %h %s" $LATEST_TAG)
+            CHANGELOG=$(git log --pretty=format:"- [%h](${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/commit/%H) %s" $LATEST_TAG)
           else
-            CHANGELOG=$(git log --pretty=format:"- %h %s" ${PREVIOUS_TAG}..${LATEST_TAG})
+            CHANGELOG=$(git log --pretty=format:"- [%h](${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/commit/%H) %s" ${PREVIOUS_TAG}..${LATEST_TAG})
           fi
 
           {
