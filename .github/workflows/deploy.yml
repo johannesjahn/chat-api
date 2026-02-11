@@ -195,7 +195,7 @@ jobs:
           yq eval ".images.backend.version = \"${VERSION}\"" -i values.yaml
 
           git add .
-          git commit -m "Bump backend to chat-api ${VERSION}"
+          git commit -m "Bump backend to chat-api ${VERSION}" -m "$CHANGELOG"
 
           git push origin $TARGET_BRANCH
 
