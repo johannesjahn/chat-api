@@ -693,8 +693,7 @@ describe('ChatService Test', () => {
 
 		const chatService = app.get(ChatService);
 		try {
-			// @ts-ignore
-			await chatService.createConversation(firstUser.id, {});
+			await chatService.createConversation(firstUser.id, {} as any);
 			throw new Error('Should have thrown an HttpException');
 		} catch (e: any) {
 			expect(e).toBeInstanceOf(HttpException);
