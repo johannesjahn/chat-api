@@ -172,6 +172,7 @@ jobs:
             CHANGELOG=$(git log --pretty=format:"- [%h](${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/commit/%H) %s" $LATEST_TAG)
           else
             CHANGELOG=$(git log --pretty=format:"- [%h](${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/commit/%H) %s" ${PREVIOUS_TAG}..${LATEST_TAG})
+            CHANGELOG="$CHANGELOG"$'\n\n'"[View Diff](${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/compare/${PREVIOUS_TAG}...${LATEST_TAG})"
           fi
 
           {
