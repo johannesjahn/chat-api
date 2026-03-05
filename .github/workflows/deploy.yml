@@ -6,7 +6,6 @@ on:
       - '**'
 jobs:
   test:
-    environment: prod
     runs-on: ubuntu-24.04
     strategy:
       matrix:
