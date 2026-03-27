@@ -51,7 +51,7 @@
 	"devDependencies": {
 		"@eslint/eslintrc": "3.3.5",
 		"@eslint/js": "10.0.1",
-		"@faker-js/faker": "10.3.0",
+		"@faker-js/faker": "10.4.0",
 		"@nestjs/cli": "11.0.16",
 		"@nestjs/schematics": "11.0.9",
 		"@nestjs/testing": "11.1.17",
@@ -62,9 +62,9 @@
 		"@types/passport-jwt": "4.0.1",
 		"@types/passport-local": "1.0.38",
 		"@types/supertest": "7.2.0",
-		"@typescript-eslint/eslint-plugin": "8.57.1",
-		"@typescript-eslint/parser": "8.57.1",
-		"eslint": "10.0.3",
+		"@typescript-eslint/eslint-plugin": "8.57.2",
+		"@typescript-eslint/parser": "8.57.2",
+		"eslint": "10.1.0",
 		"eslint-config-prettier": "10.1.8",
 		"eslint-plugin-prettier": "5.5.5",
 		"globals": "17.4.0",
@@ -77,7 +77,7 @@
 		"ts-node": "10.9.2",
 		"tsconfig-paths": "4.2.0",
 		"typescript": "5.9.3",
-		"typescript-eslint": "8.57.1"
+		"typescript-eslint": "8.57.2"
 	},
 	"jest": {
 		"projects": [
