@@ -1,4 +1,4 @@
-import request from 'supertest';
+import * as request from 'supertest';
 import { app } from './setup.e2e';
 
 describe('AppController (e2e)', () => {

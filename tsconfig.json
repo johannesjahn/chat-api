@@ -9,18 +9,12 @@
 		"target": "es2017",
 		"sourceMap": true,
 		"outDir": "./dist",
-
-		"paths": {
-			"src/*": ["./src/*"]
-		},
-
+		"baseUrl": "./",
 		"incremental": true,
 		"skipLibCheck": true,
 		"allowJs": true,
 		"strict": true,
-		"strictPropertyInitialization": false,
-		"esModuleInterop": true,
-		"types": ["jest", "node"]
+		"strictPropertyInitialization": false
 	},
 	"exclude": ["node_modules", "test", "dist", "eslint.config.mjs"]
 }
