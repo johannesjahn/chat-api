@@ -12,10 +12,11 @@ import {
 	UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { Multer } from 'multer';
 import { ApiBearerAuth, ApiBody, ApiConsumes, ApiCreatedResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import * as fs from 'fs';
 import * as path from 'path';
-import * as sharp from 'sharp';
+import sharp from 'sharp';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { UserResponseDTO } from '../dtos/user.dto';
 import { UserMapper } from './user.mapper';
@@ -101,7 +102,7 @@ export class UsersController {
 				.ensureAlpha()
 				.raw()
 				.toBuffer()
-				.then(async (buf) => {
+				.then(async (buf: Buffer) => {
 					const encoded = encode(new Uint8ClampedArray(buf), 64, 64, 4, 4);
 					await this.usersService.setAvatarHash(parseInt(userId), encoded);
 				}),

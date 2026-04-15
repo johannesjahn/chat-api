@@ -1,9 +1,9 @@
 import { faker } from '@faker-js/faker';
-import { ConversationResponseDTO } from 'src/dtos/chat.dto';
-import { CreateConversationRequestDTO } from 'src/dtos/conversation.dto';
-import * as request from 'supertest';
+import { ConversationResponseDTO } from '../src/dtos/chat.dto';
+import { CreateConversationRequestDTO } from '../src/dtos/conversation.dto';
+import request from 'supertest';
 import { app } from './setup.e2e';
-import { CreatePostDTO, PostResponseDTO } from 'src/dtos/post.dto';
+import { CreatePostDTO, PostResponseDTO } from '../src/dtos/post.dto';
 
 export async function createAccount(): Promise<{
 	username: string;
