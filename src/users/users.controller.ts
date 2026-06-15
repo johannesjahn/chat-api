@@ -12,7 +12,6 @@ import {
 	UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { Multer } from 'multer';
 import { ApiBearerAuth, ApiBody, ApiConsumes, ApiCreatedResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import * as fs from 'fs';
 import * as path from 'path';
