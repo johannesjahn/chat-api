@@ -180,7 +180,7 @@ describe('ChatService Test', () => {
 		const conversationRepo: Repository<Conversation> = app.get(getRepositoryToken(Conversation));
 		const firstMessageSent = await conversationRepo.find({
 			where: { id: conversation.id },
-			relations: ['lastMessage'],
+			relations: { lastMessage: true },
 		});
 
 		expect(messages.messages).toHaveLength(1);
@@ -192,7 +192,7 @@ describe('ChatService Test', () => {
 
 		const secondMessageSent = await conversationRepo.find({
 			where: { id: conversation.id },
-			relations: ['lastMessage'],
+			relations: { lastMessage: true },
 		});
 
 		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
