@@ -23,7 +23,7 @@ export class AuthService {
 	async validateUser(username: string, pass: string): Promise<User | null> {
 		const user = await this.userRepository.findOne({
 			where: { username: username },
-			relations: ['userAuth'],
+			relations: { userAuth: true },
 		});
 		const hash = createHmac('sha256', hashConstants.salt()).update(pass).digest('hex');
 		if (user && user.userAuth && user.userAuth.password === hash) {
@@ -42,7 +42,7 @@ export class AuthService {
 	async changePassword(id: number, password: string) {
 		const user = await this.userRepository.findOne({
 			where: { id },
-			relations: ['userAuth'],
+			relations: { userAuth: true },
 		});
 		if (!user) throw new HttpException({ error: 'User not found' }, 400);
 		if (!user.userAuth) {

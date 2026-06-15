@@ -124,7 +124,7 @@ export class PostService {
 		const result = await this.commentRepository.find({
 			where: { post: { id: postId } },
 			order: { createdAt: 'ASC' },
-			relations: ['author', 'likedBy', 'replies', 'replies.author'],
+			relations: { author: true, likedBy: true, replies: { author: true } },
 		});
 		return result;
 	}
@@ -165,7 +165,7 @@ export class PostService {
 	async getPostFromCommentId(commentId: number) {
 		const result = await this.commentRepository.findOne({
 			where: { id: commentId },
-			relations: ['post'],
+			relations: { post: true },
 		});
 		return result?.post;
 	}
@@ -174,7 +174,7 @@ export class PostService {
 		const result = await this.replyRepository.find({
 			where: { comment: { id: commentId } },
 			order: { createdAt: 'ASC' },
-			relations: ['author', 'likedBy'],
+			relations: { author: true, likedBy: true },
 		});
 		return result;
 	}
@@ -203,7 +203,7 @@ export class PostService {
 	async likePost(userId: number, postId: number) {
 		const post = await this.postRepository.findOne({
 			where: { id: postId },
-			relations: ['likedBy'],
+			relations: { likedBy: true },
 		});
 
 		if (post == null) {
@@ -238,7 +238,7 @@ export class PostService {
 	async likeComment(userId: number, commentId: number) {
 		const comment = await this.commentRepository.findOne({
 			where: { id: commentId },
-			relations: ['likedBy'],
+			relations: { likedBy: true },
 		});
 
 		if (comment == null) {
@@ -273,7 +273,7 @@ export class PostService {
 	async likeReply(userId: number, replyId: number) {
 		const reply = await this.replyRepository.findOne({
 			where: { id: replyId },
-			relations: ['likedBy'],
+			relations: { likedBy: true },
 		});
 
 		if (reply == null) {

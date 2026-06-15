@@ -87,7 +87,7 @@ export class ChatService {
 		}
 		const conversation = await this.conversationRepository.findOne({
 			where: { id: conversationId },
-			relations: ['participants'],
+			relations: { participants: true },
 		});
 		if (!conversation) {
 			throw new HttpException({ error: 'Could not find conversation' }, 404);
@@ -116,7 +116,7 @@ export class ChatService {
 	async getMessages(userId: number, conversationId: number, lastMessage?: number) {
 		const conversation = await this.conversationRepository.findOne({
 			where: { id: conversationId },
-			relations: ['participants', 'lastMessage', 'lastMessage.author', 'lastMessage.readBy'],
+			relations: { participants: true, lastMessage: { author: true, readBy: true } },
 		});
 		if (!conversation) {
 			throw new HttpException({ error: 'No conversation found' }, 404);
@@ -137,7 +137,7 @@ export class ChatService {
 
 		const m = await this.messageRepository.find({
 			where: findConditions,
-			relations: ['author', 'readBy'],
+			relations: { author: true, readBy: true },
 		});
 
 		conversation.messages = m;
@@ -147,7 +147,7 @@ export class ChatService {
 	async markMessageAsRead(userId: number, messageId: number) {
 		const message = await this.messageRepository.findOne({
 			where: { id: messageId },
-			relations: ['author', 'readBy', 'conversation', 'conversation.participants'],
+			relations: { author: true, readBy: true, conversation: { participants: true } },
 		});
 		if (!message) {
 			throw new HttpException({ error: 'No message found' }, 404);
@@ -173,7 +173,7 @@ export class ChatService {
 	async markConversationAsRead(userId: number, conversationId: number) {
 		const conversation = await this.conversationRepository.findOne({
 			where: { id: conversationId },
-			relations: ['participants', 'messages', 'messages.author', 'messages.readBy'],
+			relations: { participants: true, messages: { author: true, readBy: true } },
 		});
 		if (!conversation) {
 			throw new HttpException({ error: 'No conversation found' }, 404);
@@ -234,7 +234,7 @@ export class ChatService {
 	async setConversationTitle(userId: number, conversationId: number, title: string) {
 		const conversation = await this.conversationRepository.findOne({
 			where: { id: conversationId },
-			relations: ['participants'],
+			relations: { participants: true },
 		});
 		if (!conversation) {
 			throw new HttpException({ error: 'No conversation found' }, 404);

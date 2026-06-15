@@ -17,13 +17,12 @@ import { faker } from '@faker-js/faker';
 import { ConfigModule } from '@nestjs/config';
 
 export const testOrmOptions: DataSourceOptions = {
-	type: 'sqlite',
+	type: 'better-sqlite3',
 	database: ':memory:',
 	dropSchema: true,
 	entities: ['./**/*.entity.ts'],
 	synchronize: true,
 	logging: false,
-	name: 'default',
 };
 
 export const getTestDataSource = async () => {
