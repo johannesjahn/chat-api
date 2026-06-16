@@ -101,7 +101,7 @@ export class UsersController {
 				.ensureAlpha()
 				.raw()
 				.toBuffer()
-				.then(async (buf) => {
+				.then(async (buf: Buffer) => {
 					const encoded = encode(new Uint8ClampedArray(buf), 64, 64, 4, 4);
 					await this.usersService.setAvatarHash(parseInt(userId), encoded);
 				}),

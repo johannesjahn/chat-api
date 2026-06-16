@@ -2,7 +2,7 @@ import { CommentResponseDTO, PostResponseDTO, ReplyResponseDTO } from '../dtos/p
 import { Comment, Post, Reply } from './post.entity';
 import { Converter, Mapper } from 'typevert';
 import { UserMapper } from '../users/user.mapper';
-import { User } from 'src/users/user.entity';
+import { User } from '../users/user.entity';
 
 export class LikedByMapper extends Converter<User[], boolean> {
 	convert(source?: User[]): boolean {
