@@ -8,6 +8,7 @@ on:
       - 'v*'
 jobs:
   test:
+    if: "!startsWith(github.event.head_commit.message, '[RELEASE]')"
     runs-on: ubuntu-24.04
     strategy:
       matrix:
@@ -21,6 +22,7 @@ jobs:
       - run: npm ci
       - run: npm run test:int
   test-container:
+    if: "!startsWith(github.event.head_commit.message, '[RELEASE]')"
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v6
@@ -28,6 +30,7 @@ jobs:
       - uses: docker/setup-buildx-action@v4
       - run: docker compose -f docker-compose.test.yml run chat npm run test:int
   test-e2e:
+    if: "!startsWith(github.event.head_commit.message, '[RELEASE]')"
     runs-on: ubuntu-24.04
     strategy:
       matrix:
@@ -41,6 +44,7 @@ jobs:
       - run: npm ci
       - run: npm run test:e2e
   test-container-e2e:
+    if: "!startsWith(github.event.head_commit.message, '[RELEASE]')"
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v6
@@ -48,6 +52,7 @@ jobs:
       - uses: docker/setup-buildx-action@v4
       - run: docker compose -f docker-compose.test.yml run chat npm run test:e2e
   test-coverage:
+    if: "!startsWith(github.event.head_commit.message, '[RELEASE]')"
     runs-on: ubuntu-24.04
     needs: [test]
     steps:
@@ -63,6 +68,7 @@ jobs:
           name: coverage
           path: coverage
   lint:
+    if: "!startsWith(github.event.head_commit.message, '[RELEASE]')"
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v6
@@ -73,6 +79,7 @@ jobs:
       - run: npm ci
       - run: npm run lint
   tsc:
+    if: "!startsWith(github.event.head_commit.message, '[RELEASE]')"
     runs-on: ubuntu-24.04
     strategy:
       matrix:
@@ -102,11 +109,12 @@ jobs:
           git config --global user.email 'johannes.jahn@outlook.com'
           NEW_VERSION=$(npm version patch --no-git-tag-version)  
           git add .
-          git commit -m "[RELEASE] ${NEW_VERSION:1} [skip ci]"
+          git commit -m "[RELEASE] ${NEW_VERSION:1}"
           git tag -a "$NEW_VERSION" -m "[RELEASE] ${NEW_VERSION:1}"
           git push
           git push --tags
   build:
+    if: "!startsWith(github.event.head_commit.message, '[RELEASE]')"
     runs-on: ubuntu-24.04
     needs: [tsc, lint, test, test-e2e]
     steps:
