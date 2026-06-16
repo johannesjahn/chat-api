@@ -203,22 +203,18 @@ export class ChatService {
 	}
 
 	async getUnreadMessagesCount(userId: number) {
-		const conversations = await this.conversationRepository
-			.createQueryBuilder('conversation')
-			.leftJoinAndSelect('conversation.participants', 'user')
-			.leftJoinAndSelect('conversation.messages', 'message')
-			.leftJoinAndSelect('message.author', 'author')
-			.leftJoinAndSelect('message.readBy', 'readBy')
-			.where('conversation.id in (SELECT "conversationId" FROM conversation_participants_user WHERE "userId" = :id)', {
-				id: userId,
-			})
-			.orderBy({ 'conversation.updatedAt': 'DESC' })
-			.getMany();
-
-		return conversations.reduce((prev, curr) => {
-			const unread = curr.messages.filter((m) => m.author.id != userId && !m.readBy.some((u) => u.id == userId));
-			return prev + unread.length;
-		}, 0);
+		return this.messageRepository
+			.createQueryBuilder('message')
+			.where(
+				'message."conversationId" IN (SELECT "conversationId" FROM conversation_participants_user WHERE "userId" = :userId)',
+				{ userId },
+			)
+			.andWhere('message."authorId" != :userId', { userId })
+			.andWhere(
+				'message.id NOT IN (SELECT "messageId" FROM message_read_by_user WHERE "userId" = :userId)',
+				{ userId },
+			)
+			.getCount();
 	}
 
 	async hasUnreadMessages(userId: number) {
