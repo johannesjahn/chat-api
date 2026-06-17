@@ -623,6 +623,83 @@ describe('ChatService Test', () => {
 		).rejects.toThrow('Http Exception');
 	});
 
+	it('Can create a group conversation with users that already have a 1-on-1', async () => {
+		const authService = app.get(AuthService);
+		const userA = await authService.register({
+			username: faker.internet.username(),
+			password: faker.internet.password(),
+		});
+		const userB = await authService.register({
+			username: faker.internet.username(),
+			password: faker.internet.password(),
+		});
+		const userC = await authService.register({
+			username: faker.internet.username(),
+			password: faker.internet.password(),
+		});
+
+		const chatService = app.get(ChatService);
+
+		await chatService.createConversation(userA.id, { partnerIds: [userB.id] });
+
+		// Group chat with same two users + a third should be allowed
+		const group = await chatService.createConversation(userA.id, {
+			partnerIds: [userB.id, userC.id],
+		});
+
+		expect(group).toBeDefined();
+		expect(group.participants).toHaveLength(3);
+	});
+
+	it('Can create separate 1-on-1 conversations with different partners', async () => {
+		const authService = app.get(AuthService);
+		const userA = await authService.register({
+			username: faker.internet.username(),
+			password: faker.internet.password(),
+		});
+		const userB = await authService.register({
+			username: faker.internet.username(),
+			password: faker.internet.password(),
+		});
+		const userC = await authService.register({
+			username: faker.internet.username(),
+			password: faker.internet.password(),
+		});
+
+		const chatService = app.get(ChatService);
+
+		await chatService.createConversation(userA.id, { partnerIds: [userB.id] });
+		await chatService.createConversation(userA.id, { partnerIds: [userC.id] });
+
+		const conversations = await chatService.getConversationListForUser(userA.id);
+		expect(conversations).toHaveLength(2);
+	});
+
+	it('Can create multiple group conversations with the same set of users', async () => {
+		const authService = app.get(AuthService);
+		const userA = await authService.register({
+			username: faker.internet.username(),
+			password: faker.internet.password(),
+		});
+		const userB = await authService.register({
+			username: faker.internet.username(),
+			password: faker.internet.password(),
+		});
+		const userC = await authService.register({
+			username: faker.internet.username(),
+			password: faker.internet.password(),
+		});
+
+		const chatService = app.get(ChatService);
+
+		// Duplicate check only applies to 1-on-1 conversations
+		await chatService.createConversation(userA.id, { partnerIds: [userB.id, userC.id] });
+		await chatService.createConversation(userA.id, { partnerIds: [userB.id, userC.id] });
+
+		const conversations = await chatService.getConversationListForUser(userA.id);
+		expect(conversations).toHaveLength(2);
+	});
+
 	it('Change title in conversation', async () => {
 		const authService = app.get(AuthService);
 		const firstUser = await authService.register({
