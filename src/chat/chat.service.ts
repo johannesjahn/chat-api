@@ -62,13 +62,16 @@ export class ChatService {
 	async getConversationListForUser(userId: number) {
 		return await this.conversationRepository
 			.createQueryBuilder('conversation')
+			.innerJoin(
+				'conversation_participants_user',
+				'cpu',
+				'cpu."conversationId" = conversation.id AND cpu."userId" = :id',
+				{ id: userId },
+			)
 			.leftJoinAndSelect('conversation.participants', 'user')
 			.leftJoinAndSelect('conversation.lastMessage', 'message')
 			.leftJoinAndSelect('message.author', 'author')
 			.leftJoinAndSelect('message.readBy', 'readBy')
-			.where('conversation.id in (SELECT "conversationId" FROM conversation_participants_user WHERE "userId" = :id)', {
-				id: userId,
-			})
 			.orderBy({ 'conversation.updatedAt': 'DESC' })
 			.getMany();
 	}
@@ -215,13 +218,8 @@ export class ChatService {
 	}
 
 	async hasUnreadMessages(userId: number) {
-		const conversations = await this.getConversationListForUser(userId);
-		const result = conversations.some((c) => {
-			const unread = c.lastMessage?.author.id != userId && !c.lastMessage?.readBy.some((u) => u.id == userId);
-			return unread;
-		});
-
-		return result;
+		const count = await this.getUnreadMessagesCount(userId);
+		return count > 0;
 	}
 
 	async setConversationTitle(userId: number, conversationId: number, title: string) {
