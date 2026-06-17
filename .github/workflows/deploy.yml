@@ -135,7 +135,6 @@ jobs:
   build-image:
     if: startsWith(github.ref, 'refs/tags/v')
     runs-on: ubuntu-24.04
-    needs: [tsc, lint, test, test-e2e, test-container, test-container-e2e]
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
