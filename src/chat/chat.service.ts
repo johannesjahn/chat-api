@@ -72,7 +72,7 @@ export class ChatService {
 			.leftJoinAndSelect('conversation.lastMessage', 'message')
 			.leftJoinAndSelect('message.author', 'author')
 			.leftJoinAndSelect('message.readBy', 'readBy')
-			.orderBy({ 'conversation.updatedAt': 'DESC' })
+			.orderBy({ 'conversation.updatedAt': 'DESC', 'conversation.id': 'DESC' })
 			.getMany();
 	}
 

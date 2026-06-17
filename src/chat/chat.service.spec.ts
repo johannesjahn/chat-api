@@ -603,9 +603,6 @@ describe('ChatService Test', () => {
 
 		const chatService = app.get(ChatService);
 		const conv1 = await chatService.createConversation(userA.id, { partnerIds: [userB.id] });
-
-		// Small delay so updatedAt timestamps differ
-		await new Promise((resolve) => setTimeout(resolve, 50));
 		const conv2 = await chatService.createConversation(userA.id, { partnerIds: [userC.id] });
 
 		const conversations = await chatService.getConversationListForUser(userA.id);
