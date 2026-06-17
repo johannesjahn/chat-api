@@ -7,6 +7,7 @@
 		"^.+\\.(t|j)s$": "ts-jest"
 	},
 	"transformIgnorePatterns": ["node_modules/(?!@faker-js)"],
+	"setupFiles": ["./setup-env.ts"],
 	"setupFilesAfterEnv": ["./setup.e2e.ts"],
 	"reporters": ["default", ["github-actions", { "silent": false }], "summary"]
 }
