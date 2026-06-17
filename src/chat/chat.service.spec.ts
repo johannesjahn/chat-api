@@ -456,6 +456,166 @@ describe('ChatService Test', () => {
 		expect(unreadCount2).toBe(false);
 	});
 
+	it('hasUnreadMessages returns false when user has no conversations', async () => {
+		const authService = app.get(AuthService);
+		const user = await authService.register({
+			username: faker.internet.username(),
+			password: faker.internet.password(),
+		});
+
+		const chatService = app.get(ChatService);
+		const result = await chatService.hasUnreadMessages(user.id);
+		expect(result).toBe(false);
+	});
+
+	it('hasUnreadMessages returns false for the message author (own messages are not unread)', async () => {
+		const authService = app.get(AuthService);
+		const sender = await authService.register({
+			username: faker.internet.username(),
+			password: faker.internet.password(),
+		});
+		const receiver = await authService.register({
+			username: faker.internet.username(),
+			password: faker.internet.password(),
+		});
+
+		const chatService = app.get(ChatService);
+		const conversation = await chatService.createConversation(sender.id, {
+			partnerIds: [receiver.id],
+		});
+
+		await chatService.sendMessage(sender.id, conversation.id, faker.lorem.words(5), 'TEXT');
+
+		// The sender should never see their own message as unread
+		const senderHasUnread = await chatService.hasUnreadMessages(sender.id);
+		expect(senderHasUnread).toBe(false);
+	});
+
+	it('hasUnreadMessages returns true when any conversation has an unread message', async () => {
+		const authService = app.get(AuthService);
+		const userA = await authService.register({
+			username: faker.internet.username(),
+			password: faker.internet.password(),
+		});
+		const userB = await authService.register({
+			username: faker.internet.username(),
+			password: faker.internet.password(),
+		});
+		const userC = await authService.register({
+			username: faker.internet.username(),
+			password: faker.internet.password(),
+		});
+
+		const chatService = app.get(ChatService);
+		const conv1 = await chatService.createConversation(userA.id, { partnerIds: [userB.id] });
+		const conv2 = await chatService.createConversation(userA.id, { partnerIds: [userC.id] });
+
+		// Read all messages in conv1
+		await chatService.sendMessage(userB.id, conv1.id, faker.lorem.words(5), 'TEXT');
+		await chatService.markConversationAsRead(userA.id, conv1.id);
+
+		// Leave conv2 unread
+		await chatService.sendMessage(userC.id, conv2.id, faker.lorem.words(5), 'TEXT');
+
+		const result = await chatService.hasUnreadMessages(userA.id);
+		expect(result).toBe(true);
+	});
+
+	it('hasUnreadMessages returns false after markConversationAsRead on all conversations', async () => {
+		const authService = app.get(AuthService);
+		const userA = await authService.register({
+			username: faker.internet.username(),
+			password: faker.internet.password(),
+		});
+		const userB = await authService.register({
+			username: faker.internet.username(),
+			password: faker.internet.password(),
+		});
+		const userC = await authService.register({
+			username: faker.internet.username(),
+			password: faker.internet.password(),
+		});
+
+		const chatService = app.get(ChatService);
+		const conv1 = await chatService.createConversation(userA.id, { partnerIds: [userB.id] });
+		const conv2 = await chatService.createConversation(userA.id, { partnerIds: [userC.id] });
+
+		await chatService.sendMessage(userB.id, conv1.id, faker.lorem.words(5), 'TEXT');
+		await chatService.sendMessage(userC.id, conv2.id, faker.lorem.words(5), 'TEXT');
+
+		await chatService.markConversationAsRead(userA.id, conv1.id);
+		await chatService.markConversationAsRead(userA.id, conv2.id);
+
+		const result = await chatService.hasUnreadMessages(userA.id);
+		expect(result).toBe(false);
+	});
+
+	it('getConversationListForUser returns only conversations the user participates in', async () => {
+		const authService = app.get(AuthService);
+		const userA = await authService.register({
+			username: faker.internet.username(),
+			password: faker.internet.password(),
+		});
+		const userB = await authService.register({
+			username: faker.internet.username(),
+			password: faker.internet.password(),
+		});
+		const userC = await authService.register({
+			username: faker.internet.username(),
+			password: faker.internet.password(),
+		});
+
+		const chatService = app.get(ChatService);
+
+		// Create a conversation that userA is not part of
+		await chatService.createConversation(userB.id, { partnerIds: [userC.id] });
+
+		const conversations = await chatService.getConversationListForUser(userA.id);
+		expect(conversations).toHaveLength(0);
+	});
+
+	it('getConversationListForUser returns empty list for user with no conversations', async () => {
+		const authService = app.get(AuthService);
+		const user = await authService.register({
+			username: faker.internet.username(),
+			password: faker.internet.password(),
+		});
+
+		const chatService = app.get(ChatService);
+		const conversations = await chatService.getConversationListForUser(user.id);
+		expect(conversations).toHaveLength(0);
+	});
+
+	it('getConversationListForUser orders results by updatedAt descending', async () => {
+		const authService = app.get(AuthService);
+		const userA = await authService.register({
+			username: faker.internet.username(),
+			password: faker.internet.password(),
+		});
+		const userB = await authService.register({
+			username: faker.internet.username(),
+			password: faker.internet.password(),
+		});
+		const userC = await authService.register({
+			username: faker.internet.username(),
+			password: faker.internet.password(),
+		});
+
+		const chatService = app.get(ChatService);
+		const conv1 = await chatService.createConversation(userA.id, { partnerIds: [userB.id] });
+
+		// Small delay so updatedAt timestamps differ
+		await new Promise((resolve) => setTimeout(resolve, 50));
+		const conv2 = await chatService.createConversation(userA.id, { partnerIds: [userC.id] });
+
+		const conversations = await chatService.getConversationListForUser(userA.id);
+
+		expect(conversations).toHaveLength(2);
+		// Most recently created/updated comes first
+		expect(conversations[0].id).toBe(conv2.id);
+		expect(conversations[1].id).toBe(conv1.id);
+	});
+
 	it('Create conversation for invalid user', async () => {
 		const chatService = app.get(ChatService);
 		expect(
