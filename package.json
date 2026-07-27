@@ -34,7 +34,7 @@
 		"@nestjs/swagger": "11.4.6",
 		"@nestjs/typeorm": "11.0.3",
 		"@nestjs/websockets": "11.1.28",
-		"better-sqlite3": "^12.11.1",
+		"better-sqlite3": "^13.0.1",
 		"blurhash": "2.0.5",
 		"passport": "0.7.0",
 		"passport-jwt": "4.0.1",
@@ -48,6 +48,11 @@
 		"swagger-ui-express": "5.0.1",
 		"typeorm": "1.1.0",
 		"typevert": "0.9.11"
+	},
+	"overrides": {
+		"typeorm": {
+			"better-sqlite3": "$better-sqlite3"
+		}
 	},
 	"devDependencies": {
 		"@eslint/eslintrc": "3.3.6",
