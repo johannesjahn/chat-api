@@ -32,7 +32,7 @@
 		"@nestjs/platform-express": "11.2.3",
 		"@nestjs/platform-socket.io": "11.2.3",
 		"@nestjs/swagger": "11.4.7",
-		"@nestjs/typeorm": "11.0.3",
+		"@nestjs/typeorm": "12.0.1",
 		"@nestjs/websockets": "11.2.3",
 		"better-sqlite3": "^13.0.3",
 		"blurhash": "2.0.5",
